@@ -1,9 +1,10 @@
 CC=g++
-CFLAGS=-Wall -Werror -O3 -std=c++11
+CFLAGS=-Wall -Werror -O3 -std=c++11 -g -Wl,--no-as-needed -ldl -rdynamic -fstack-protector-all
 
 SUBDIRS=external/exceptionpp/
 
-INCLUDE=-Iinclude/ -Iexternal/exceptionpp/include/
+INCLUDE=-Iinclude/
+INCLUDE_LIBS=-Iexternal/exceptionpp/include/ -Iinclude/libs/stacktrace/
 SOURCES=src/*cc libs/*/*cc
 
 OBJECTS=$(SOURCES:.cc=.o)
@@ -13,12 +14,10 @@ EXECUTABLE=cachepp.app
 .PHONY: all clean
 
 all: $(EXECUTABLE) $(SOURCES)
-	for dir in $(SUBDIRS); do $(MAKE) -C $$dir; done
 
 $(EXECUTABLE): $(OBJECTS)
-	$(CC) $(CFLAGS) $(INCLUDE) $(OBJECTS) -o $@ $(LIBS)
+	$(CC) $(CFLAGS) $(INCLUDE) $(INCLUDE_LIBS) $(OBJECTS) -o $@ $(LIBS)
 
 clean:
-	for dir in $(SUBDIRS); do $(MAKE) clean -C $$dir; done
 	rm -f $(EXECUTABLE) *.o
 
