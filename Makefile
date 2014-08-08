@@ -3,8 +3,8 @@ CFLAGS=-Wall -Werror -O3 -std=c++11
 
 SUBDIRS=external/exceptionpp/
 
-INCLUDE=-Iinclude/
-SOURCES=src/*cc
+INCLUDE=-Iinclude/ -Iexternal/exceptionpp/include/
+SOURCES=src/*cc libs/*/*cc
 
 OBJECTS=$(SOURCES:.cc=.o)
 
