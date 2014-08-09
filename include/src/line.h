@@ -19,36 +19,36 @@ namespace cachepp {
 			Line(identifier id);
 
 			identifier get_identifier();
+			std::shared_ptr<std::vector<uint8_t>> get_data();
 
 			/**
 			 * loads and unloads data from RAM
 			 */
-			virtual void load() = 0;
-			virtual void unload() = 0;
+			void load();
+			void unload();
 
 		protected:
 			identifier id;
 			std::shared_ptr<std::vector<uint8_t>> data;
 
-			/**
-			 * checks the data in this->data
-			 *
-			 * raises exceptionpp::RuntimeError if the data is not valid
-			 */
-			virtual void checksum() = 0;
+			void checksum();
 
 			/**
 			 * produces the checksum and store internally
 			 */
 			virtual void set_hash() = 0;
+
+			/**
+			 * derived class to implement the specifics
+			 */
+			virtual void load_aux() = 0;
+			virtual void unload_aux() = 0;
+			virtual bool checksum_aux() = 0;
 	};
 
 	class SimpleLine : Line {
 		public:
 			SimpleLine(identifier id, bool is_corrupt);
-
-			virtual void load();
-			virtual void unload();
 
 		private:
 			bool parity;
@@ -56,8 +56,10 @@ namespace cachepp {
 
 			bool calculate_parity(bool is_corrupt = false);
 
-			virtual void checksum();
 			virtual void set_hash();
+			virtual void load_aux();
+			virtual void unload_aux();
+			virtual bool checksum_aux();
 	};
 }
 
