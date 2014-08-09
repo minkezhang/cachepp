@@ -23,6 +23,7 @@ TEST_CASE("cachepp|line") {
 	REQUIRE(s->get_is_loaded() == true);
 
 	std::shared_ptr<cachepp::SimpleLine> t (new cachepp::SimpleLine(111, true));
+
 	t->load();
 	t->unload();
 	REQUIRE(t->get_is_dirty() == true);
