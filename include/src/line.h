@@ -22,6 +22,7 @@ namespace cachepp {
 			std::shared_ptr<std::vector<uint8_t>> get_data();
 
 			bool get_is_loaded();
+			bool get_is_dirty();
 
 			/**
 			 * loads and unloads data from RAM
@@ -34,9 +35,12 @@ namespace cachepp {
 			std::shared_ptr<std::vector<uint8_t>> data;
 
 			bool is_loaded;
+			bool is_dirty;
 
 			void checksum();
+
 			void set_is_loaded(bool is_loaded);
+			void set_is_dirty(bool is_dirty);
 
 			/**
 			 * produces the checksum and store internally
@@ -51,7 +55,7 @@ namespace cachepp {
 			virtual bool checksum_aux() = 0;
 	};
 
-	class SimpleLine : Line {
+	class SimpleLine : public Line {
 		public:
 			SimpleLine(identifier id, bool is_corrupt);
 

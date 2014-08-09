@@ -11,12 +11,15 @@ OBJECTS=$(SOURCES:.cc=.o)
 
 EXECUTABLE=cachepp.app
 
-.PHONY: all clean
+.PHONY: all clean test
 
 all: $(EXECUTABLE) $(SOURCES)
 
 $(EXECUTABLE): $(OBJECTS)
 	$(CC) $(CFLAGS) $(INCLUDE) $(INCLUDE_LIBS) $(OBJECTS) -o $@ $(LIBS)
+
+test: clean all
+	./$(EXECUTABLE)
 
 clean:
 	rm -f $(EXECUTABLE) *.o
