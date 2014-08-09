@@ -42,7 +42,7 @@ namespace cachepp {
 			identifier size;
 
 			std::map<identifier, std::shared_ptr<T>> cache;
-			std::recursive_mutex l;
+			std::mutex l;
 
 			bool in(const std::shared_ptr<T>& arg);
 			void allocate(const std::shared_ptr<T>& arg);
