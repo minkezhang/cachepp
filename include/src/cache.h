@@ -4,15 +4,10 @@
 #include <map>
 #include <memory>
 #include <mutex>
-#include <vector>
 
 #include "src/globals.h"
 
 #include "src/line.h"
-
-/**
- * cache scaffolding headers
- */
 
 namespace cachepp {
 	/**

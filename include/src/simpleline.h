@@ -4,11 +4,10 @@
 #include "src/globals.h"
 #include "src/line.h"
 
-/**
- * cache line scaffolding headers
- */
-
 namespace cachepp {
+	/**
+	 * simple concrete implementation of the Line interface
+	 */
 	class SimpleLine : public Line {
 		public:
 			SimpleLine(identifier id, bool is_corrupt);

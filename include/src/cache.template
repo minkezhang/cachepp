@@ -7,10 +7,6 @@
 
 #include "src/cache.h"
 
-/**
- * Cache
- */
-
 template <typename T> cachepp::Cache<T>::Cache(cachepp::identifier size) : size(size) {
 	if(!std::is_base_of<cachepp::Line, T>::value) {
 		throw(exceptionpp::InvalidOperation("cachepp::Cache<T>::Cache", "given typename T is not inherited from cachepp::Line"));

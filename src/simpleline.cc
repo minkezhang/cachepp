@@ -18,6 +18,9 @@ bool cachepp::SimpleLine::checksum_aux() {
 	return(this->parity == this->calculate_parity(this->is_corrupt));
 }
 
+/**
+ * intentionally corrupt the data to encourage Line::checksum to throw an exception
+ */
 bool cachepp::SimpleLine::calculate_parity(bool is_corrupt) {
 	uint32_t result = 0;
 	for(std::vector<uint8_t>::iterator it = this->data->begin(); it != this->data->end(); ++it) {

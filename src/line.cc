@@ -2,10 +2,6 @@
 
 #include "src/line.h"
 
-/**
- * Line
- */
-
 cachepp::Line::Line(cachepp::identifier id) : id(id), is_loaded(0), is_dirty(0) {
 	this->data = std::shared_ptr<std::vector<uint8_t>> (new std::vector<uint8_t> ());
 }

@@ -6,13 +6,9 @@
 
 #include "src/globals.h"
 
-/**
- * cache line scaffolding headers
- */
-
 namespace cachepp {
 	/**
-	 * base cache line interface
+	 * basic cache line interface -- this is NOT directly callable by the user
 	 */
 	class Line {
 		public:
