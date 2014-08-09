@@ -54,6 +54,12 @@ TEST_CASE("cachepp|cache") {
 	c->acquire(v.at(2));
 
 	REQUIRE(v.at(0)->get_is_loaded() == true);
-	REQUIRE(v.at(2)->get_is_loaded() == true);
 	REQUIRE(v.at(1)->get_is_loaded() == false);
+	REQUIRE(v.at(2)->get_is_loaded() == true);
+
+	c->acquire(v.at(3));
+
+	REQUIRE(v.at(0)->get_is_loaded() == false);
+	REQUIRE(v.at(2)->get_is_loaded() == true);
+	REQUIRE(v.at(3)->get_is_loaded() == true);
 }

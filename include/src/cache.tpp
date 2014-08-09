@@ -1,6 +1,7 @@
 #ifndef _CACHEPP_CACHE_TPP
 #define _CACHEPP_CACHE_TPP
 
+#include <limits>
 #include <type_traits>
 
 #include "libs/exceptionpp/exception.h"
@@ -74,10 +75,14 @@ template <typename T> std::shared_ptr<T> cachepp::Cache<T>::select() {
 	cachepp::identifier heuristic = 0;
 	cachepp::identifier target = 0;
 	for(typename std::map<cachepp::identifier, std::shared_ptr<T>>::iterator it = this->cache.begin(); it != this->cache.end(); ++it) {
-		if(heuristic <= this->heuristic(it->second)) {
-			heuristic = this->heuristic(it->second);
+		cachepp::identifier  h = this->heuristic(it->second);
+		if(h <= heuristic) {
+			heuristic = h;
 			target = it->first;
 		}
+	}
+	if(target == 0) {
+		throw(exceptionpp::RuntimeError("cachepp::Cache::select", "cannot find a target to evict"));
 	}
 	return(this->cache.at(target));
 }
@@ -107,7 +112,9 @@ template <typename T> cachepp::identifier cachepp::SimpleNChanceCache<T>::hash(c
 }
 
 template <typename T> size_t cachepp::SimpleNChanceCache<T>::heuristic(const std::shared_ptr<T>& arg) {
-	return(this->access_data.at(this->hash(arg))--);
+	cachepp::identifier h = this->access_data.at(this->hash(arg));
+	this->access_data.at(this->hash(arg)) = h == 0 ? 0 : h - 1;
+	return(h);
 }
 
 #endif
