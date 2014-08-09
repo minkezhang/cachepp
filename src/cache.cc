@@ -2,6 +2,9 @@
 
 #include "src/cache.h"
 
+/**
+ * base cache class
+ */
 template <typename T> cachepp::Cache<T>::Cache(cachepp::identifier size) : size(size) {}
 
 template <typename T> void cachepp::Cache<T>::acquire(const std::shared_ptr<T>& arg) {
@@ -12,6 +15,9 @@ template <typename T> void cachepp::Cache<T>::acquire(const std::shared_ptr<T>& 
 	this->l.unlock();
 }
 
+/**
+ * this interface is not implemented in the base class -- override this in derived classes
+ */
 template <typename T> void cachepp::Cache<T>::access(const std::shared_ptr<T>& arg) {
 	throw(exceptionpp::NotImplemented("cachepp::Cache<T>::access"));
 }
@@ -44,9 +50,10 @@ template <typename T> void cachepp::Cache<T>::allocate(const std::shared_ptr<T>&
 
 /**
  * selects a cache line for eviction
+ *
+ * default implementation may need to be overridden in derived classes
  */
 template <typename T> std::shared_ptr<T> cachepp::Cache<T>::select() {
-	this->l.lock();
 	cachepp::identifier heuristic = 0;
 	cachepp::identifier target = 0;
 	for(typename std::map<cachepp::identifier, std::shared_ptr<T>>::iterator it = this->cache.begin(); it != this->cache.end(); ++it) {
@@ -56,7 +63,32 @@ template <typename T> std::shared_ptr<T> cachepp::Cache<T>::select() {
 		}
 	}
 	this->cache.at(target)->unload();
-	this->l.unlock();
 }
 
+/**
+ * takes in a cache line and returns a recommendation on if the line should be evicted
+ *	return value of 0 indicates the line should NOT be evicted
+ *
+ * by default, not implemented and will need to be overridden
+ */
+template <typename T> size_t cachepp::Cache<T>::heuristic(const std::shared_ptr<T>& arg) {
+	throw(exceptionpp::NotImplemented("cachepp::Cache<T>::access"));
+}
+
+template <typename T> cachepp::SimpleNChanceCache<T>::SimpleNChanceCache(cachepp::identifier size) : cachepp::Cache<T>::Cache(size) {
+	for(cachepp::identifier i = 0; i < this->size; ++i) {
+		this->access_data.push_back(0);
+	}
+}
+
+/**
+ * takes in an object and returns an index to the auxiliary data
+ */
+template <typename T> cachepp::identifier cachepp::SimpleNChanceCache<T>::hash(const std::shared_ptr<T>& arg) {
+	return(arg->get_identifier() % this->size);
+}
+
+template <typename T> size_t cachepp::SimpleNChanceCache<T>::heuristic(const std::shared_ptr<T>& arg) {
+	return(this->aux_data.at(this->hash(arg))--);
+}
 int main() { return(0); }

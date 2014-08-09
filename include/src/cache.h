@@ -4,6 +4,7 @@
 #include <map>
 #include <memory>
 #include <mutex>
+#include <vector>
 
 namespace cachepp {
 	// number of unique IDs supported by the cache
@@ -35,7 +36,6 @@ namespace cachepp {
 			virtual std::shared_ptr<T> select();
 
 			virtual size_t heuristic(const std::shared_ptr<T>& arg);
-			virtual identifier hash(const std::shared_ptr<T>& arg);
 	};
 
 	template<typename T>
@@ -43,7 +43,9 @@ namespace cachepp {
 		public:
 			SimpleNChanceCache(identifier size);
 		private:
-			std::map<identifier, size_t> tracker;
+			std::vector<size_t> access_data;
+			virtual identifier hash(const std::shared_ptr<T>& arg);
+
 			virtual size_t heuristic(const std::shared_ptr<T>&arg);
 	};
 }
