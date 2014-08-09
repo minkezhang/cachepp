@@ -54,34 +54,6 @@ namespace cachepp {
 			virtual void unload_aux() = 0;
 			virtual bool checksum_aux() = 0;
 	};
-
-	class SimpleLine : public Line {
-		public:
-			SimpleLine(identifier id, bool is_corrupt);
-
-		private:
-			bool parity;
-			bool is_corrupt;
-
-			bool calculate_parity(bool is_corrupt = false);
-
-			virtual void set_hash();
-			virtual void load_aux();
-			virtual void unload_aux();
-			virtual bool checksum_aux();
-	};
-
-	class Random {
-		public:
-			Random(identifier id);
-			identifier get_identifier();
-
-			void load();
-			void unload();
-
-		private:
-			identifier id;
-	};
 }
 
 #endif

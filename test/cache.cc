@@ -6,10 +6,11 @@
 #include "libs/exceptionpp/exception.h"
 
 #include "src/simplecache.h"
-#include "src/line.h"
+#include "src/simpleline.h"
+#include "src/imposter.h"
 
 TEST_CASE("cachepp|cache") {
-	REQUIRE_THROWS_AS(cachepp::SimpleCache<cachepp::Random>(10), exceptionpp::InvalidOperation);
+	REQUIRE_THROWS_AS(cachepp::SimpleCache<cachepp::Imposter>(10), exceptionpp::InvalidOperation);
 
 	std::shared_ptr<cachepp::SimpleCache<cachepp::SimpleLine>> c (new cachepp::SimpleCache<cachepp::SimpleLine>(2));
 

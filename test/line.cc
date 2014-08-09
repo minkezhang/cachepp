@@ -1,7 +1,7 @@
 #include "libs/catch/catch.hpp"
 #include "libs/exceptionpp/exception.h"
 
-#include "src/line.h"
+#include "src/simpleline.h"
 
 TEST_CASE("cachepp|line") {
 	std::shared_ptr<cachepp::SimpleLine> s (new cachepp::SimpleLine(111, false));
