@@ -4,8 +4,8 @@ CFLAGS=-Wall -Werror -O3 -std=c++11 -g -Wl,--no-as-needed -ldl -rdynamic -fstack
 SUBDIRS=external/exceptionpp/
 
 INCLUDE=-Iinclude/
-INCLUDE_LIBS=-Iexternal/exceptionpp/include/ -Iinclude/libs/stacktrace/
-SOURCES=src/*cc libs/*/*cc
+INCLUDE_LIBS=-Iexternal/catch/include/ -Iexternal/exceptionpp/include/ -Iinclude/libs/stacktrace/
+SOURCES=src/*cc libs/*/*cc test/*cc
 
 OBJECTS=$(SOURCES:.cc=.o)
 

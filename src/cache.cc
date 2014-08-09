@@ -93,8 +93,3 @@ template <typename T> cachepp::identifier cachepp::SimpleNChanceCache<T>::hash(c
 template <typename T> size_t cachepp::SimpleNChanceCache<T>::heuristic(const std::shared_ptr<T>& arg) {
 	return(this->access_data.at(this->hash(arg))--);
 }
-
-int main() {
-	return(0);
-}
-
