@@ -18,6 +18,11 @@ namespace cachepp {
 			 */
 			void acquire(const std::shared_ptr<T>& arg);
 
+			/**
+			 * updates cache internal tracker
+			 */
+			virtual void access(const std::shared_ptr<T>& arg);
+
 		private:
 			identifier size;
 
@@ -27,10 +32,19 @@ namespace cachepp {
 			bool in(const std::shared_ptr<T>& arg);
 			void allocate(const std::shared_ptr<T>& arg);
 
-			std::shared_ptr<T> select();
+			virtual std::shared_ptr<T> select();
 
 			virtual size_t heuristic(const std::shared_ptr<T>& arg);
 			virtual identifier hash(const std::shared_ptr<T>& arg);
+	};
+
+	template<typename T>
+	class SimpleNChanceCache : public Cache<T> {
+		public:
+			SimpleNChanceCache(identifier size);
+		private:
+			std::map<identifier, size_t> tracker;
+			virtual size_t heuristic(const std::shared_ptr<T>&arg);
 	};
 }
 

@@ -1,7 +1,24 @@
+#include "libs/exceptionpp/exception.h"
+
 #include "src/cache.h"
 
 template <typename T> cachepp::Cache<T>::Cache(cachepp::identifier size) : size(size) {}
 
+template <typename T> void cachepp::Cache<T>::acquire(const std::shared_ptr<T>& arg) {
+	this->l.lock();
+	if(!this->in(arg)) {
+		this->allocate(arg);
+	}
+	this->l.unlock();
+}
+
+template <typename T> void cachepp::Cache<T>::access(const std::shared_ptr<T>& arg) {
+	throw(exceptionpp::NotImplemented("cachepp::Cache<T>::access"));
+}
+
+/**
+ * tests for membership in the cache
+ */
 template <typename T> bool cachepp::Cache<T>::in(const std::shared_ptr<T>& arg) {
 	this->l.lock();
 	bool succ = false;
@@ -13,12 +30,11 @@ template <typename T> bool cachepp::Cache<T>::in(const std::shared_ptr<T>& arg) 
 	return(succ);
 }
 
+/**
+ * the function which actually loads the data into the cache
+ */
 template <typename T> void cachepp::Cache<T>::allocate(const std::shared_ptr<T>& arg) {
 	this->l.lock();
-	if(this->in(arg)) {
-		this->l.unlock();
-		return;
-	}
 	if(this->cache.size() > this->size) {
 		this->cache.erase(this->select()->get_identifier());
 	}
@@ -26,6 +42,9 @@ template <typename T> void cachepp::Cache<T>::allocate(const std::shared_ptr<T>&
 	this->l.unlock();
 }
 
+/**
+ * selects a cache line for eviction
+ */
 template <typename T> std::shared_ptr<T> cachepp::Cache<T>::select() {
 	this->l.lock();
 	cachepp::identifier heuristic = 0;
