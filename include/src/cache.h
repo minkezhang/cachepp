@@ -1,16 +1,20 @@
-#ifndef _CACHE_H
-#define _CACHE_H
+#ifndef _CACHEPP_CACHE_H
+#define _CACHEPP_CACHE_H
 
 #include <map>
 #include <memory>
 #include <mutex>
 #include <vector>
 
-namespace cachepp {
-	// number of unique IDs supported by the cache
-	typedef uint32_t identifier;
+#include "src/globals.h"
 
-	template <typename T>
+#include "src/line.h"
+
+/**
+ * cache scaffolding headers
+ */
+
+namespace cachepp {
 	/**
 	 * Basic cache class -- this is NOT directly usable by the user, but is meant as a scaffold to quickly build other cache selection schemes
 	 */
@@ -21,39 +25,44 @@ namespace cachepp {
 			/**
 			 * ensures the cache contains T -- that is, T is loaded
 			 */
-			void acquire(const std::shared_ptr<T>& arg);
+			void acquire(const std::shared_ptr<Line>& arg);
 
 			/**
 			 * updates cache internal tracker
 			 */
-			virtual void access(const std::shared_ptr<T>& arg);
+			virtual void access(const std::shared_ptr<Line>& arg) = 0;
 
-		private:
+		protected:
 			identifier size;
 
-			std::map<identifier, std::shared_ptr<T>> cache;
+			std::map<identifier, std::shared_ptr<Line>> cache;
 			std::recursive_mutex l;
 
-			bool in(const std::shared_ptr<T>& arg);
-			void allocate(const std::shared_ptr<T>& arg);
+			bool in(const std::shared_ptr<Line>& arg);
+			void allocate(const std::shared_ptr<Line>& arg);
 
-			virtual std::shared_ptr<T> select();
+			virtual std::shared_ptr<Line> select();
 
-			virtual size_t heuristic(const std::shared_ptr<T>& arg);
+			/**
+			 * takes in a cache line and returns a recommendation on if the line should be evicted
+			 *	return value of 0 indicates the line should NOT be evicted
+			 *
+			 * by default, not implemented and will need to be overridden
+			 */
+			virtual size_t heuristic(const std::shared_ptr<Line>& arg) = 0;
 	};
 
 	/**
 	 * essentially a clock algorithm WITHOUT the persistent hand -- uses Cache::Cache::select, which iterates from the beginning of cache on each invocation
 	 */
-	template<typename T>
-	class SimpleNChanceCache : public Cache<T> {
+	class SimpleNChanceCache : public Cache {
 		public:
 			SimpleNChanceCache(identifier size);
 		private:
 			std::vector<size_t> access_data;
-			virtual identifier hash(const std::shared_ptr<T>& arg);
+			virtual identifier hash(const std::shared_ptr<Line>& arg);
 
-			virtual size_t heuristic(const std::shared_ptr<T>&arg);
+			virtual size_t heuristic(const std::shared_ptr<Line>& arg);
 	};
 }
 
