@@ -1,3 +1,5 @@
+#include <type_traits>
+
 #include "libs/exceptionpp/exception.h"
 
 #include "src/cache.h"
@@ -6,9 +8,13 @@
  * Cache
  */
 
-cachepp::Cache::Cache(cachepp::identifier size) : size(size) {}
+template <typename T> cachepp::Cache<T>::Cache(cachepp::identifier size) : size(size) {
+	if(!std::is_base_of<cachepp::Line, T>::value) {
+		throw(exceptionpp::InvalidOperation("cachepp::Cache<T>::Cache", "given typename T is not inherited from cachepp::Line"));
+	}
+}
 
-void cachepp::Cache::acquire(const std::shared_ptr<cachepp::Line>& arg) {
+template <typename T> void cachepp::Cache<T>::acquire(const std::shared_ptr<T>& arg) {
 	this->l.lock();
 	if(!this->in(arg)) {
 		this->allocate(arg);
@@ -19,7 +25,7 @@ void cachepp::Cache::acquire(const std::shared_ptr<cachepp::Line>& arg) {
 /**
  * tests for membership in the cache
  */
-bool cachepp::Cache::in(const std::shared_ptr<cachepp::Line>& arg) {
+template <typename T> bool cachepp::Cache<T>::in(const std::shared_ptr<T>& arg) {
 	this->l.lock();
 	bool succ = false;
 	try {
@@ -33,12 +39,12 @@ bool cachepp::Cache::in(const std::shared_ptr<cachepp::Line>& arg) {
 /**
  * the function which actually loads the data into the cache
  */
-void cachepp::Cache::allocate(const std::shared_ptr<cachepp::Line>& arg) {
+template <typename T> void cachepp::Cache<T>::allocate(const std::shared_ptr<T>& arg) {
 	this->l.lock();
 	if(this->cache.size() > this->size) {
 		this->cache.erase(this->select()->get_identifier());
 	}
-	this->cache.insert(std::pair<cachepp::identifier, std::shared_ptr<cachepp::Line>> (arg->get_identifier(), arg));
+	this->cache.insert(std::pair<cachepp::identifier, std::shared_ptr<T>> (arg->get_identifier(), arg));
 	this->l.unlock();
 }
 
@@ -47,10 +53,10 @@ void cachepp::Cache::allocate(const std::shared_ptr<cachepp::Line>& arg) {
  *
  * default implementation may need to be overridden in derived classes
  */
-std::shared_ptr<cachepp::Line> cachepp::Cache::select() {
+template <typename T> std::shared_ptr<T> cachepp::Cache<T>::select() {
 	cachepp::identifier heuristic = 0;
 	cachepp::identifier target = 0;
-	for(typename std::map<cachepp::identifier, std::shared_ptr<cachepp::Line>>::iterator it = this->cache.begin(); it != this->cache.end(); ++it) {
+	for(typename std::map<cachepp::identifier, std::shared_ptr<T>>::iterator it = this->cache.begin(); it != this->cache.end(); ++it) {
 		if(heuristic >= this->heuristic(it->second)) {
 			heuristic = this->heuristic(it->second);
 			target = it->first;
@@ -71,7 +77,7 @@ std::shared_ptr<cachepp::Line> cachepp::Cache::select() {
  * SimpleNChanceCache
  */
 
-cachepp::SimpleNChanceCache::SimpleNChanceCache(cachepp::identifier size) : cachepp::Cache::Cache(size) {
+template <typename T> cachepp::SimpleNChanceCache<T>::SimpleNChanceCache(cachepp::identifier size) : cachepp::Cache<T>::Cache(size) {
 	for(cachepp::identifier i = 0; i < this->size; ++i) {
 		this->access_data.push_back(0);
 	}
@@ -80,11 +86,11 @@ cachepp::SimpleNChanceCache::SimpleNChanceCache(cachepp::identifier size) : cach
 /**
  * takes in an object and returns an index to the auxiliary data
  */
-cachepp::identifier cachepp::SimpleNChanceCache::hash(const std::shared_ptr<cachepp::Line>& arg) {
+template <typename T> cachepp::identifier cachepp::SimpleNChanceCache<T>::hash(const std::shared_ptr<T>& arg) {
 	return(arg->get_identifier() % this->size);
 }
 
-size_t cachepp::SimpleNChanceCache::heuristic(const std::shared_ptr<cachepp::Line>& arg) {
+template <typename T> size_t cachepp::SimpleNChanceCache<T>::heuristic(const std::shared_ptr<T>& arg) {
 	return(this->access_data.at(this->hash(arg))--);
 }
 
