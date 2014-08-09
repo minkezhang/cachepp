@@ -3,8 +3,9 @@
 #include "src/cache.h"
 
 /**
- * base cache class
+ * Cache
  */
+
 template <typename T> cachepp::Cache<T>::Cache(cachepp::identifier size) : size(size) {}
 
 template <typename T> void cachepp::Cache<T>::acquire(const std::shared_ptr<T>& arg) {
@@ -75,6 +76,10 @@ template <typename T> size_t cachepp::Cache<T>::heuristic(const std::shared_ptr<
 	throw(exceptionpp::NotImplemented("cachepp::Cache<T>::access"));
 }
 
+/**
+ * SimpleNChanceCache
+ */
+
 template <typename T> cachepp::SimpleNChanceCache<T>::SimpleNChanceCache(cachepp::identifier size) : cachepp::Cache<T>::Cache(size) {
 	for(cachepp::identifier i = 0; i < this->size; ++i) {
 		this->access_data.push_back(0);
@@ -91,4 +96,3 @@ template <typename T> cachepp::identifier cachepp::SimpleNChanceCache<T>::hash(c
 template <typename T> size_t cachepp::SimpleNChanceCache<T>::heuristic(const std::shared_ptr<T>& arg) {
 	return(this->aux_data.at(this->hash(arg))--);
 }
-int main() { return(0); }

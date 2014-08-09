@@ -9,7 +9,11 @@
 namespace cachepp {
 	// number of unique IDs supported by the cache
 	typedef uint32_t identifier;
+
 	template <typename T>
+	/**
+	 * Basic cache class -- this is NOT directly usable by the user, but is meant as a scaffold to quickly build other cache selection schemes
+	 */
 	class Cache {
 		public:
 			Cache(identifier size);
@@ -38,6 +42,9 @@ namespace cachepp {
 			virtual size_t heuristic(const std::shared_ptr<T>& arg);
 	};
 
+	/**
+	 * essentially a clock algorithm WITHOUT the persistent hand -- uses Cache::Cache::select, which iterates from the beginning of cache on each invocation
+	 */
 	template<typename T>
 	class SimpleNChanceCache : public Cache<T> {
 		public:
