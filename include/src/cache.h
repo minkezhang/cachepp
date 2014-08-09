@@ -57,28 +57,12 @@ namespace cachepp {
 			 */
 			virtual size_t heuristic(const std::shared_ptr<T>& arg) = 0;
 	};
-
-	/**
-	 * essentially a clock algorithm WITHOUT the persistent hand -- uses Cache::Cache::select, which iterates from the beginning of cache on each invocation
-	 */
-	template <typename T>
-	class SimpleNChanceCache : public Cache<T> {
-		public:
-			SimpleNChanceCache(identifier size);
-			virtual void access(const std::shared_ptr<T>& arg);
-
-		private:
-			std::vector<size_t> access_data;
-			virtual identifier hash(const std::shared_ptr<T>& arg);
-
-			virtual size_t heuristic(const std::shared_ptr<T>& arg);
-	};
 }
 
 /**
  * include template instantiation
  *	cf. http://bit.ly/MQKzaI
  */
-#include "src/cache.tpp"
+#include "src/cache.template"
 
 #endif

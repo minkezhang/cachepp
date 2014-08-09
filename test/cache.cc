@@ -5,13 +5,13 @@
 #include "libs/catch/catch.hpp"
 #include "libs/exceptionpp/exception.h"
 
-#include "src/cache.h"
+#include "src/simplecache.h"
 #include "src/line.h"
 
 TEST_CASE("cachepp|cache") {
-	REQUIRE_THROWS_AS(cachepp::SimpleNChanceCache<cachepp::Random>(10), exceptionpp::InvalidOperation);
+	REQUIRE_THROWS_AS(cachepp::SimpleCache<cachepp::Random>(10), exceptionpp::InvalidOperation);
 
-	std::shared_ptr<cachepp::SimpleNChanceCache<cachepp::SimpleLine>> c (new cachepp::SimpleNChanceCache<cachepp::SimpleLine>(2));
+	std::shared_ptr<cachepp::SimpleCache<cachepp::SimpleLine>> c (new cachepp::SimpleCache<cachepp::SimpleLine>(2));
 
 	std::vector<std::shared_ptr<cachepp::SimpleLine>> v;
 	for(size_t i = 0; i < 10; ++i) {
