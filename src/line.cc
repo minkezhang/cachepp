@@ -84,3 +84,12 @@ bool cachepp::SimpleLine::calculate_parity(bool is_corrupt) {
 	}
 	return((is_corrupt + (result % 2)) % 2);
 }
+
+/**
+ * Random
+ */
+
+cachepp::Random::Random(cachepp::identifier id) : id(id) {}
+cachepp::identifier cachepp::Random::get_identifier() { return(this->id); }
+void cachepp::Random::load() {}
+void cachepp::Random::unload() {}

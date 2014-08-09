@@ -67,13 +67,6 @@ template <typename T> std::shared_ptr<T> cachepp::Cache<T>::select() {
 }
 
 /**
- * takes in a cache line and returns a recommendation on if the line should be evicted
- *	return value of 0 indicates the line should NOT be evicted
- *
- * by default, not implemented and will need to be overridden
- */
-
-/**
  * SimpleNChanceCache
  */
 
@@ -81,6 +74,10 @@ template <typename T> cachepp::SimpleNChanceCache<T>::SimpleNChanceCache(cachepp
 	for(cachepp::identifier i = 0; i < this->size; ++i) {
 		this->access_data.push_back(0);
 	}
+}
+
+template <typename T> void cachepp::SimpleNChanceCache<T>::access(const std::shared_ptr<T>& arg) {
+	this->access_data.at(this->hash(arg))++;
 }
 
 /**

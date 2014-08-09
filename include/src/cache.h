@@ -60,6 +60,8 @@ namespace cachepp {
 	class SimpleNChanceCache : public Cache<T> {
 		public:
 			SimpleNChanceCache(identifier size);
+			virtual void access(const std::shared_ptr<T>& arg);
+
 		private:
 			std::vector<size_t> access_data;
 			virtual identifier hash(const std::shared_ptr<T>& arg);

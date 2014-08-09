@@ -70,6 +70,18 @@ namespace cachepp {
 			virtual void unload_aux();
 			virtual bool checksum_aux();
 	};
+
+	class Random {
+		public:
+			Random(identifier id);
+			identifier get_identifier();
+
+			void load();
+			void unload();
+
+		private:
+			identifier id;
+	};
 }
 
 #endif
