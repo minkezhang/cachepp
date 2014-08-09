@@ -36,6 +36,28 @@ namespace cachepp {
 			 * raises exceptionpp::RuntimeError if the data is not valid
 			 */
 			virtual void checksum() = 0;
+
+			/**
+			 * produces the checksum and store internally
+			 */
+			virtual void set_hash() = 0;
+	};
+
+	class SimpleLine : Line {
+		public:
+			SimpleLine(identifier id, bool is_corrupt);
+
+			virtual void load();
+			virtual void unload();
+
+		private:
+			bool parity;
+			bool is_corrupt;
+
+			bool calculate_parity(bool is_corrupt = false);
+
+			virtual void checksum();
+			virtual void set_hash();
 	};
 }
 
