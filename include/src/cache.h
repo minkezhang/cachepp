@@ -70,4 +70,10 @@ namespace cachepp {
 	};
 }
 
+/**
+ * include template instantiation
+ *	cf. http://bit.ly/MQKzaI
+ */
+#include "src/cache.tpp"
+
 #endif

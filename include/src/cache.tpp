@@ -1,3 +1,6 @@
+#ifndef _CACHEPP_CACHE_TPP
+#define _CACHEPP_CACHE_TPP
+
 #include <type_traits>
 
 #include "libs/exceptionpp/exception.h"
@@ -90,3 +93,5 @@ template <typename T> cachepp::identifier cachepp::SimpleNChanceCache<T>::hash(c
 template <typename T> size_t cachepp::SimpleNChanceCache<T>::heuristic(const std::shared_ptr<T>& arg) {
 	return(this->access_data.at(this->hash(arg))--);
 }
+
+#endif
