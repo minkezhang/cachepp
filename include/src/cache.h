@@ -29,6 +29,11 @@ namespace cachepp {
 			void acquire(const std::shared_ptr<T>& arg);
 
 			/**
+			 * clears the cache of all lines
+			 */
+			void clear();
+
+			/**
 			 * updates cache internal tracker
 			 */
 			virtual void access(const std::shared_ptr<T>& arg) = 0;

@@ -25,6 +25,16 @@ template <typename T> void cachepp::Cache<T>::acquire(const std::shared_ptr<T>& 
 	this->l.unlock();
 }
 
+template <typename T> void cachepp::Cache<T>::clear() {
+	this->l.lock();
+	for(typename std::map<cachepp::identifier, std::shared_ptr<T>>::iterator it = this->cache.begin(); it != this->cache.end();) {
+		this->cache.erase(it->first);
+		it->second->unload();
+		it++;
+	}
+	this->l.unlock();
+}
+
 /**
  * tests for membership in the cache
  */
@@ -33,6 +43,7 @@ template <typename T> bool cachepp::Cache<T>::in(const std::shared_ptr<T>& arg) 
 	bool succ = false;
 	try {
 		this->cache.at(arg->get_identifier());
+		succ = true;
 	} catch(const std::out_of_range& e) {
 	}
 	this->l.unlock();
@@ -44,9 +55,12 @@ template <typename T> bool cachepp::Cache<T>::in(const std::shared_ptr<T>& arg) 
  */
 template <typename T> void cachepp::Cache<T>::allocate(const std::shared_ptr<T>& arg) {
 	this->l.lock();
-	if(this->cache.size() > this->size) {
-		this->cache.erase(this->select()->get_identifier());
+	if(this->cache.size() >= this->size) {
+		std::shared_ptr<T> target = this->select();
+		this->cache.erase(target->get_identifier());
+		target->unload();
 	}
+	arg->load();
 	this->cache.insert(std::pair<cachepp::identifier, std::shared_ptr<T>> (arg->get_identifier(), arg));
 	this->l.unlock();
 }
@@ -60,12 +74,11 @@ template <typename T> std::shared_ptr<T> cachepp::Cache<T>::select() {
 	cachepp::identifier heuristic = 0;
 	cachepp::identifier target = 0;
 	for(typename std::map<cachepp::identifier, std::shared_ptr<T>>::iterator it = this->cache.begin(); it != this->cache.end(); ++it) {
-		if(heuristic >= this->heuristic(it->second)) {
+		if(heuristic <= this->heuristic(it->second)) {
 			heuristic = this->heuristic(it->second);
 			target = it->first;
 		}
 	}
-	this->cache.at(target)->unload();
 	return(this->cache.at(target));
 }
 
@@ -80,6 +93,9 @@ template <typename T> cachepp::SimpleNChanceCache<T>::SimpleNChanceCache(cachepp
 }
 
 template <typename T> void cachepp::SimpleNChanceCache<T>::access(const std::shared_ptr<T>& arg) {
+	if(!this->in(arg)) {
+		throw(exceptionpp::RuntimeError("cachepp::SimpleNChanceCache::access", "attempting to access a cache line which is not loaded"));
+	}
 	this->access_data.at(this->hash(arg))++;
 }
 
