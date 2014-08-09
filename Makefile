@@ -19,8 +19,9 @@ $(EXECUTABLE): $(OBJECTS)
 	$(CC) $(CFLAGS) $(INCLUDE) $(INCLUDE_LIBS) $(OBJECTS) -o $@ $(LIBS)
 
 test: clean all
-	./$(EXECUTABLE)
+	# set ulimit -c unlimited to get a core dump and analyze via gdb
+	#	cf. http://bit.ly/1zlOj8u, http://bit.ly/1n2ONGD, http://bit.ly/1n2ONGD, http://bit.ly/VCQ0yM
+	ulimit -c unlimited && ./$(EXECUTABLE) | tee results.log
 
 clean:
-	rm -f $(EXECUTABLE) *.o
-
+	rm -f $(EXECUTABLE) *.o *.log core
