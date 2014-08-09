@@ -6,7 +6,7 @@
  * Line
  */
 
-cachepp::Line::Line(cachepp::identifier id) : id(id) {
+cachepp::Line::Line(cachepp::identifier id) : id(id), is_loaded(0) {
 	this->data = std::shared_ptr<std::vector<uint8_t>> (new std::vector<uint8_t> ());
 }
 
@@ -14,12 +14,20 @@ cachepp::identifier cachepp::Line::get_identifier() { return(this->id); }
 
 std::shared_ptr<std::vector<uint8_t>> cachepp::Line::get_data() { return(this->data); }
 
+bool cachepp::Line::get_is_loaded() { return(this->is_loaded); }
+
 void cachepp::Line::load() {
+	if(this->get_is_loaded()) {
+		return;
+	}
 	this->load_aux();
 	this->checksum();
 }
 
 void cachepp::Line::unload() {
+	if(!this->get_is_loaded()) {
+		return;
+	}
 	this->set_hash();
 	this->unload_aux();
 }
@@ -34,6 +42,8 @@ void cachepp::Line::checksum() {
 		throw(exceptionpp::RuntimeError("cachepp::SimpleLine::checksum", "calculated checksum did not match data"));
 	}
 }
+
+void cachepp::Line::set_is_loaded(bool is_loaded) { this->is_loaded = is_loaded; }
 
 /**
  * SimpleLine

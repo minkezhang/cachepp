@@ -21,6 +21,8 @@ namespace cachepp {
 			identifier get_identifier();
 			std::shared_ptr<std::vector<uint8_t>> get_data();
 
+			bool get_is_loaded();
+
 			/**
 			 * loads and unloads data from RAM
 			 */
@@ -31,7 +33,10 @@ namespace cachepp {
 			identifier id;
 			std::shared_ptr<std::vector<uint8_t>> data;
 
+			bool is_loaded;
+
 			void checksum();
+			void set_is_loaded(bool is_loaded);
 
 			/**
 			 * produces the checksum and store internally
