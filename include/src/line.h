@@ -10,6 +10,7 @@ namespace cachepp {
 	/**
 	 * basic cache line interface -- this is NOT directly callable by the user
 	 */
+	template <typename T>
 	class Line {
 		public:
 			Line(identifier id);
@@ -33,23 +34,24 @@ namespace cachepp {
 			bool is_loaded;
 			bool is_dirty;
 
+			T checksum;
+
 			void validate();
 
 			void set_is_loaded(bool is_loaded);
 			void set_is_dirty(bool is_dirty);
-
-			/**
-			 * produces the checksum and store internally
-			 */
-			virtual void set_checksum() = 0;
+			void set_checksum(T);
+			T get_checksum();
 
 			/**
 			 * derived class to implement the specifics
 			 */
 			virtual void aux_load() = 0;
 			virtual void aux_unload() = 0;
-			virtual bool aux_validate() = 0;
+			virtual T calculate_checksum() = 0;
 	};
 }
+
+#include "src/line.template"
 
 #endif

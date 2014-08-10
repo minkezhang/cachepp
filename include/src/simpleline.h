@@ -8,20 +8,16 @@ namespace cachepp {
 	/**
 	 * simple concrete implementation of the Line interface
 	 */
-	class SimpleLine : public Line {
+	class SimpleLine : public Line<bool> {
 		public:
 			SimpleLine(identifier id, bool is_corrupt);
 
 		private:
-			bool parity;
 			bool is_corrupt;
 
-			bool calculate_parity(bool is_corrupt = false);
-
-			virtual void set_checksum();
 			virtual void aux_load();
 			virtual void aux_unload();
-			virtual bool aux_validate();
+			virtual bool calculate_checksum();
 	};
 }
 
