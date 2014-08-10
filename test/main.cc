@@ -1,4 +1,5 @@
 #define CATCH_CONFIG_RUNNER
+
 #include "libs/catch/catch.hpp"
 
 int main(int argc, char **argv) {

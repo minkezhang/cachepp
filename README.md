@@ -4,8 +4,8 @@ cachepp
 Overview
 ----
 
-This is a **lightly** concurrent (i.e., coarse-grained locking mechanism) caching framework, in the same sense of "cache" as paging, L1, etc. This framework is designed 
-so that different caching algorithms can be easily added, and to be flexible enough that the cache itself can store arbitrary data (by casting data into a byte vector).
+This is a **non-concurrent** caching framework designed so that different caching algorithms can be easily added, and to be flexible enough that the cache itself can 
+store arbitrary data (by casting data into a byte vector).
 
 Examples are included, but will be more well-documented in the future.
 

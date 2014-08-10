@@ -3,9 +3,8 @@
 
 #include <vector>
 
-#include "src/globals.h"
-
 #include "src/cache.h"
+#include "src/globals.h"
 
 namespace cachepp {
 	class SimpleCacheData {};

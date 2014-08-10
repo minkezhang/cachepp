@@ -3,10 +3,8 @@
 
 #include <map>
 #include <memory>
-#include <mutex>
 
 #include "src/globals.h"
-
 #include "src/line.h"
 
 namespace cachepp {
@@ -40,7 +38,6 @@ namespace cachepp {
 			identifier size;
 
 			std::map<identifier, std::shared_ptr<T>> cache;
-			std::mutex l;
 
 			bool in(const std::shared_ptr<T>& arg);
 			void allocate(const std::shared_ptr<T>& arg);
