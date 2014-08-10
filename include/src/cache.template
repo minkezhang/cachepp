@@ -7,11 +7,7 @@
 
 #include "src/cache.h"
 
-template <typename T, typename D> cachepp::Cache<T, D>::Cache(cachepp::identifier size) : size(size) {
-	if(!std::is_base_of<cachepp::Line<T>, T>::value) {
-		throw(exceptionpp::InvalidOperation("cachepp::Cache<T, D>::Cache", "given typename T, typename D is not inherited from cachepp::Line"));
-	}
-}
+template <typename T, typename D> cachepp::Cache<T, D>::Cache(cachepp::identifier size) : size(size) {}
 
 template <typename T, typename D> void cachepp::Cache<T, D>::acquire(const std::shared_ptr<T>& arg) {
 	// lock_guard auto-calls this->l->unlock upon stack deallocation -- do not need to worry about releasing resources during exceptions

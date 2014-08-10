@@ -7,11 +7,8 @@
 
 #include "src/simplecache.h"
 #include "src/simpleline.h"
-#include "src/imposter.h"
 
 TEST_CASE("cachepp|cache") {
-	REQUIRE_THROWS_AS(cachepp::SimpleCache<cachepp::Imposter>(10), exceptionpp::InvalidOperation);
-
 	std::shared_ptr<cachepp::SimpleCache<cachepp::SimpleLine>> c (new cachepp::SimpleCache<cachepp::SimpleLine>(2));
 
 	std::vector<std::shared_ptr<cachepp::SimpleLine>> v;
