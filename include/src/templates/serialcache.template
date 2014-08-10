@@ -1,11 +1,11 @@
-#ifndef _CACHEPP_CACHE_TEMPLATE
-#define _CACHEPP_CACHE_TEMPLATE
+#ifndef _CACHEPP_SERIALCACHE_TEMPLATE
+#define _CACHEPP_SERIALCACHE_TEMPLATE
 
 #include <type_traits>
 
 #include "libs/exceptionpp/exception.h"
 
-#include "src/cache.h"
+#include "src/serialcache.h"
 
 template <typename T, typename D> cachepp::Cache<T, D>::Cache(cachepp::identifier size) : size(size) {}
 

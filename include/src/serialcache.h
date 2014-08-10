@@ -1,5 +1,5 @@
-#ifndef _CACHEPP_CACHE_H
-#define _CACHEPP_CACHE_H
+#ifndef _CACHEPP_SERIALCACHE_H
+#define _CACHEPP_SERIALCACHE_H
 
 #include <map>
 #include <memory>
@@ -65,6 +65,6 @@ namespace cachepp {
  * include template instantiation
  *	cf. http://bit.ly/MQKzaI
  */
-#include "src/templates/cache.template"
+#include "src/templates/serialcache.template"
 
 #endif

@@ -3,7 +3,6 @@
 
 #include "libs/exceptionpp/exception.h"
 
-#include "src/cache.h"
 #include "src/simplecache.h"
 
 template <typename T> cachepp::SimpleCache<T>::SimpleCache(cachepp::identifier size) : cachepp::Cache<T, cachepp::SimpleCacheData>::Cache(size) {

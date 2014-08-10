@@ -3,7 +3,7 @@
 
 #include <vector>
 
-#include "src/cache.h"
+#include "src/serialcache.h"
 #include "src/globals.h"
 
 namespace cachepp {
