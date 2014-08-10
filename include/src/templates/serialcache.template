@@ -7,7 +7,9 @@
 
 #include "src/serialcache.h"
 
-template <typename T, typename D> cachepp::SerialCache<T, D>::SerialCache(cachepp::identifier size) : size(size) {}
+template <typename T, typename D> cachepp::SerialCache<T, D>::SerialCache(cachepp::identifier size) {
+	this->size = size;
+}
 
 template <typename T, typename D> void cachepp::SerialCache<T, D>::acquire(const std::shared_ptr<T>& arg) {
 	if(!this->in(arg)) {

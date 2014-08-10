@@ -4,59 +4,28 @@
 #include <map>
 #include <memory>
 
+#include "src/cacheinterface.h"
 #include "src/globals.h"
 #include "src/line.h"
 
 namespace cachepp {
 	/**
-	 * This is the base Cache template
-	 * 	this is NOT directly callable by the user
-	 *	but is meant as a scaffold to quickly build other cache selection schemes
-	 *
-	 * typename T -- the type of the cache line, subclassed from Line in src/line.h
-	 * typename D -- the type of the cache class auxiliary data
+	 * this is a subclass of the base Cache template and is NOT thread-safe
 	 */
 	template <typename T, typename D>
-	class SerialCache {
+	class SerialCache : public CacheInterface<T, D, std::map<identifier, std::shared_ptr<T>>> {
 		public:
 			SerialCache(identifier size);
 
-			/**
-			 * ensures the cache contains T -- that is, T is loaded
-			 */
-			virtual void acquire(const std::shared_ptr<T>& arg);
-
-			/**
-			 * mark that the cache line is no longer in active use
-			 */
-			virtual void release(const std::shared_ptr<T>& arg);
-
-			/**
-			 * clears the cache of all lines
-			 */
-			void clear();
-
-			/**
-			 * updates cache internal tracker
-			 */
+			virtual void acquire(const std::shared_ptr<T>& arg) final;
+			virtual void release(const std::shared_ptr<T>& arg) final;
+			virtual void clear() final;
 			virtual void access(const std::shared_ptr<T>& arg, D aux) = 0;
 
 		protected:
-			identifier size;
-
-			std::map<identifier, std::shared_ptr<T>> cache;
-
-			bool in(const std::shared_ptr<T>& arg);
-			void allocate(const std::shared_ptr<T>& arg);
-
-			virtual std::shared_ptr<T> select();
-
-			/**
-			 * takes in a cache line and returns a recommendation on if the line should be evicted
-			 *	return value of 0 indicates the line should NOT be evicted
-			 *
-			 * by default, not implemented and will need to be overridden
-			 */
+			virtual bool in(const std::shared_ptr<T>& arg) final;
+			virtual void allocate(const std::shared_ptr<T>& arg) final;
+			virtual std::shared_ptr<T> select() final;
 			virtual size_t heuristic(const std::shared_ptr<T>& arg) = 0;
 	};
 }
