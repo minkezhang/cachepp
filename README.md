@@ -4,8 +4,10 @@ cachepp
 Overview
 ----
 
-This is a **non-concurrent** caching framework designed so that different caching algorithms can be easily added, and to be flexible enough that the cache itself can 
-store arbitrary data (by casting data into a byte vector).
+This is a caching framework designed so that different caching algorithms can be easily added, and to be flexible enough that the cache itself can store arbitrary data 
+(by casting data into a byte vector).
+
+While the supplied `Cache` template is not inherently concurrent, a concurrent instantiation of the template is underway.
 
 Examples are included, but will be more well-documented in the future.
 
