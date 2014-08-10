@@ -31,6 +31,22 @@ git submodule foreach --recursive git pull
 Usage
 ----
 
+```
+auto c = MyCache<MyLine>(100);
+auto v = std::vector<MyLine> (...);
+
+for(auto i = ...; ...; ++i) {
+	// does nothing if the entry is already in the cache
+	c.acquire(v.at(i));
+
+	// process data
+	v.at(i)->get_data()->...
+}
+
+// clear the cache and unloads all cache lines
+c.clear();
+```
+
 ### Line
 
 A `Line` instance represents a cache line to be stored as data inside the `Cache` instantiation. We have decided to implement `Line` as a template, with one template 
