@@ -22,7 +22,8 @@ namespace cachepp {
 
 		private:
 			std::vector<size_t> access_data;
-			virtual identifier hash(const std::shared_ptr<T>& arg);
+
+			virtual identifier index(const std::shared_ptr<T>& arg);
 
 			virtual size_t heuristic(const std::shared_ptr<T>& arg);
 	};

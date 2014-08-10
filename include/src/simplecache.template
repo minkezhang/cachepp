@@ -16,19 +16,24 @@ template <typename T> void cachepp::SimpleCache<T>::access(const std::shared_ptr
 	if(!this->in(arg)) {
 		throw(exceptionpp::RuntimeError("cachepp::SimpleCache::access", "attempting to access a cache line which is not loaded"));
 	}
-	this->access_data.at(this->hash(arg))++;
+	this->access_data.at(this->index(arg))++;
 }
 
 /**
  * takes in an object and returns an index to the auxiliary data
  */
-template <typename T> cachepp::identifier cachepp::SimpleCache<T>::hash(const std::shared_ptr<T>& arg) {
+template <typename T> cachepp::identifier cachepp::SimpleCache<T>::index(const std::shared_ptr<T>& arg) {
 	return(arg->get_identifier() % this->size);
 }
 
+/**
+ * returns the number of times the cache line has been accessed
+ *
+ * decrements the number per query to ensure semblance of fairness
+ */
 template <typename T> size_t cachepp::SimpleCache<T>::heuristic(const std::shared_ptr<T>& arg) {
-	cachepp::identifier h = this->access_data.at(this->hash(arg));
-	this->access_data.at(this->hash(arg)) = h == 0 ? 0 : h - 1;
+	cachepp::identifier h = this->access_data.at(this->index(arg));
+	this->access_data.at(this->index(arg)) = h == 0 ? 0 : h - 1;
 	return(h);
 }
 
