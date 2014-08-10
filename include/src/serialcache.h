@@ -17,9 +17,9 @@ namespace cachepp {
 	 * typename D -- the type of the cache class auxiliary data
 	 */
 	template <typename T, typename D>
-	class Cache {
+	class SerialCache {
 		public:
-			Cache(identifier size);
+			SerialCache(identifier size);
 
 			/**
 			 * ensures the cache contains T -- that is, T is loaded

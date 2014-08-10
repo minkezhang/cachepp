@@ -5,7 +5,7 @@
 
 #include "src/simplecache.h"
 
-template <typename T> cachepp::SimpleCache<T>::SimpleCache(cachepp::identifier size) : cachepp::Cache<T, cachepp::SimpleCacheData>::Cache(size) {
+template <typename T> cachepp::SimpleCache<T>::SimpleCache(cachepp::identifier size) : cachepp::SerialCache<T, cachepp::SimpleCacheData>::SerialCache(size) {
 	for(cachepp::identifier i = 0; i < this->size; ++i) {
 		this->access_data.push_back(0);
 	}
