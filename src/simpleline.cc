@@ -6,20 +6,20 @@ cachepp::SimpleLine::SimpleLine(cachepp::identifier id, bool is_corrupt) : Line(
 	this->data->push_back(id % 256);
 }
 
-void cachepp::SimpleLine::set_hash() { this->parity = this->calculate_parity(); }
+void cachepp::SimpleLine::set_checksum() { this->parity = this->calculate_parity(); }
 
-void cachepp::SimpleLine::load_aux() {}
+void cachepp::SimpleLine::aux_load() {}
 
-void cachepp::SimpleLine::unload_aux() {
+void cachepp::SimpleLine::aux_unload() {
 	this->set_is_dirty(true);
 }
 
-bool cachepp::SimpleLine::checksum_aux() {
+bool cachepp::SimpleLine::aux_validate() {
 	return(this->parity == this->calculate_parity(this->is_corrupt));
 }
 
 /**
- * intentionally corrupt the data to encourage Line::checksum to throw an exception
+ * intentionally corrupt the data to encourage Line::validate to throw an exception
  */
 bool cachepp::SimpleLine::calculate_parity(bool is_corrupt) {
 	uint32_t result = 0;

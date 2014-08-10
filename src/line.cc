@@ -22,8 +22,8 @@ void cachepp::Line::load() {
 	if(this->get_is_loaded()) {
 		return;
 	}
-	this->load_aux();
-	this->checksum();
+	this->aux_load();
+	this->validate();
 	this->set_is_loaded(true);
 }
 
@@ -31,8 +31,8 @@ void cachepp::Line::unload() {
 	if(!this->get_is_loaded()) {
 		return;
 	}
-	this->set_hash();
-	this->unload_aux();
+	this->set_checksum();
+	this->aux_unload();
 	this->set_is_loaded(false);
 }
 
@@ -41,12 +41,12 @@ void cachepp::Line::unload() {
  *
  * raises exceptionpp::RuntimeError if the data is not valid
  */
-void cachepp::Line::checksum() {
+void cachepp::Line::validate() {
 	if(!this->get_is_dirty()) {
 		return;
 	}
-	if(!this->checksum_aux()) {
-		throw(exceptionpp::RuntimeError("cachepp::Line::checksum", "calculated checksum did not match data"));
+	if(!this->aux_validate()) {
+		throw(exceptionpp::RuntimeError("cachepp::Line::validate", "calculated checksum did not match data"));
 	}
 }
 

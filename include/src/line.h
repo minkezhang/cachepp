@@ -33,7 +33,7 @@ namespace cachepp {
 			bool is_loaded;
 			bool is_dirty;
 
-			void checksum();
+			void validate();
 
 			void set_is_loaded(bool is_loaded);
 			void set_is_dirty(bool is_dirty);
@@ -41,14 +41,14 @@ namespace cachepp {
 			/**
 			 * produces the checksum and store internally
 			 */
-			virtual void set_hash() = 0;
+			virtual void set_checksum() = 0;
 
 			/**
 			 * derived class to implement the specifics
 			 */
-			virtual void load_aux() = 0;
-			virtual void unload_aux() = 0;
-			virtual bool checksum_aux() = 0;
+			virtual void aux_load() = 0;
+			virtual void aux_unload() = 0;
+			virtual bool aux_validate() = 0;
 	};
 }
 

@@ -18,10 +18,10 @@ namespace cachepp {
 
 			bool calculate_parity(bool is_corrupt = false);
 
-			virtual void set_hash();
-			virtual void load_aux();
-			virtual void unload_aux();
-			virtual bool checksum_aux();
+			virtual void set_checksum();
+			virtual void aux_load();
+			virtual void aux_unload();
+			virtual bool aux_validate();
 	};
 }
 
