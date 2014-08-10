@@ -9,7 +9,9 @@
 
 namespace cachepp {
 	/**
-	 * Basic cache class -- this is NOT directly usable by the user, but is meant as a scaffold to quickly build other cache selection schemes
+	 * This is the base Cache template
+	 * 	this is NOT directly callable by the user
+	 *	but is meant as a scaffold to quickly build other cache selection schemes
 	 *
 	 * typename T -- the type of the cache line, subclassed from Line in src/line.h
 	 * typename D -- the type of the cache class auxiliary data
@@ -22,7 +24,12 @@ namespace cachepp {
 			/**
 			 * ensures the cache contains T -- that is, T is loaded
 			 */
-			void acquire(const std::shared_ptr<T>& arg);
+			virtual void acquire(const std::shared_ptr<T>& arg);
+
+			/**
+			 * mark that the cache line is no longer in active use
+			 */
+			virtual void release(const std::shared_ptr<T>& arg);
 
 			/**
 			 * clears the cache of all lines
