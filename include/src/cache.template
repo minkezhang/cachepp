@@ -7,13 +7,13 @@
 
 #include "src/cache.h"
 
-template <typename T> cachepp::Cache<T>::Cache(cachepp::identifier size) : size(size) {
+template <typename T, typename D> cachepp::Cache<T, D>::Cache(cachepp::identifier size) : size(size) {
 	if(!std::is_base_of<cachepp::Line, T>::value) {
-		throw(exceptionpp::InvalidOperation("cachepp::Cache<T>::Cache", "given typename T is not inherited from cachepp::Line"));
+		throw(exceptionpp::InvalidOperation("cachepp::Cache<T, D>::Cache", "given typename T, typename D is not inherited from cachepp::Line"));
 	}
 }
 
-template <typename T> void cachepp::Cache<T>::acquire(const std::shared_ptr<T>& arg) {
+template <typename T, typename D> void cachepp::Cache<T, D>::acquire(const std::shared_ptr<T>& arg) {
 	// lock_guard auto-calls this->l->unlock upon stack deallocation -- do not need to worry about releasing resources during exceptions
 	std::lock_guard<std::mutex> l(this->l);
 	if(!this->in(arg)) {
@@ -21,7 +21,7 @@ template <typename T> void cachepp::Cache<T>::acquire(const std::shared_ptr<T>& 
 	}
 }
 
-template <typename T> void cachepp::Cache<T>::clear() {
+template <typename T, typename D> void cachepp::Cache<T, D>::clear() {
 	std::lock_guard<std::mutex> l(this->l);
 	for(typename std::map<cachepp::identifier, std::shared_ptr<T>>::iterator it = this->cache.begin(); it != this->cache.end();) {
 		this->cache.erase(it->first);
@@ -33,7 +33,7 @@ template <typename T> void cachepp::Cache<T>::clear() {
 /**
  * tests for membership in the cache
  */
-template <typename T> bool cachepp::Cache<T>::in(const std::shared_ptr<T>& arg) {
+template <typename T, typename D> bool cachepp::Cache<T, D>::in(const std::shared_ptr<T>& arg) {
 	bool succ = (this->cache.count(arg->get_identifier()) == 1);
 	return(succ);
 }
@@ -41,7 +41,7 @@ template <typename T> bool cachepp::Cache<T>::in(const std::shared_ptr<T>& arg) 
 /**
  * the function which actually loads the data into the cache
  */
-template <typename T> void cachepp::Cache<T>::allocate(const std::shared_ptr<T>& arg) {
+template <typename T, typename D> void cachepp::Cache<T, D>::allocate(const std::shared_ptr<T>& arg) {
 	if(this->cache.size() >= this->size) {
 		std::shared_ptr<T> target = this->select();
 		this->cache.erase(target->get_identifier());
@@ -56,7 +56,7 @@ template <typename T> void cachepp::Cache<T>::allocate(const std::shared_ptr<T>&
  *
  * default implementation may need to be overridden in derived classes
  */
-template <typename T> std::shared_ptr<T> cachepp::Cache<T>::select() {
+template <typename T, typename D> std::shared_ptr<T> cachepp::Cache<T, D>::select() {
 	cachepp::identifier heuristic = 0;
 	cachepp::identifier target = 0;
 	for(typename std::map<cachepp::identifier, std::shared_ptr<T>>::iterator it = this->cache.begin(); it != this->cache.end(); ++it) {

@@ -8,6 +8,7 @@
 #include "src/cache.h"
 
 namespace cachepp {
+	class SimpleCacheData {};
 	/**
 	 * essentially a clock algorithm WITHOUT the persistent hand
 	 *	uses Cache::Cache::select, which iterates from the beginning of cache on each invocation
@@ -15,10 +16,10 @@ namespace cachepp {
 	 * compare with an n-chance algorithm
 	 */
 	template <typename T>
-	class SimpleCache : public Cache<T> {
+	class SimpleCache : public Cache<T, SimpleCacheData> {
 		public:
 			SimpleCache(identifier size);
-			virtual void access(const std::shared_ptr<T>& arg);
+			virtual void access(const std::shared_ptr<T>& arg, SimpleCacheData aux = SimpleCacheData());
 
 		private:
 			std::vector<size_t> access_data;
