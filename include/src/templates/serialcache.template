@@ -7,19 +7,19 @@
 
 #include "src/serialcache.h"
 
-template <typename T, typename D> cachepp::SerialCache<T, D>::SerialCache(cachepp::identifier size) {
+template <typename D, typename T> cachepp::SerialCache<D, T>::SerialCache(cachepp::identifier size) {
 	this->size = size;
 }
 
-template <typename T, typename D> void cachepp::SerialCache<T, D>::acquire(const std::shared_ptr<T>& arg) {
+template <typename D, typename T> void cachepp::SerialCache<D, T>::acquire(const std::shared_ptr<T>& arg) {
 	if(!this->in(arg)) {
 		this->allocate(arg);
 	}
 }
 
-template <typename T, typename D> void cachepp::SerialCache<T, D>::release(const std::shared_ptr<T>& arg) {}
+template <typename D, typename T> void cachepp::SerialCache<D, T>::release(const std::shared_ptr<T>& arg) {}
 
-template <typename T, typename D> void cachepp::SerialCache<T, D>::clear() {
+template <typename D, typename T> void cachepp::SerialCache<D, T>::clear() {
 	for(typename std::map<cachepp::identifier, std::shared_ptr<T>>::iterator it = this->cache.begin(); it != this->cache.end();) {
 		this->cache.erase(it->first);
 		it->second->unload();
@@ -30,7 +30,7 @@ template <typename T, typename D> void cachepp::SerialCache<T, D>::clear() {
 /**
  * tests for membership in the cache
  */
-template <typename T, typename D> bool cachepp::SerialCache<T, D>::in(const std::shared_ptr<T>& arg) {
+template <typename D, typename T> bool cachepp::SerialCache<D, T>::in(const std::shared_ptr<T>& arg) {
 	bool succ = (this->cache.count(arg->get_identifier()) == 1);
 	return(succ);
 }
@@ -38,7 +38,7 @@ template <typename T, typename D> bool cachepp::SerialCache<T, D>::in(const std:
 /**
  * the function which actually loads the data into the cache
  */
-template <typename T, typename D> void cachepp::SerialCache<T, D>::allocate(const std::shared_ptr<T>& arg) {
+template <typename D, typename T> void cachepp::SerialCache<D, T>::allocate(const std::shared_ptr<T>& arg) {
 	if(this->cache.size() >= this->size) {
 		std::shared_ptr<T> target = this->select();
 		this->cache.erase(target->get_identifier());
@@ -53,7 +53,7 @@ template <typename T, typename D> void cachepp::SerialCache<T, D>::allocate(cons
  *
  * default implementation may need to be overridden in derived classes
  */
-template <typename T, typename D> std::shared_ptr<T> cachepp::SerialCache<T, D>::select() {
+template <typename D, typename T> std::shared_ptr<T> cachepp::SerialCache<D, T>::select() {
 	cachepp::identifier heuristic = 0;
 	cachepp::identifier target = 0;
 	for(typename std::map<cachepp::identifier, std::shared_ptr<T>>::iterator it = this->cache.begin(); it != this->cache.end(); ++it) {

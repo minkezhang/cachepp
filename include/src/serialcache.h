@@ -12,8 +12,8 @@ namespace cachepp {
 	/**
 	 * this is a subclass of the base Cache template and is NOT thread-safe
 	 */
-	template <typename T, typename D>
-	class SerialCache : public CacheInterface<T, D, std::map<identifier, std::shared_ptr<T>>> {
+	template <typename D, typename T>
+	class SerialCache : public CacheInterface<std::map<identifier, std::shared_ptr<T>>, D, T> {
 		public:
 			SerialCache(identifier size);
 

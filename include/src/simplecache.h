@@ -18,7 +18,7 @@ namespace cachepp {
 	 * compare with an n-chance algorithm
 	 */
 	template <typename T>
-	class SimpleCache : public SerialCache<T, SimpleCacheData> {
+	class SimpleCache : public SerialCache<SimpleCacheData, T> {
 		public:
 			SimpleCache(identifier size);
 

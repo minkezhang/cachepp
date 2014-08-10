@@ -13,11 +13,11 @@ namespace cachepp {
 	 * 	this is NOT directly callable by the user
 	 *	but is meant as a scaffold to quickly build other cache selection schemes
 	 *
-	 * typename T -- the type of the cache line, subclassed from Line in src/line.h
-	 * typename D -- the type of the cache class auxiliary data
 	 * typename C -- the internal cache type representation
+	 * typename D -- the type of the cache class auxiliary data
+	 * typename T -- the type of the cache line, subclassed from Line in src/line.h
 	 */
-	template <typename T, typename D, typename C>
+	template <typename C, typename D, typename T>
 	class CacheInterface {
 		public:
 			/**
