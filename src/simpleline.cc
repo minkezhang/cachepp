@@ -15,7 +15,8 @@ void cachepp::SimpleLine::aux_unload() { this->set_is_dirty(true); }
  */
 bool cachepp::SimpleLine::calculate_checksum() {
 	if(this->is_corrupt) {
-		return((this->get_checksum() + 1) % 2);
+		// return the wrong parity
+		return(!this->get_checksum());
 	}
 
 	uint32_t result = 0;

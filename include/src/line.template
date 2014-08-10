@@ -45,10 +45,10 @@ template <typename T> void cachepp::Line<T>::unload() {
  * raises exceptionpp::RuntimeError if the data is not valid
  */
 template <typename T> void cachepp::Line<T>::validate() {
-	if(!this->get_is_loaded()) {
+	if(!this->get_is_dirty()) {
 		return;
 	}
-	if(!this->get_checksum() != this->calculate_checksum()) {
+	if(this->get_checksum() != this->calculate_checksum()) {
 		throw(exceptionpp::RuntimeError("cachepp::Line<T>::validate", "calculated checksum did not match data"));
 	}
 }
