@@ -34,7 +34,7 @@ template <typename T> void cachepp::Line<T>::unload() {
 	if(!this->get_is_loaded()) {
 		return;
 	}
-	this->set_checksum(this->calculate_checksum());
+	this->set_checksum(this->hash());
 	this->aux_unload();
 	this->set_is_loaded(false);
 }
@@ -48,7 +48,7 @@ template <typename T> void cachepp::Line<T>::validate() {
 	if(!this->get_is_dirty()) {
 		return;
 	}
-	if(this->get_checksum() != this->calculate_checksum()) {
+	if(this->get_checksum() != this->hash()) {
 		throw(exceptionpp::RuntimeError("cachepp::Line<T>::validate", "calculated checksum did not match data"));
 	}
 }

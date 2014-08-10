@@ -17,7 +17,7 @@ namespace cachepp {
 
 			virtual void aux_load();
 			virtual void aux_unload();
-			virtual bool calculate_checksum();
+			virtual bool hash();
 	};
 }
 

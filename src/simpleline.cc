@@ -13,7 +13,7 @@ void cachepp::SimpleLine::aux_unload() { this->set_is_dirty(true); }
 /**
  * intentionally corrupt the data to encourage Line::validate to throw an exception
  */
-bool cachepp::SimpleLine::calculate_checksum() {
+bool cachepp::SimpleLine::hash() {
 	if(this->is_corrupt) {
 		// return the wrong parity
 		return(!this->get_checksum());
