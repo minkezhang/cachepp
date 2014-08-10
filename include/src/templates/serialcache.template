@@ -31,8 +31,7 @@ template <typename D, typename T> void cachepp::SerialCache<D, T>::clear() {
  * tests for membership in the cache
  */
 template <typename D, typename T> bool cachepp::SerialCache<D, T>::in(const std::shared_ptr<T>& arg) {
-	bool succ = (this->cache.count(arg->get_identifier()) == 1);
-	return(succ);
+	return(this->cache.count(arg->get_identifier()) == 1);
 }
 
 /**

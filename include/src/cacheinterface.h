@@ -31,7 +31,7 @@ namespace cachepp {
 			virtual void release(const std::shared_ptr<T>& arg) = 0;
 
 			/**
-			 * clears the cache of all lines
+			 * clears the cache of all lines which existed at the beginning of the call
 			 */
 			virtual void clear() = 0;
 

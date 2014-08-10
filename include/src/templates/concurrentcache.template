@@ -1,0 +1,67 @@
+#ifndef _CACHEPP_CONCURRENTCACHE_H
+#define _CACHEPP_CONCURRENTCACHE_H
+
+#include "src/concurrentcache.h"
+
+template <typename D, typename T> cachepp::ConcurrentCache<D, T>::ConcurrentCache(cachepp::identifier size) {
+	this->size = size;
+	for(cachepp::identifier i = 0; i < this->size; ++i) {
+		this->cache_l.push_back(new std::recursive_mutex());
+	}
+}
+
+template <typename D, typename T> cachepp::ConcurrentCache<D, T>::acquire(const std::shared_ptr<T>& arg) {
+	this->cache_l.at(this->identity(arg))->lock();
+	if(!arg->get_is_loaded()) {
+		this->allocate(arg);
+	}
+}
+
+template <typename D, typename T> cachepp::ConcurrentCache<D, T>::release(const std::shared_ptr<T>& arg) {
+	this->cache_l.at(this->identity(arg))->unlock();
+}
+
+template <typename D, typename T> cachepp::ConcurrentCache<D, T>::clear() {
+	for(cachepp::identifier i = 0; i < this->size; ++i) {
+		this->cache_i.at(i)->lock();
+	}
+	for(typename std::map<cachepp::identifier, std::shared_ptr<T>>::iterator it = this->cache.begin(); it != this->cache.end();) {
+		this->cache.erase(it->first);
+		it->second->unload();
+		it++;
+	}
+	for(cachepp::identifier i = 0; i < this->size; ++i) {
+		this->cache_i.at(i)->unlock();
+	}
+}
+
+template <typename D, typename T> cachepp::ConcurrentCache<D, T>::allocate(const std::shared_ptr<T>& arg) {
+	
+}
+
+template <typename D, typename T> cachepp::ConcurrentCache<D, T>::in(const std::shared_ptr<T>& arg) {
+	throw(exceptionpp::NotImplemented("cachepp::ConcurrentCache::in"));
+}
+
+
+
+namespace cachepp {
+	/**
+	 * this is a subclass of the base Cache template and is NOT thread-safe
+	 */
+	template <typename D, typename T>
+	class ConcurrentCache : public CacheInterface<std::map<identifier, std::shared_ptr<T>>, D, T> {
+		public:
+
+		protected:
+			std::vector<std::shared_ptr<std::mutex>> cache_l;
+			std::mutex l;
+
+			virtual void allocate(const std::shared_ptr<T>& arg) final;
+			virtual std::shared_ptr<T> select() final;
+			virtual size_t heuristic(const std::shared_ptr<T>& arg) = 0;
+	};
+
+#include "src/templates/concurrentcache.template"
+
+#endif
