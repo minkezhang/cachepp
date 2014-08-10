@@ -58,6 +58,6 @@ namespace cachepp {
  * include template instantiation
  *	cf. http://bit.ly/MQKzaI
  */
-#include "src/cache.template"
+#include "src/templates/cache.template"
 
 #endif

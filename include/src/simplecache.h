@@ -29,6 +29,6 @@ namespace cachepp {
 	};
 }
 
-#include "src/simplecache.template"
+#include "src/templates/simplecache.template"
 
 #endif

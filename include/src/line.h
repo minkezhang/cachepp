@@ -52,6 +52,6 @@ namespace cachepp {
 	};
 }
 
-#include "src/line.template"
+#include "src/templates/line.template"
 
 #endif
