@@ -37,7 +37,7 @@ namespace cachepp {
 			/**
 			 * locks that protect the cache line from concurrent access
 			 */
-			std::vector<std::recursive_mutex> cache_l;
+			std::vector<std::shared_ptr<std::recursive_mutex>> cache_l;
 			std::recursive_mutex l;
 
 			virtual bool in(const std::shared_ptr<T>& arg) final;

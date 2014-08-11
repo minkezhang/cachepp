@@ -8,7 +8,7 @@
 template <typename D, typename T> cachepp::ConcurrentCache<D, T>::ConcurrentCache(cachepp::identifier size) {
 	this->size = size;
 	for(cachepp::identifier i = 0; i < this->size; ++i) {
-		this->cache_l.push_back(new std::recursive_mutex());
+		this->cache_l.push_back(std::shared_ptr<std::recursive_mutex> (new std::recursive_mutex()));
 	}
 }
 
@@ -28,7 +28,7 @@ template <typename D, typename T> void cachepp::ConcurrentCache<D, T>::clear() {
 	// fundamentally we need to make this->cache's size atomic -- map.insert and map.erase therefore must be wrapped with a lock
 	std::lock_guard<std::recursive_mutex> l (this->l);
 	for(cachepp::identifier i = 0; i < this->size; ++i) {
-		this->cache_i.at(i)->lock();
+		this->cache_l.at(i)->lock();
 	}
 	for(typename std::map<cachepp::identifier, std::shared_ptr<T>>::iterator it = this->cache.begin(); it != this->cache.end();) {
 		this->cache.erase(it->first);
@@ -36,7 +36,7 @@ template <typename D, typename T> void cachepp::ConcurrentCache<D, T>::clear() {
 		it++;
 	}
 	for(cachepp::identifier i = 0; i < this->size; ++i) {
-		this->cache_i.at(i)->unlock();
+		this->cache_l.at(i)->unlock();
 	}
 }
 
@@ -51,7 +51,7 @@ template <typename D, typename T> void cachepp::ConcurrentCache<D, T>::allocate(
 		return;
 	}
 
-	if(this->cache().size() >= this->size) {
+	if(this->cache.size() >= this->size) {
 		std::shared_ptr<T> target = this->select();
 		this->cache.erase(target->get_identifier());
 		target->unload();
@@ -61,19 +61,19 @@ template <typename D, typename T> void cachepp::ConcurrentCache<D, T>::allocate(
 }
 
 template <typename D, typename T> std::shared_ptr<T> cachepp::ConcurrentCache<D, T>::select() {
-	std::vector<cachepp::identity> candidates;
+	std::vector<cachepp::identifier> candidates;
 
 	// we are guaranteed to have at least one candidate -- we are currently holding onto one lock
-	for(typename std::map<cachepp::identifier, std::shared_ptr<T>>::iterator it = this->cache.begin(); it != this->cache.end(); ++i) {
-		if(this->cache_l.at(this->index(it->second)).try_lock()) {
+	for(typename std::map<cachepp::identifier, std::shared_ptr<T>>::iterator it = this->cache.begin(); it != this->cache.end(); ++it) {
+		if(this->cache_l.at(this->index(it->second))->try_lock()) {
 			candidates.push_back(it->first);
 		}
 	}
 
 	cachepp::identifier heuristic = 0;
 	cachepp::identifier target = 0;
-	for(std::vector<cachepp::identity>::iterator it = candidates.begin(); it != candidates.end(); ++i) {
-		cachepp::identifier h = this->heuristic(*it);
+	for(std::vector<cachepp::identifier>::iterator it = candidates.begin(); it != candidates.end(); ++it) {
+		cachepp::identifier h = this->heuristic(this->cache.at(*it));
 		if(h <= heuristic) {
 			heuristic = h;
 			target = *it;
@@ -87,7 +87,7 @@ template <typename D, typename T> std::shared_ptr<T> cachepp::ConcurrentCache<D,
 	return(this->cache.at(target));
 }
 
-template <typename D, typename T> cachepp::ConcurrentCache<D, T>::in(const std::shared_ptr<T>& arg) {
+template <typename D, typename T> bool cachepp::ConcurrentCache<D, T>::in(const std::shared_ptr<T>& arg) {
 	throw(exceptionpp::NotImplemented("cachepp::ConcurrentCache::in"));
 }
 
