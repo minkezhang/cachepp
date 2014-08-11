@@ -13,7 +13,16 @@
 #include "src/simpleline.h"
 
 void concurrentcache_multithread_worker(std::shared_ptr<std::atomic<size_t>> result, std::shared_ptr<cachepp::SimpleConcurrentCache<cachepp::SimpleLine>> c, std::shared_ptr<std::vector<std::shared_ptr<cachepp::SimpleLine>>> v) {
-	*result += 1;
+	size_t n_attempts = 1000;
+	size_t n_success = 0;
+	for(size_t attempt = 0; attempt < n_attempts; ++attempt) {
+		cachepp::identifier index = rand() % v->size();
+		c->acquire(v->at(index));
+		n_success += v->at(index)->get_is_loaded();
+		c->release(v->at(index));
+	}
+
+	*result += (n_success == n_attempts);
 }
 
 
