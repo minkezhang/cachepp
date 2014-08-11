@@ -17,7 +17,7 @@ Installation
 ```
 git clone https://github.com/cripplet/cachepp.git
 cd cachepp
-git submodule --init --recursive
+git submodule update --init --recursive
 make test
 ```
 
