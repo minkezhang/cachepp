@@ -144,9 +144,9 @@ TEST_CASE("cachepp|concurrentcache-singlethread") {
 
 	std::cout << "cachepp|concurrentcache-singlethread: " << c->get_miss_rate() << std::endl;
 }
-/**
+
 TEST_CASE("cachepp|concurrentcache-multithread") {
-	size_t n_threads = 16;
+	size_t n_threads = 2;
 	size_t n_attempts = 1000;
 
 	std::shared_ptr<cachepp::SimpleConcurrentCache<cachepp::SimpleLine>> c (new cachepp::SimpleConcurrentCache<cachepp::SimpleLine>(2));
@@ -171,4 +171,4 @@ TEST_CASE("cachepp|concurrentcache-multithread") {
 
 	REQUIRE(*result == (n_attempts * n_threads));
 }
-*/
+
