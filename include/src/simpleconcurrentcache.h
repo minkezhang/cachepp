@@ -15,13 +15,12 @@ namespace cachepp {
 		public:
 			SimpleConcurrentCache(identifier size);
 
-			virtual void access(const std::shared_ptr<T>& arg, SimpleConcurrentCacheData aux = SimpleConcurrentCacheData());
-
 		private:
 			std::vector<size_t> access_data;
 
 			virtual identifier index(const std::shared_ptr<T>& arg);
 			virtual size_t heuristic(const std::shared_ptr<T>& arg);
+			virtual void access(const std::shared_ptr<T>& arg, SimpleConcurrentCacheData aux);
 	};
 }
 

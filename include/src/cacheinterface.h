@@ -25,7 +25,7 @@ namespace cachepp {
 			/**
 			 * ensures the cache contains T -- that is, T is loaded
 			 */
-			virtual void acquire(const std::shared_ptr<T>& arg) = 0;
+			virtual void acquire(const std::shared_ptr<T>& arg, D aux) = 0;
 
 			/**
 			 * mark that the cache line is no longer in active use
@@ -36,11 +36,6 @@ namespace cachepp {
 			 * clears the cache of all lines which existed at the beginning of the call
 			 */
 			virtual void clear() = 0;
-
-			/**
-			 * updates cache internal tracker
-			 */
-			virtual void access(const std::shared_ptr<T>& arg, D aux) = 0;
 
 			/**
 			 * returns n_miss / n_acquire, or returns a RuntimeError if a divide-by-zero occurs
@@ -56,6 +51,11 @@ namespace cachepp {
 			 */
 			std::atomic<identifier> n_acquire;
 			std::atomic<identifier> n_miss;
+
+			/**
+			 * updates cache internal tracker
+			 */
+			virtual void access(const std::shared_ptr<T>& arg, D aux) = 0;
 
 			/**
 			 * test for if the given arg is in the cache

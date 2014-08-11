@@ -21,7 +21,7 @@ namespace cachepp {
 			/**
 			 * ensures that the given arg is in the cache, and ensures that the given arg cannot be unloaded until release is called
 			 */
-			virtual void acquire(const std::shared_ptr<T>& arg) final;
+			virtual void acquire(const std::shared_ptr<T>& arg, D aux = D()) final;
 
 			/**
 			 * releases a hold on the cache line containing arg -- this cache line can now be evicted

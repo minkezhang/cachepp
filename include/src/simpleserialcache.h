@@ -22,13 +22,12 @@ namespace cachepp {
 		public:
 			SimpleSerialCache(identifier size);
 
-			virtual void access(const std::shared_ptr<T>& arg, SimpleSerialCacheData aux = SimpleSerialCacheData());
-
 		private:
 			std::vector<size_t> access_data;
 
-			identifier index(const std::shared_ptr<T>& arg);
+			virtual identifier index(const std::shared_ptr<T>& arg);
 			virtual size_t heuristic(const std::shared_ptr<T>& arg);
+			virtual void access(const std::shared_ptr<T>& arg, SimpleSerialCacheData aux);
 	};
 }
 

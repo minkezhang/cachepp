@@ -70,9 +70,7 @@ TEST_CASE("cachepp|serialcache") {
 	c->acquire(v.at(0));
 	c->acquire(v.at(1));
 
-	REQUIRE_THROWS_AS(c->access(v.at(2)), exceptionpp::RuntimeError);
-
-	c->access(v.at(0));
+	c->acquire(v.at(0));
 	c->acquire(v.at(2));
 
 	REQUIRE(v.at(0)->get_is_loaded() == true);
@@ -129,9 +127,7 @@ TEST_CASE("cachepp|concurrentcache-singlethread") {
 	c->acquire(v.at(0));
 	c->acquire(v.at(1));
 
-	REQUIRE_THROWS_AS(c->access(v.at(2)), exceptionpp::RuntimeError);
-
-	c->access(v.at(0));
+	c->acquire(v.at(0));
 	c->acquire(v.at(2));
 
 	REQUIRE(v.at(0)->get_is_loaded() == true);

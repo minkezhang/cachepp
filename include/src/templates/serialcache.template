@@ -11,10 +11,11 @@ template <typename D, typename T> cachepp::SerialCache<D, T>::SerialCache(cachep
 	this->size = size;
 }
 
-template <typename D, typename T> void cachepp::SerialCache<D, T>::acquire(const std::shared_ptr<T>& arg) {
+template <typename D, typename T> void cachepp::SerialCache<D, T>::acquire(const std::shared_ptr<T>& arg, D aux) {
 	if(!this->in(arg)) {
 		this->allocate(arg);
 	}
+	this->access(arg, aux);
 }
 
 template <typename D, typename T> void cachepp::SerialCache<D, T>::release(const std::shared_ptr<T>& arg) {}
@@ -45,7 +46,7 @@ template <typename D, typename T> std::shared_ptr<T> cachepp::SerialCache<D, T>:
 	cachepp::identifier target = 0;
 	for(typename std::map<cachepp::identifier, std::shared_ptr<T>>::iterator it = this->cache.begin(); it != this->cache.end(); ++it) {
 		cachepp::identifier  h = this->heuristic(it->second);
-		if(h <= heuristic) {
+		if(h <= heuristic || target == 0) {
 			heuristic = h;
 			target = it->first;
 		}

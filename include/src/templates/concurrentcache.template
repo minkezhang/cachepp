@@ -12,12 +12,13 @@ template <typename D, typename T> cachepp::ConcurrentCache<D, T>::ConcurrentCach
 	}
 }
 
-template <typename D, typename T> void cachepp::ConcurrentCache<D, T>::acquire(const std::shared_ptr<T>& arg) {
+template <typename D, typename T> void cachepp::ConcurrentCache<D, T>::acquire(const std::shared_ptr<T>& arg, D aux) {
 	this->cache_l.at(this->index(arg))->lock();
 	if(!arg->get_is_loaded()) {
 		this->cache_l.at(this->index(arg))->unlock();
 		this->allocate(arg);
 	}
+	this->access(arg, aux);
 }
 
 template <typename D, typename T> void cachepp::ConcurrentCache<D, T>::release(const std::shared_ptr<T>& arg) {
@@ -73,7 +74,7 @@ template <typename D, typename T> std::shared_ptr<T> cachepp::ConcurrentCache<D,
 	cachepp::identifier target = 0;
 	for(std::vector<cachepp::identifier>::iterator it = candidates.begin(); it != candidates.end(); ++it) {
 		cachepp::identifier h = this->heuristic(this->cache.at(*it));
-		if(h <= heuristic) {
+		if(h <= heuristic || target == 0) {
 			heuristic = h;
 			target = *it;
 		}

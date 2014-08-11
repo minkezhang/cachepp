@@ -17,10 +17,9 @@ namespace cachepp {
 		public:
 			SerialCache(identifier size);
 
-			virtual void acquire(const std::shared_ptr<T>& arg) final;
+			virtual void acquire(const std::shared_ptr<T>& arg, D aux = D()) final;
 			virtual void release(const std::shared_ptr<T>& arg) final;
 			virtual void clear() final;
-			virtual void access(const std::shared_ptr<T>& arg, D aux) = 0;
 
 		protected:
 			virtual bool in(const std::shared_ptr<T>& arg) final;
