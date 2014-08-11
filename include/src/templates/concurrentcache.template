@@ -31,9 +31,8 @@ template <typename D, typename T> void cachepp::ConcurrentCache<D, T>::clear() {
 		this->cache_l.at(i)->lock();
 	}
 	for(typename std::map<cachepp::identifier, std::shared_ptr<T>>::iterator it = this->cache.begin(); it != this->cache.end();) {
-		this->cache.erase(it->first);
 		it->second->unload();
-		it++;
+		this->cache.erase(it++);
 	}
 	for(cachepp::identifier i = 0; i < this->size; ++i) {
 		this->cache_l.at(i)->unlock();
@@ -53,8 +52,8 @@ template <typename D, typename T> void cachepp::ConcurrentCache<D, T>::allocate(
 
 	if(this->cache.size() >= this->size) {
 		std::shared_ptr<T> target = this->select();
-		this->cache.erase(target->get_identifier());
 		target->unload();
+		this->cache.erase(target->get_identifier());
 	}
 	arg->load();
 	this->cache.insert(std::pair<cachepp::identifier, std::shared_ptr<T>> (arg->get_identifier(), arg));
