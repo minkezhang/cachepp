@@ -5,16 +5,14 @@
 
 #include "src/simpleconcurrentcache.h"
 
-template <typename T> cachepp::SimpleConcurrentCache<T>::SimpleConcurrentCache(cachepp::identifier size) {
-	this->size = size;
-// template <typename T> cachepp::SimpleConcurrentCache<T>::SimpleConcurrentCache(cachepp::identifier size) : cachepp::ConcurrentCache<cachepp::SimpleConcurrentCacheData, T>::ConcurrentCache(size) {
+template <typename T> cachepp::SimpleConcurrentCache<T>::SimpleConcurrentCache(cachepp::identifier size) : cachepp::ConcurrentCache<cachepp::SimpleConcurrentCacheData, T>::ConcurrentCache(size) {
 	for(cachepp::identifier i = 0; i < this->size; ++i) {
 		this->access_data.push_back(0);
 	}
 }
 
 template <typename T> void cachepp::SimpleConcurrentCache<T>::access(const std::shared_ptr<T>& arg, cachepp::SimpleConcurrentCacheData aux) {
-	std::lock_guard<std::recursive_mutex> l (*this->cache_l.at(this->index(arg)));
+	std::lock_guard<std::recursive_mutex> l (this->cache_l.at(this->index(arg)));
 	if(!arg->get_is_loaded()) {
 		throw(exceptionpp::RuntimeError("cachepp::SimpleConcurrentCache::access", "attempting to access a cache line which is not loaded"));
 	}
@@ -27,7 +25,7 @@ template <typename T> cachepp::identifier cachepp::SimpleConcurrentCache<T>::ind
 }
 
 template <typename T> size_t cachepp::SimpleConcurrentCache<T>::heuristic(const std::shared_ptr<T>& arg) {
-	std::lock_guard<std::recursive_mutex> l (*this->cache_l.at(this->index(arg)));
+	std::lock_guard<std::recursive_mutex> l (this->cache_l.at(this->index(arg)));
 	cachepp::identifier h = this->access_data.at(this->index(arg));
 	this->access_data.at(this->index(arg)) = h == 0 ? 0 : h - 1;
 	return(h);
