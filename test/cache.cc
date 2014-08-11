@@ -18,9 +18,11 @@ void concurrentcache_multithread_worker(std::shared_ptr<std::atomic<size_t>> res
 	size_t n_success = 0;
 	for(size_t attempt = 0; attempt < n_attempts; ++attempt) {
 		cachepp::identifier index = rand() % v->size();
+		std::cout << std::this_thread::get_id() << ")  acquiring line " << index << std::endl;
 		c->acquire(v->at(index));
 		n_success += v->at(index)->get_is_loaded();
 		c->release(v->at(index));
+		std::cout << std::this_thread::get_id() << ")  released line " << index << std::endl;
 	}
 
 	*result += (n_success == n_attempts);

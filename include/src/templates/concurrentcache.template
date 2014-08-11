@@ -57,6 +57,8 @@ template <typename D, typename T> void cachepp::ConcurrentCache<D, T>::allocate(
 		std::shared_ptr<T> target = this->select();
 		target->unload();
 		this->cache.erase(target->get_identifier());
+		// release rights to the cache line
+		this->cache_l.at(this->index(target))->unlock();
 	}
 	arg->load();
 	this->cache.insert(std::pair<cachepp::identifier, std::shared_ptr<T>> (arg->get_identifier(), arg));
@@ -86,6 +88,13 @@ template <typename D, typename T> std::shared_ptr<T> cachepp::ConcurrentCache<D,
 
 	if(!is_set) {
 		throw(exceptionpp::RuntimeError("cachepp::ConcurrentCache::select", "cannot find a target to evict"));
+	}
+
+	for(std::vector<cachepp::identifier>::iterator it = candidates.begin(); it != candidates.end(); ++it) {
+		// need to still hold onto the rights to the line to be evicted
+		if(*it != target) {
+			this->cache_l.at(this->index(this->cache.at(*it)))->unlock();
+		}
 	}
 
 	return(this->cache.at(target));
