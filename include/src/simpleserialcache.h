@@ -1,5 +1,5 @@
-#ifndef _CACHEPP_SIMPLECACHE_H
-#define _CACHEPP_SIMPLECACHE_H
+#ifndef _CACHEPP_SIMPLESERIALCACHE_H
+#define _CACHEPP_SIMPLESERIALCACHE_H
 
 #include <vector>
 
@@ -7,9 +7,9 @@
 #include "src/globals.h"
 
 namespace cachepp {
-	class SimpleCacheData {};
+	class SimpleSerialCacheData {};
 	/**
-	 * SimpleCache implements a partially instantiated Cache template
+	 * SimpleSerialCache implements a partially instantiated Cache template
 	 *	this is DIRECTLY callable by the user to be used as a cache
 	 *
 	 * essentially a clock algorithm WITHOUT the persistent hand
@@ -18,11 +18,11 @@ namespace cachepp {
 	 * compare with an n-chance algorithm
 	 */
 	template <typename T>
-	class SimpleCache : public SerialCache<SimpleCacheData, T> {
+	class SimpleSerialCache : public SerialCache<SimpleSerialCacheData, T> {
 		public:
-			SimpleCache(identifier size);
+			SimpleSerialCache(identifier size);
 
-			virtual void access(const std::shared_ptr<T>& arg, SimpleCacheData aux = SimpleCacheData());
+			virtual void access(const std::shared_ptr<T>& arg, SimpleSerialCacheData aux = SimpleSerialCacheData());
 
 		private:
 			std::vector<size_t> access_data;
@@ -32,6 +32,6 @@ namespace cachepp {
 	};
 }
 
-#include "src/templates/simplecache.template"
+#include "src/templates/simpleserialcache.template"
 
 #endif

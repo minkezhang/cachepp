@@ -5,17 +5,16 @@
 #include "libs/catch/catch.hpp"
 #include "libs/exceptionpp/exception.h"
 
-#include "src/simplecache.h"
-#include "src/simpleline.h"
-
 #include "src/simpleconcurrentcache.h"
+#include "src/simpleserialcache.h"
+#include "src/simpleline.h"
 
 TEST_CASE("cachepp|concurrentcache") {
 	std::shared_ptr<cachepp::SimpleConcurrentCache<cachepp::SimpleLine>> c (new cachepp::SimpleConcurrentCache<cachepp::SimpleLine>(2));
 }
 
-TEST_CASE("cachepp|cache") {
-	std::shared_ptr<cachepp::SimpleCache<cachepp::SimpleLine>> c (new cachepp::SimpleCache<cachepp::SimpleLine>(2));
+TEST_CASE("cachepp|serialcache") {
+	std::shared_ptr<cachepp::SimpleSerialCache<cachepp::SimpleLine>> c (new cachepp::SimpleSerialCache<cachepp::SimpleLine>(2));
 
 	std::vector<std::shared_ptr<cachepp::SimpleLine>> v;
 	for(size_t i = 0; i < 10; ++i) {
