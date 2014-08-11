@@ -7,11 +7,11 @@
 
 template <typename C, typename D, typename T> cachepp::CacheInterface<C, D, T>::CacheInterface() : n_acquire(0), n_miss(0) {}
 
-template <typename C, typename D, typename T> cachepp::identifier cachepp::CacheInterface<C, D, T>::get_miss_rate() {
+template <typename C, typename D, typename T> double cachepp::CacheInterface<C, D, T>::get_miss_rate() {
 	if(this->n_acquire == 0) {
 		throw(exceptionpp::RuntimeError("cachepp::CacheInterface::get_miss_rate", "divide by zero"));
 	}
-	return(this->n_miss / this->n_acquire);
+	return((double) ((double) this->n_miss / this->n_acquire));
 }
 
 #endif

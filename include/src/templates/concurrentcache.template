@@ -14,7 +14,9 @@ template <typename D, typename T> cachepp::ConcurrentCache<D, T>::ConcurrentCach
 
 template <typename D, typename T> void cachepp::ConcurrentCache<D, T>::acquire(const std::shared_ptr<T>& arg, D aux) {
 	this->cache_l.at(this->index(arg))->lock();
+	this->n_acquire++;
 	if(!arg->get_is_loaded()) {
+		this->n_miss++;
 		this->cache_l.at(this->index(arg))->unlock();
 		this->allocate(arg);
 	}
@@ -70,17 +72,19 @@ template <typename D, typename T> std::shared_ptr<T> cachepp::ConcurrentCache<D,
 		}
 	}
 
+	bool is_set = false;
 	cachepp::identifier heuristic = 0;
 	cachepp::identifier target = 0;
 	for(std::vector<cachepp::identifier>::iterator it = candidates.begin(); it != candidates.end(); ++it) {
 		cachepp::identifier h = this->heuristic(this->cache.at(*it));
-		if(h <= heuristic || target == 0) {
+		if(h <= heuristic || !is_set) {
+			is_set = true;
 			heuristic = h;
 			target = *it;
 		}
 	}
 
-	if(target == 0) {
+	if(!is_set) {
 		throw(exceptionpp::RuntimeError("cachepp::ConcurrentCache::select", "cannot find a target to evict"));
 	}
 

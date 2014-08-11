@@ -3,6 +3,8 @@
 
 #include <type_traits>
 
+#include <iostream>
+
 #include "libs/exceptionpp/exception.h"
 
 #include "src/serialcache.h"
@@ -12,7 +14,9 @@ template <typename D, typename T> cachepp::SerialCache<D, T>::SerialCache(cachep
 }
 
 template <typename D, typename T> void cachepp::SerialCache<D, T>::acquire(const std::shared_ptr<T>& arg, D aux) {
+	this->n_acquire++;
 	if(!this->in(arg)) {
+		this->n_miss++;
 		this->allocate(arg);
 	}
 	this->access(arg, aux);
@@ -42,17 +46,18 @@ template <typename D, typename T> void cachepp::SerialCache<D, T>::allocate(cons
 }
 
 template <typename D, typename T> std::shared_ptr<T> cachepp::SerialCache<D, T>::select() {
+	bool is_set = false;
 	cachepp::identifier heuristic = 0;
 	cachepp::identifier target = 0;
 	for(typename std::map<cachepp::identifier, std::shared_ptr<T>>::iterator it = this->cache.begin(); it != this->cache.end(); ++it) {
 		cachepp::identifier  h = this->heuristic(it->second);
-		if(h <= heuristic || target == 0) {
+		if((h <= heuristic) || !is_set) {
 			heuristic = h;
 			target = it->first;
 		}
 	}
-	if(target == 0) {
-		throw(exceptionpp::RuntimeError("cachepp::SerialCache::select", "cannot find a target to evict"));
+	if(!is_set) {
+		throw(exceptionpp::RuntimeError("cachepp::ConcurrentCache::select", "cannot find a target to evict"));
 	}
 	return(this->cache.at(target));
 }

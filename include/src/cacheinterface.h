@@ -40,7 +40,7 @@ namespace cachepp {
 			/**
 			 * returns n_miss / n_acquire, or returns a RuntimeError if a divide-by-zero occurs
 			 */
-			identifier get_miss_rate();
+			double get_miss_rate();
 
 		protected:
 			identifier size;
