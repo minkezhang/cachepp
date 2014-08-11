@@ -44,9 +44,19 @@ namespace cachepp {
 			identifier size;
 			C cache;
 
+			/**
+			 * test for if the given arg is in the cache
+			 */
 			virtual bool in(const std::shared_ptr<T>& arg) = 0;
+
+			/**
+			 * allocates the input arg within the cache
+			 */
 			virtual void allocate(const std::shared_ptr<T>& arg) = 0;
 
+			/**
+			 * selection policy of the cache -- returns a line from the cache which MUST be evicted
+			 */
 			virtual std::shared_ptr<T> select() = 0;
 
 			/**

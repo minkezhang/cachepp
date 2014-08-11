@@ -1,6 +1,8 @@
 #ifndef _CACHEPP_CONCURRENTCACHE_H
 #define _CACHEPP_CONCURRENTCACHE_H
 
+#include "libs/exceptionpp/exception.h"
+
 #include "src/concurrentcache.h"
 
 template <typename D, typename T> cachepp::ConcurrentCache<D, T>::ConcurrentCache(cachepp::identifier size) {
@@ -10,18 +12,21 @@ template <typename D, typename T> cachepp::ConcurrentCache<D, T>::ConcurrentCach
 	}
 }
 
-template <typename D, typename T> cachepp::ConcurrentCache<D, T>::acquire(const std::shared_ptr<T>& arg) {
-	this->cache_l.at(this->identity(arg))->lock();
+template <typename D, typename T> void cachepp::ConcurrentCache<D, T>::acquire(const std::shared_ptr<T>& arg) {
+	this->cache_l.at(this->index(arg))->lock();
 	if(!arg->get_is_loaded()) {
+		this->cache_l.at(this->index(arg))->unlock();
 		this->allocate(arg);
 	}
 }
 
-template <typename D, typename T> cachepp::ConcurrentCache<D, T>::release(const std::shared_ptr<T>& arg) {
-	this->cache_l.at(this->identity(arg))->unlock();
+template <typename D, typename T> void cachepp::ConcurrentCache<D, T>::release(const std::shared_ptr<T>& arg) {
+	this->cache_l.at(this->index(arg))->unlock();
 }
 
-template <typename D, typename T> cachepp::ConcurrentCache<D, T>::clear() {
+template <typename D, typename T> void cachepp::ConcurrentCache<D, T>::clear() {
+	// fundamentally we need to make this->cache's size atomic -- map.insert and map.erase therefore must be wrapped with a lock
+	std::lock_guard<std::mutex> l (this->l);
 	for(cachepp::identifier i = 0; i < this->size; ++i) {
 		this->cache_i.at(i)->lock();
 	}
@@ -35,33 +40,55 @@ template <typename D, typename T> cachepp::ConcurrentCache<D, T>::clear() {
 	}
 }
 
-template <typename D, typename T> cachepp::ConcurrentCache<D, T>::allocate(const std::shared_ptr<T>& arg) {
-	
+template <typename D, typename T> void cachepp::ConcurrentCache<D, T>::allocate(const std::shared_ptr<T>& arg) {
+	// fundamentally we need to make this->cache's size atomic -- map.insert and map.erase therefore must be wrapped with a lock
+	std::lock_guard<std::mutex> l (this->l);
+
+	this->cache_l.at(this->index(arg))->lock();
+
+	// competing call may have already allocated this line
+	if(arg->get_is_loaded()) {
+		return;
+	}
+
+	if(this->cache().size() >= this->size) {
+		std::shared_ptr<T> target = this->select();
+		this->cache.erase(target->get_identifier());
+		target->unload();
+	}
+	arg->load();
+	this->cache.insert(std::pair<cachepp::identifier, std::shared_ptr<T>> (arg->get_identifier(), arg));
+}
+
+template <typename D, typename T> std::shared_ptr<T> cachepp::ConcurrentCache<D, T>::select() {
+	std::vector<cachepp::identity> candidates;
+
+	// we are guaranteed to have at least one candidate -- we are currently holding onto one lock
+	for(typename std::map<cachepp::identifier, std::shared_ptr<T>>::iterator it = this->cache.begin(); it != this->cache.end(); ++i) {
+		if(this->cache_l.at(this->index(it->second)).try_lock()) {
+			candidates.push_back(it->first);
+		}
+	}
+
+	cachepp::identifier heuristic = 0;
+	cachepp::identifier target = 0;
+	for(std::vector<cachepp::identity>::iterator it = candidates.begin(); it != candidates.end(); ++i) {
+		cachepp::identifier h = this->heuristic(*it);
+		if(h <= heuristic) {
+			heuristic = h;
+			target = *it;
+		}
+	}
+
+	if(target == 0) {
+		throw(exceptionpp::RuntimeError("cachepp::ConcurrentCache::select", "cannot find a target to evict"));
+	}
+
+	return(this->cache.at(target));
 }
 
 template <typename D, typename T> cachepp::ConcurrentCache<D, T>::in(const std::shared_ptr<T>& arg) {
 	throw(exceptionpp::NotImplemented("cachepp::ConcurrentCache::in"));
 }
-
-
-
-namespace cachepp {
-	/**
-	 * this is a subclass of the base Cache template and is NOT thread-safe
-	 */
-	template <typename D, typename T>
-	class ConcurrentCache : public CacheInterface<std::map<identifier, std::shared_ptr<T>>, D, T> {
-		public:
-
-		protected:
-			std::vector<std::shared_ptr<std::mutex>> cache_l;
-			std::mutex l;
-
-			virtual void allocate(const std::shared_ptr<T>& arg) final;
-			virtual std::shared_ptr<T> select() final;
-			virtual size_t heuristic(const std::shared_ptr<T>& arg) = 0;
-	};
-
-#include "src/templates/concurrentcache.template"
 
 #endif

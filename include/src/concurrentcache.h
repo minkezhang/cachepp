@@ -11,29 +11,43 @@
 
 namespace cachepp {
 	/**
-	 * this is a subclass of the base Cache template and is NOT thread-safe
+	 * this is a subclass of the base Cache template and is IS thread-safe
 	 */
 	template <typename D, typename T>
 	class ConcurrentCache : public CacheInterface<std::map<identifier, std::shared_ptr<T>>, D, T> {
 		public:
 			ConcurrentCache(identifier size);
 
+			/**
+			 * ensures that the given arg is in the cache, and ensures that the given arg cannot be unloaded until release is called
+			 */
 			virtual void acquire(const std::shared_ptr<T>& arg) final;
+
+			/**
+			 * releases a hold on the cache line containing arg -- this cache line can now be evicted
+			 */
 			virtual void release(const std::shared_ptr<T>& arg) final;
+
+			/**
+			 * deletes things
+			 */
 			virtual void clear() final;
+
 			virtual void access(const std::shared_ptr<T>& arg, D aux) = 0;
 
 		protected:
+			/**
+			 * locks that protect the cache line from concurrent access
+			 */
 			std::vector<std::recursive_mutex> cache_l;
 			std::mutex l;
 
 			virtual bool in(const std::shared_ptr<T>& arg) final;
 			virtual void allocate(const std::shared_ptr<T>& arg) final;
 			virtual std::shared_ptr<T> select() final;
-			virtual size_t heuristic(const std::shared_ptr<T>& arg) = 0;
 
 			/**
-			 * hash arg->get_identity() and returns an index to the cache_l
+			 * hash arg->get_identity() and returns an index to cache_l
 			 */
 			virtual identity index(const std::shared_ptr<T>& arg) = 0;
 	};

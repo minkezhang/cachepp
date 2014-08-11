@@ -27,16 +27,10 @@ template <typename D, typename T> void cachepp::SerialCache<D, T>::clear() {
 	}
 }
 
-/**
- * tests for membership in the cache
- */
 template <typename D, typename T> bool cachepp::SerialCache<D, T>::in(const std::shared_ptr<T>& arg) {
 	return(this->cache.count(arg->get_identifier()) == 1);
 }
 
-/**
- * the function which actually loads the data into the cache
- */
 template <typename D, typename T> void cachepp::SerialCache<D, T>::allocate(const std::shared_ptr<T>& arg) {
 	if(this->cache.size() >= this->size) {
 		std::shared_ptr<T> target = this->select();
@@ -47,11 +41,6 @@ template <typename D, typename T> void cachepp::SerialCache<D, T>::allocate(cons
 	this->cache.insert(std::pair<cachepp::identifier, std::shared_ptr<T>> (arg->get_identifier(), arg));
 }
 
-/**
- * selects a cache line for eviction
- *
- * default implementation may need to be overridden in derived classes
- */
 template <typename D, typename T> std::shared_ptr<T> cachepp::SerialCache<D, T>::select() {
 	cachepp::identifier heuristic = 0;
 	cachepp::identifier target = 0;
@@ -63,7 +52,7 @@ template <typename D, typename T> std::shared_ptr<T> cachepp::SerialCache<D, T>:
 		}
 	}
 	if(target == 0) {
-		throw(exceptionpp::RuntimeError("cachepp::SerialCacheselect", "cannot find a target to evict"));
+		throw(exceptionpp::RuntimeError("cachepp::SerialCache::select", "cannot find a target to evict"));
 	}
 	return(this->cache.at(target));
 }
