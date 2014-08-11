@@ -13,19 +13,18 @@
 #include "src/simpleserialcache.h"
 #include "src/simpleline.h"
 
-void concurrentcache_multithread_worker(std::shared_ptr<std::atomic<size_t>> result, std::shared_ptr<cachepp::SimpleConcurrentCache<cachepp::SimpleLine>> c, std::shared_ptr<std::vector<std::shared_ptr<cachepp::SimpleLine>>> v) {
+void concurrentcache_multithread_worker(std::shared_ptr<std::atomic<size_t>> n_done, std::shared_ptr<std::atomic<size_t>> result, std::shared_ptr<cachepp::SimpleConcurrentCache<cachepp::SimpleLine>> c, std::shared_ptr<std::vector<std::shared_ptr<cachepp::SimpleLine>>> v) {
 	size_t n_attempts = 1000;
 	size_t n_success = 0;
 	for(size_t attempt = 0; attempt < n_attempts; ++attempt) {
 		cachepp::identifier index = rand() % v->size();
-		std::cout << std::this_thread::get_id() << ")  acquiring line " << index << std::endl;
 		c->acquire(v->at(index));
 		n_success += v->at(index)->get_is_loaded();
 		c->release(v->at(index));
-		std::cout << std::this_thread::get_id() << ")  released line " << index << std::endl;
 	}
 
 	*result += (n_success == n_attempts);
+	*n_done += 1;
 }
 
 
@@ -161,10 +160,14 @@ TEST_CASE("cachepp|concurrentcache-multithread") {
 	std::vector<std::thread> threads;
 
 	std::shared_ptr<std::atomic<size_t>> result (new std::atomic<size_t>());
+	std::shared_ptr<std::atomic<size_t>> n_done (new std::atomic<size_t>());
+
 	for(size_t attempt = 0; attempt < n_attempts; ++attempt) {
 		for(size_t i = 0; i < n_threads; ++i) {
-			threads.push_back(std::thread(concurrentcache_multithread_worker, result, c, v));
+			threads.push_back(std::thread(concurrentcache_multithread_worker, n_done, result, c, v));
 		}
+
+		while(*n_done != n_threads) {}
 
 		for(size_t i = 0; i < n_threads; ++i) {
 			threads.at(i).join();

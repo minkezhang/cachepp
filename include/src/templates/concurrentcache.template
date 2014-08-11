@@ -74,6 +74,10 @@ template <typename D, typename T> std::shared_ptr<T> cachepp::ConcurrentCache<D,
 		}
 	}
 
+	if(candidates.size() == 0) {
+		throw(exceptionpp::RuntimeError("cachepp::ConcurrentCache::select", "zero-element candidate list -- could not try_lock own cache line"));
+	}
+
 	bool is_set = false;
 	cachepp::identifier heuristic = 0;
 	cachepp::identifier target = 0;
