@@ -52,6 +52,7 @@ template <typename D, typename T> std::shared_ptr<T> cachepp::SerialCache<D, T>:
 	for(typename std::map<cachepp::identifier, std::shared_ptr<T>>::iterator it = this->cache.begin(); it != this->cache.end(); ++it) {
 		cachepp::identifier  h = this->heuristic(it->second);
 		if((h <= heuristic) || !is_set) {
+			is_set = true;
 			heuristic = h;
 			target = it->first;
 		}
