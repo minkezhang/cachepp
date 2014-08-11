@@ -20,6 +20,8 @@ namespace cachepp {
 	template <typename C, typename D, typename T>
 	class CacheInterface {
 		public:
+			CacheInterface();
+
 			/**
 			 * ensures the cache contains T -- that is, T is loaded
 			 */
@@ -40,9 +42,20 @@ namespace cachepp {
 			 */
 			virtual void access(const std::shared_ptr<T>& arg, D aux) = 0;
 
+			/**
+			 * returns n_miss / n_acquire, or returns a RuntimeError if a divide-by-zero occurs
+			 */
+			identifier get_miss_rate();
+
 		protected:
 			identifier size;
 			C cache;
+
+			/**
+			 * optional performance tracker objects
+			 */
+			std::atomic<identifier> n_acquire;
+			std::atomic<identifier> n_miss;
 
 			/**
 			 * test for if the given arg is in the cache
@@ -68,5 +81,7 @@ namespace cachepp {
 			virtual size_t heuristic(const std::shared_ptr<T>& arg) = 0;
 	};
 }
+
+#include "src/templates/cacheinterface.template"
 
 #endif
