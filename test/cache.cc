@@ -9,7 +9,12 @@
 #include "src/simpleserialcache.h"
 #include "src/simpleline.h"
 
-TEST_CASE("cachepp|concurrentcache") {
+TEST_CASE("cachepp|concurrentcache-multithread") {
+	std::shared_ptr<cachepp::SimpleConcurrentCache<cachepp::SimpleLine>> c (new cachepp::SimpleConcurrentCache<cachepp::SimpleLine>(2));
+	
+}
+
+TEST_CASE("cachepp|concurrentcache-singlethread") {
 	std::shared_ptr<cachepp::SimpleConcurrentCache<cachepp::SimpleLine>> c (new cachepp::SimpleConcurrentCache<cachepp::SimpleLine>(2));
 
 	std::vector<std::shared_ptr<cachepp::SimpleLine>> v;

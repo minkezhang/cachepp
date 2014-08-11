@@ -7,6 +7,8 @@ INCLUDE=-Iinclude/
 INCLUDE_LIBS=-Iexternal/catch/include/ -Iexternal/exceptionpp/include/ -Iinclude/libs/stacktrace/
 SOURCES=src/*cc libs/*/*cc test/*cc
 
+LIBS=-pthread
+
 OBJECTS=$(SOURCES:.cc=.o)
 
 EXECUTABLE=cachepp.app
