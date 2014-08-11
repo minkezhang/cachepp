@@ -53,7 +53,7 @@ template <typename D, typename T> std::shared_ptr<T> cachepp::SerialCache<D, T>:
 		cachepp::identifier  h = this->heuristic(it->second);
 		if((h <= heuristic) || !is_set) {
 			is_set = true;
-			heuristic = h;
+			heuristic = (h <= heuristic) ? h : heuristic;
 			target = it->first;
 		}
 	}

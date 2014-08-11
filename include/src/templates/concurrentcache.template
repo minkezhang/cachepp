@@ -79,7 +79,7 @@ template <typename D, typename T> std::shared_ptr<T> cachepp::ConcurrentCache<D,
 		cachepp::identifier h = this->heuristic(this->cache.at(*it));
 		if(h <= heuristic || !is_set) {
 			is_set = true;
-			heuristic = h;
+			heuristic = (h <= heuristic) ? h : heuristic;
 			target = *it;
 		}
 	}
