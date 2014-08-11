@@ -26,7 +26,7 @@ template <typename D, typename T> void cachepp::ConcurrentCache<D, T>::release(c
 
 template <typename D, typename T> void cachepp::ConcurrentCache<D, T>::clear() {
 	// fundamentally we need to make this->cache's size atomic -- map.insert and map.erase therefore must be wrapped with a lock
-	std::lock_guard<std::mutex> l (this->l);
+	std::lock_guard<std::recursive_mutex> l (this->l);
 	for(cachepp::identifier i = 0; i < this->size; ++i) {
 		this->cache_i.at(i)->lock();
 	}
@@ -42,7 +42,7 @@ template <typename D, typename T> void cachepp::ConcurrentCache<D, T>::clear() {
 
 template <typename D, typename T> void cachepp::ConcurrentCache<D, T>::allocate(const std::shared_ptr<T>& arg) {
 	// fundamentally we need to make this->cache's size atomic -- map.insert and map.erase therefore must be wrapped with a lock
-	std::lock_guard<std::mutex> l (this->l);
+	std::lock_guard<std::recursive_mutex> l (this->l);
 
 	this->cache_l.at(this->index(arg))->lock();
 

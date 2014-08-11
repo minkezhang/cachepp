@@ -38,7 +38,7 @@ namespace cachepp {
 			 * locks that protect the cache line from concurrent access
 			 */
 			std::vector<std::recursive_mutex> cache_l;
-			std::mutex l;
+			std::recursive_mutex l;
 
 			virtual bool in(const std::shared_ptr<T>& arg) final;
 			virtual void allocate(const std::shared_ptr<T>& arg) final;
@@ -47,8 +47,9 @@ namespace cachepp {
 			/**
 			 * hash arg->get_identity() and returns an index to cache_l
 			 */
-			virtual identity index(const std::shared_ptr<T>& arg) = 0;
+			virtual identifier index(const std::shared_ptr<T>& arg) = 0;
 	};
+}
 
 #include "src/templates/concurrentcache.template"
 

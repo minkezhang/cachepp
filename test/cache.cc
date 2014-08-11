@@ -8,6 +8,12 @@
 #include "src/simplecache.h"
 #include "src/simpleline.h"
 
+#include "src/simpleconcurrentcache.h"
+
+TEST_CASE("cachepp|concurrentcache") {
+	std::shared_ptr<cachepp::SimpleConcurrentCache<cachepp::SimpleLine>> c (new cachepp::SimpleConcurrentCache<cachepp::SimpleLine>(2));
+}
+
 TEST_CASE("cachepp|cache") {
 	std::shared_ptr<cachepp::SimpleCache<cachepp::SimpleLine>> c (new cachepp::SimpleCache<cachepp::SimpleLine>(2));
 
