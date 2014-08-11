@@ -28,7 +28,7 @@ void concurrentcache_multithread_worker(std::shared_ptr<std::atomic<size_t>> res
 
 
 TEST_CASE("cachepp|serialcache") {
-	std::shared_ptr<cachepp::SimpleSerialCache<cachepp::SimpleLine>> c (new cachepp::SimpleSerialCache<cachepp::SimpleLine>(1));
+	std::shared_ptr<cachepp::SimpleSerialCache<cachepp::SimpleLine>> c (new cachepp::SimpleSerialCache<cachepp::SimpleLine>(2));
 
 	std::vector<std::shared_ptr<cachepp::SimpleLine>> v (0);
 	for(size_t i = 0; i < 10; ++i) {
@@ -87,7 +87,7 @@ TEST_CASE("cachepp|serialcache") {
 }
 
 TEST_CASE("cachepp|concurrentcache-singlethread") {
-	std::shared_ptr<cachepp::SimpleConcurrentCache<cachepp::SimpleLine>> c (new cachepp::SimpleConcurrentCache<cachepp::SimpleLine>(1));
+	std::shared_ptr<cachepp::SimpleConcurrentCache<cachepp::SimpleLine>> c (new cachepp::SimpleConcurrentCache<cachepp::SimpleLine>(2));
 
 	std::vector<std::shared_ptr<cachepp::SimpleLine>> v (0);
 	for(size_t i = 0; i < 10; ++i) {
