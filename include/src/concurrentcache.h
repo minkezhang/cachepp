@@ -33,8 +33,6 @@ namespace cachepp {
 			 */
 			virtual void clear() final;
 
-			virtual void access(const std::shared_ptr<T>& arg, D aux) = 0;
-
 		protected:
 			/**
 			 * locks that protect the cache line from concurrent access
