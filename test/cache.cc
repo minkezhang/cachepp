@@ -19,10 +19,9 @@ TEST_CASE("cachepp|concurrentcache-multithread") {
 
 	std::shared_ptr<cachepp::SimpleConcurrentCache<cachepp::SimpleLine>> c (new cachepp::SimpleConcurrentCache<cachepp::SimpleLine>(2));
 
-	std::vector<std::shared_ptr<cachepp::SimpleLine>> q;
-
+	std::vector<std::shared_ptr<cachepp::SimpleLine>> v;
 	for(size_t i = 0; i < 10; ++i) {
-		q.push_back(std::shared_ptr<cachepp::SimpleLine> (new cachepp::SimpleLine(rand(), false)));
+		v.push_back(std::shared_ptr<cachepp::SimpleLine> (new cachepp::SimpleLine(rand(), false)));
 	}
 
 	std::shared_ptr<std::atomic<size_t>> result (new std::atomic<size_t>());
