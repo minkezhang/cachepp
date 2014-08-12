@@ -1,6 +1,8 @@
 #ifndef _CACHEPP_CONCURRENTCACHE_TEMPLATE
 #define _CACHEPP_CONCURRENTCACHE_TEMPLATE
 
+#include <algorithm>
+
 #include "libs/exceptionpp/exception.h"
 
 #include "src/concurrentcache.h"
@@ -46,10 +48,17 @@ template <typename D, typename T> void cachepp::ConcurrentCache<D, T>::allocate(
 	// fundamentally we need to make this->cache's size atomic -- map.insert and map.erase therefore must be wrapped with a lock
 	std::lock_guard<std::recursive_mutex> l (this->l);
 
-	this->cache_l.at(this->index(arg))->lock();
+	for(cachepp::identifier i = 0; i < this->cache_l.size(); ++i) {
+		this->cache_l.at(i)->lock();
+	}
 
 	// competing call may have already allocated this line
 	if(arg->get_is_loaded()) {
+		for(cachepp::identifier i = 0; i < this->cache_l.size(); ++i) {
+			if(i != this->index(arg)) {
+				this->cache_l.at(i)->unlock();
+			}
+		}
 		return;
 	}
 
@@ -57,50 +66,32 @@ template <typename D, typename T> void cachepp::ConcurrentCache<D, T>::allocate(
 		std::shared_ptr<T> target = this->select();
 		target->unload();
 		this->cache.erase(target->get_identifier());
-		// release rights to the cache line
-		this->cache_l.at(this->index(target))->unlock();
 	}
 	arg->load();
 	this->cache.insert(std::pair<cachepp::identifier, std::shared_ptr<T>> (arg->get_identifier(), arg));
+
+	for(cachepp::identifier i = 0; i < this->cache_l.size(); ++i) {
+		if(i != this->index(arg)) {
+			this->cache_l.at(i)->unlock();
+		}
+	}
 }
 
 template <typename D, typename T> std::shared_ptr<T> cachepp::ConcurrentCache<D, T>::select() {
-	std::vector<cachepp::identifier> candidates;
-
-	// we are guaranteed to have at least one candidate -- we are currently holding onto one lock
-	for(typename std::map<cachepp::identifier, std::shared_ptr<T>>::iterator it = this->cache.begin(); it != this->cache.end(); ++it) {
-		if(this->cache_l.at(this->index(it->second))->try_lock()) {
-			candidates.push_back(it->first);
-		}
-	}
-
-	if(candidates.size() == 0) {
-		throw(exceptionpp::RuntimeError("cachepp::ConcurrentCache::select", "zero-element candidate list -- could not try_lock own cache line"));
-	}
-
 	bool is_set = false;
 	cachepp::identifier heuristic = 0;
 	cachepp::identifier target = 0;
-	for(std::vector<cachepp::identifier>::iterator it = candidates.begin(); it != candidates.end(); ++it) {
-		cachepp::identifier h = this->heuristic(this->cache.at(*it));
+	for(typename std::map<identifier, std::shared_ptr<T>>::iterator it = this->cache.begin(); it != this->cache.end(); ++it) {
+		cachepp::identifier h = this->heuristic(it->second);
 		if(h <= heuristic || !is_set) {
 			is_set = true;
 			heuristic = h;
-			target = *it;
+			target = it->first;
 		}
 	}
-
 	if(!is_set) {
 		throw(exceptionpp::RuntimeError("cachepp::ConcurrentCache::select", "cannot find a target to evict"));
 	}
-
-	for(std::vector<cachepp::identifier>::iterator it = candidates.begin(); it != candidates.end(); ++it) {
-		// need to still hold onto the rights to the line to be evicted
-		if(*it != target) {
-			this->cache_l.at(this->index(this->cache.at(*it)))->unlock();
-		}
-	}
-
 	return(this->cache.at(target));
 }
 

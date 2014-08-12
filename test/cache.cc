@@ -13,9 +13,10 @@
 #include "src/simpleserialcache.h"
 #include "src/simpleline.h"
 
-void concurrentcache_multithread_worker(std::shared_ptr<std::atomic<size_t>> n_done, std::shared_ptr<std::atomic<size_t>> result, std::shared_ptr<cachepp::SimpleConcurrentCache<cachepp::SimpleLine>> c, std::shared_ptr<std::vector<std::shared_ptr<cachepp::SimpleLine>>> v) {
+void concurrentcache_multithread_worker(std::shared_ptr<std::atomic<size_t>> result, std::shared_ptr<cachepp::SimpleConcurrentCache<cachepp::SimpleLine>> c, std::shared_ptr<std::vector<std::shared_ptr<cachepp::SimpleLine>>> v) {
 	size_t n_attempts = 1000;
 	size_t n_success = 0;
+
 	for(size_t attempt = 0; attempt < n_attempts; ++attempt) {
 		cachepp::identifier index = rand() % v->size();
 		c->acquire(v->at(index));
@@ -24,7 +25,7 @@ void concurrentcache_multithread_worker(std::shared_ptr<std::atomic<size_t>> n_d
 	}
 
 	*result += (n_success == n_attempts);
-	*n_done += 1;
+	return;
 }
 
 
@@ -147,7 +148,7 @@ TEST_CASE("cachepp|concurrentcache-singlethread") {
 }
 
 TEST_CASE("cachepp|concurrentcache-multithread") {
-	size_t n_threads = 2;
+	size_t n_threads = 16;
 	size_t n_attempts = 1000;
 
 	std::shared_ptr<cachepp::SimpleConcurrentCache<cachepp::SimpleLine>> c (new cachepp::SimpleConcurrentCache<cachepp::SimpleLine>(2));
@@ -157,23 +158,32 @@ TEST_CASE("cachepp|concurrentcache-multithread") {
 		v->push_back(std::shared_ptr<cachepp::SimpleLine> (new cachepp::SimpleLine(i, false)));
 	}
 
-	std::vector<std::thread> threads;
+	std::vector<std::shared_ptr<std::thread>> threads;
 
 	std::shared_ptr<std::atomic<size_t>> result (new std::atomic<size_t>());
-	std::shared_ptr<std::atomic<size_t>> n_done (new std::atomic<size_t>());
+
+	std::cout << "cachepp|concurrentcache-multithread: " << std::flush;
 
 	for(size_t attempt = 0; attempt < n_attempts; ++attempt) {
+		threads.clear();
+
 		for(size_t i = 0; i < n_threads; ++i) {
-			threads.push_back(std::thread(concurrentcache_multithread_worker, n_done, result, c, v));
+			std::shared_ptr<std::thread> t (new std::thread(concurrentcache_multithread_worker, result, c, v));
+			threads.push_back(t);
 		}
 
-		while(*n_done != n_threads) {}
-
 		for(size_t i = 0; i < n_threads; ++i) {
-			threads.at(i).join();
+			threads.at(i)->join();
+		}
+
+		if((attempt % 100) == 0) {
+			std::cout << "." << std::flush;
 		}
 	}
 
-	REQUIRE(*result == (n_attempts * n_threads));
-}
+	std::cout << std::endl;
 
+	REQUIRE(*result == (n_attempts * n_threads));
+
+	std::cout << "cachepp|concurrentcache-multithread: " << c->get_miss_rate() << std::endl;
+}
