@@ -151,14 +151,14 @@ TEST_CASE("cachepp|concurrentcache-multithread") {
 	size_t n_threads = 16;
 	size_t n_attempts = 1000;
 
-	std::shared_ptr<cachepp::SimpleConcurrentCache<cachepp::SimpleLine>> c (new cachepp::SimpleConcurrentCache<cachepp::SimpleLine>(2));
+	std::shared_ptr<cachepp::SimpleConcurrentCache<cachepp::SimpleLine>> c (new cachepp::SimpleConcurrentCache<cachepp::SimpleLine>(5));
 	std::shared_ptr<std::vector<std::shared_ptr<cachepp::SimpleLine>>> v (new std::vector<std::shared_ptr<cachepp::SimpleLine>> (0));
 
 	for(size_t i = 0; i < 10; ++i) {
 		v->push_back(std::shared_ptr<cachepp::SimpleLine> (new cachepp::SimpleLine(i, false)));
 	}
 
-	std::vector<std::shared_ptr<std::thread>> threads;
+	std::vector<std::thread> threads;
 
 	std::shared_ptr<std::atomic<size_t>> result (new std::atomic<size_t>());
 
@@ -168,12 +168,11 @@ TEST_CASE("cachepp|concurrentcache-multithread") {
 		threads.clear();
 
 		for(size_t i = 0; i < n_threads; ++i) {
-			std::shared_ptr<std::thread> t (new std::thread(concurrentcache_multithread_worker, result, c, v));
-			threads.push_back(t);
+			threads.push_back(std::thread(concurrentcache_multithread_worker, result, c, v));
 		}
 
 		for(size_t i = 0; i < n_threads; ++i) {
-			threads.at(i)->join();
+			threads.at(i).join();
 		}
 
 		if((attempt % 100) == 0) {
