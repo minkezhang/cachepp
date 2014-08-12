@@ -3,7 +3,7 @@
 #include "src/simpleline.h"
 
 cachepp::SimpleLine::SimpleLine(cachepp::identifier id, bool is_corrupt) : cachepp::Line<bool>::Line(id), is_corrupt(is_corrupt) {
-	this->data->push_back(id % 256);
+	this->data.push_back(id % 256);
 }
 
 void cachepp::SimpleLine::aux_load() {}
@@ -20,7 +20,7 @@ bool cachepp::SimpleLine::hash() {
 	}
 
 	uint32_t result = 0;
-	for(std::vector<uint8_t>::iterator it = this->data->begin(); it != this->data->end(); ++it) {
+	for(std::vector<uint8_t>::iterator it = this->data.begin(); it != this->data.end(); ++it) {
 		result += *it;
 	}
 	return(result % 2);

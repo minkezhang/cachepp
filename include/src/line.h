@@ -16,7 +16,8 @@ namespace cachepp {
 			Line(identifier id);
 
 			identifier get_identifier();
-			std::shared_ptr<std::vector<uint8_t>> get_data();
+			std::vector<uint8_t> get_data();
+			void set_data(std::vector<uint8_t> data);
 
 			bool get_is_loaded();
 			bool get_is_dirty();
@@ -29,7 +30,7 @@ namespace cachepp {
 
 		protected:
 			identifier id;
-			std::shared_ptr<std::vector<uint8_t>> data;
+			std::vector<uint8_t> data;
 
 			bool is_loaded;
 			bool is_dirty;

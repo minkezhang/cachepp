@@ -9,9 +9,10 @@ TEST_CASE("cachepp|line") {
 	REQUIRE(s->get_is_loaded() == false);
 	REQUIRE(s->get_is_dirty() == false);
 	REQUIRE_THROWS_AS(s->get_data(), exceptionpp::RuntimeError);
+	REQUIRE_THROWS_AS(s->set_data(std::vector<uint8_t> (0)), exceptionpp::RuntimeError);
 	s->load();
 	REQUIRE(s->get_is_loaded() == true);
-	REQUIRE(s->get_data()->at(0) == 111);
+	REQUIRE(s->get_data().at(0) == 111);
 	s->load();
 	REQUIRE(s->get_is_loaded() == true);
 	s->unload();

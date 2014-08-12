@@ -5,17 +5,22 @@
 
 #include "src/line.h"
 
-template <typename T> cachepp::Line<T>::Line(cachepp::identifier id) : id(id), is_loaded(0), is_dirty(0), checksum(T()) {
-	this->data = std::shared_ptr<std::vector<uint8_t>> (new std::vector<uint8_t> ());
-}
+template <typename T> cachepp::Line<T>::Line(cachepp::identifier id) : id(id), is_loaded(0), is_dirty(0), checksum(T()) {}
 
 template <typename T> cachepp::identifier cachepp::Line<T>::get_identifier() { return(this->id); }
 
-template <typename T> std::shared_ptr<std::vector<uint8_t>> cachepp::Line<T>::get_data() {
+template <typename T> std::vector<uint8_t> cachepp::Line<T>::get_data() {
 	if(!this->get_is_loaded()) {
 		throw(exceptionpp::RuntimeError("cachepp::Line<T>::get_data", "attempting to get data when line is not loaded"));
 	}
 	return(this->data);
+}
+
+template <typename T> void cachepp::Line<T>::set_data(std::vector<uint8_t> data) {
+	if(!this->get_is_loaded()) {
+		throw(exceptionpp::RuntimeError("cachepp::Line<T>::set_data", "attempting to set data when line is not loaded"));
+	}
+	this->data = data;
 }
 
 template <typename T> bool cachepp::Line<T>::get_is_loaded() { return(this->is_loaded); }

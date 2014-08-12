@@ -15,9 +15,9 @@ namespace cachepp {
 		private:
 			bool is_corrupt;
 
-			virtual void aux_load();
-			virtual void aux_unload();
-			virtual bool hash();
+			virtual void aux_load() final;
+			virtual void aux_unload() final;
+			virtual bool hash() final;
 	};
 }
 
