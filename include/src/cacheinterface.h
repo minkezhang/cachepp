@@ -1,6 +1,7 @@
 #ifndef _CACHEPP_CACHEINTERFACE_H
 #define _CACHEPP_CACHEINTERFACE_H
 
+#include <atomic>
 #include <map>
 #include <memory>
 
