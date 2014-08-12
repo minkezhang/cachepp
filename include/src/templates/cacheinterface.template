@@ -7,6 +7,19 @@
 
 template <typename C, typename D, typename T> cachepp::CacheInterface<C, D, T>::CacheInterface() : n_acquire(0), n_miss(0) {}
 
+template <typename C, typename D, typename T> std::vector<uint8_t> cachepp::CacheInterface<C, D, T>::r(const std::shared_ptr<T>& arg, D aux) {
+	this->acquire(arg, aux);
+	std::vector<uint8_t> val = arg->get_data();
+	this->release(arg);
+	return(val);
+}
+
+template <typename C, typename D, typename T> void cachepp::CacheInterface<C, D, T>::w(const std::shared_ptr<T>& arg, std::vector<uint8_t> val, D aux) {
+	this->acquire(arg, aux);
+	arg->set_data(val);
+	this->release(arg);
+}
+
 template <typename C, typename D, typename T> double cachepp::CacheInterface<C, D, T>::get_miss_rate() {
 	if(this->n_acquire == 0) {
 		throw(exceptionpp::RuntimeError("cachepp::CacheInterface::get_miss_rate", "divide by zero"));

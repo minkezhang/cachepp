@@ -22,6 +22,12 @@ namespace cachepp {
 			CacheInterface();
 
 			/**
+			 * read / write wrapper for the Line element
+			 */
+			std::vector<uint8_t> r(const std::shared_ptr<T>& arg, D aux = D());
+			void w(const std::shared_ptr<T>& arg, std::vector<uint8_t> val, D aux = D());
+
+			/**
 			 * ensures the cache contains T -- that is, T is loaded
 			 */
 			virtual void acquire(const std::shared_ptr<T>& arg, D aux) = 0;
