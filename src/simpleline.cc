@@ -2,7 +2,7 @@
 
 #include "src/simpleline.h"
 
-cachepp::SimpleLine::SimpleLine(cachepp::identifier id, bool is_corrupt) : cachepp::Line<bool>::Line(id), is_corrupt(is_corrupt) {
+cachepp::SimpleLine::SimpleLine(cachepp::identifier id, bool is_corrupt) : cachepp::LineInterface<bool>::LineInterface(id), is_corrupt(is_corrupt) {
 	this->data.push_back(id % 256);
 }
 

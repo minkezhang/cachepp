@@ -1,5 +1,5 @@
-#ifndef _CACHEPP_LINE_H
-#define _CACHEPP_LINE_H
+#ifndef _CACHEPP_LINEINTERFACE_H
+#define _CACHEPP_LINEINTERFACE_H
 
 #include <memory>
 #include <vector>
@@ -11,9 +11,9 @@ namespace cachepp {
 	 * basic cache line interface -- this is NOT directly callable by the user
 	 */
 	template <typename T>
-	class Line {
+	class LineInterface {
 		public:
-			Line(identifier id);
+			LineInterface(identifier id);
 
 			identifier get_identifier();
 			std::vector<uint8_t> get_data();
@@ -53,6 +53,6 @@ namespace cachepp {
 	};
 }
 
-#include "src/templates/line.template"
+#include "src/templates/lineinterface.template"
 
 #endif

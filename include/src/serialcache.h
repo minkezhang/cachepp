@@ -6,7 +6,6 @@
 
 #include "src/cacheinterface.h"
 #include "src/globals.h"
-#include "src/line.h"
 
 namespace cachepp {
 	/**

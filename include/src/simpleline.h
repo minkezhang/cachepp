@@ -2,13 +2,13 @@
 #define _CACHEPP_SIMPLELINE_H
 
 #include "src/globals.h"
-#include "src/line.h"
+#include "src/lineinterface.h"
 
 namespace cachepp {
 	/**
 	 * simple concrete implementation of the Line interface
 	 */
-	class SimpleLine : public Line<bool> {
+	class SimpleLine : public LineInterface<bool> {
 		public:
 			SimpleLine(identifier id, bool is_corrupt);
 

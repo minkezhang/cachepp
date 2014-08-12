@@ -5,7 +5,6 @@
 #include <memory>
 
 #include "src/globals.h"
-#include "src/line.h"
 
 namespace cachepp {
 	/**
@@ -15,7 +14,7 @@ namespace cachepp {
 	 *
 	 * typename C -- the internal cache type representation
 	 * typename D -- the type of the cache class auxiliary data
-	 * typename T -- the type of the cache line, subclassed from Line in src/line.h
+	 * typename T -- the type of the cache line, subclassed from LineInterface in src/lineinterface.h
 	 */
 	template <typename C, typename D, typename T>
 	class CacheInterface {
