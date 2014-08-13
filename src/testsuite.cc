@@ -9,6 +9,8 @@
 
 #include "src/testsuite.h"
 
+bool is_dup(char l, char r) { return(((l == '\t') || (l == '\n')) && (l == r)); }
+
 cachepp::TestResult::TestResult() : size(0) {}
 
 void cachepp::TestResult::push_back(size_t n_acquire, size_t cache_size, size_t total_data, double read_rate, double miss_rate, double line_size, double total_runtime, bool is_parallel, size_t n_threads) {
@@ -35,8 +37,6 @@ double cachepp::TestResult::get_line_size(size_t index) { return(this->line_size
 size_t cachepp::TestResult::get_cache_size(size_t index) { return(this->cache_size.at(index)); }
 bool cachepp::TestResult::get_is_parallel(size_t index) { return(this->is_parallel.at(index)); }
 size_t  cachepp::TestResult::get_n_threads(size_t index) { return(this->n_threads.at(index)); }
-
-bool is_dup(char l, char r) { return(((l == '\t') || (l == '\n')) && (l == r)); }
 
 std::string cachepp::TestResult::to_string(bool is_tsv) {
 	size_t pad = 12;
