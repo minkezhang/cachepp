@@ -143,6 +143,7 @@ TEST_CASE("cachepp|concurrentcache-singlethread") {
 	REQUIRE(v.at(3)->get_is_loaded() == true);
 }
 
+/*
 TEST_CASE("cachepp|concurrentcache-multithread") {
 	size_t n_threads = 16;
 	size_t n_attempts = 1000;
@@ -180,3 +181,4 @@ TEST_CASE("cachepp|concurrentcache-multithread") {
 
 	REQUIRE(*result == (n_attempts * n_threads));
 }
+*/
