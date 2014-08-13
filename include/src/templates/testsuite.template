@@ -1,0 +1,14 @@
+#ifndef _CACHEPP_TESTSUITE_TEMPLATE
+#define _CACHEPP_TESTSUITE_TEMPLATE
+
+#include <memory>
+
+#include "src/testsuite.h"
+
+template <typename X, typename D, typename T> cachepp::TestSuite<X, D, T>::TestSuite(const std::shared_ptr<X>& cache) : cache(cache) {
+	this->result = cachepp::TestResult();
+}
+
+template <typename X, typename D, typename T> cachepp::TestResult cachepp::TestSuite<X, D, T>::get_result() { return(this->result); }
+
+#endif

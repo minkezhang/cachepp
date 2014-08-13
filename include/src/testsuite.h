@@ -1,6 +1,7 @@
 #ifndef _CACHEPP_TESTSUITE_H
 #define _CACHEPP_TESTSUITE_H
 
+#include <memory>
 #include <ostream>
 #include <string>
 #include <vector>
@@ -37,8 +38,35 @@ namespace cachepp {
 			std::vector<size_t> n_threads;
 	};
 
+	/**
+	 * Test suite template class
+	 *
+	 * typename X -- cache
+	 * typename D -- cache data
+	 * typename L -- cache line
+	 */
+	template <typename X, typename D, typename T>
+	class TestSuite {
+		public:
+			TestSuite(const std::shared_ptr<X>& cache);
+
+			/**
+			 * run correctness tests on the cache
+			 */
+			// void correctness(std::vector<D> lines, size_t n_attempts, bool is_parallel, size_t n_threads);
+			// void performance(std::vector<D> lines, std::vector<size_t> line_size, std::vector<identifier> access_pattern, std::vector<D> access_pattern_aux, size_t n_attempts, bool is_parallel, size_t n_threads);
+
+			TestResult get_result();
+
+			// static std::vector<identifier> generate_access_pattern(size_t length, identifier n_lines, uint8_t mode);
+		private:
+			std::shared_ptr<X> cache;
+			TestResult result;
+	};
 }
 
 std::ostream& operator<< (std::ostream& os, cachepp::TestResult& obj);
+
+#include "src/templates/testsuite.template"
 
 #endif
