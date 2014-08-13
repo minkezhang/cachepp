@@ -56,17 +56,22 @@ namespace cachepp {
 			/**
 			 * run correctness tests on the cache
 			 */
-			void correctness(std::vector<std::shared_ptr<T>>& lines, size_t n_attempts, bool is_parallel, size_t n_threads = 0);
+			void correctness(const std::shared_ptr<std::vector<std::shared_ptr<T>>>& lines, size_t n_attempts, bool is_parallel, size_t n_threads = 0);
+
+			/**
+			 * run performance tests on the cache -- add to test results
+			 */
 			// void performance(std::vector<D> lines, std::vector<size_t> line_size, std::vector<identifier> access_pattern, std::vector<D> access_pattern_aux, size_t n_attempts, bool is_parallel, size_t n_threads);
 
 			TestResult get_result();
 
 			// static std::vector<identifier> generate_access_pattern(size_t length, identifier n_lines, uint8_t mode);
+
 		private:
 			std::shared_ptr<X> cache;
 			TestResult result;
 
-			void aux_correctness(std::shared_ptr<std::atomic<size_t>> n_success, std::vector<std::shared_ptr<T>>& lines, size_t n_attempts);
+			void aux_correctness(const std::shared_ptr<std::atomic<size_t>>& n_success, const std::shared_ptr<std::vector<std::shared_ptr<T>>>& lines, size_t n_attempts);
 			// void aux_performance();
 	};
 }

@@ -12,35 +12,52 @@ template <typename X, typename D, typename T> cachepp::TestSuite<X, D, T>::TestS
 
 template <typename X, typename D, typename T> cachepp::TestResult cachepp::TestSuite<X, D, T>::get_result() { return(this->result); }
 
-template <typename X, typename D, typename T> void cachepp::TestSuite<X, D, T>::correctness(std::vector<std::shared_ptr<T>>& lines, size_t n_attempts, bool is_parallel, size_t n_threads) {
+template <typename X, typename D, typename T> void cachepp::TestSuite<X, D, T>::correctness(const std::shared_ptr<std::vector<std::shared_ptr<T>>>& lines, size_t n_attempts, bool is_parallel, size_t n_threads) {
 	if(is_parallel & !this->cache->get_is_thread_safe()) {
 		throw(exceptionpp::InvalidOperation("cachepp::TestSuite::correctness", "attempting to run a cache test in parallel on a non-thread-safe cache"));
 	}
+
 	if((!is_parallel && (n_threads != 0)) || (is_parallel && (n_threads == 0))) {
 		throw(exceptionpp::InvalidOperation("cachepp::TestResult::push_back", "is_parallel and n_thread provide conflicting data"));
 	}
 
+	bool success = false;
+
+	// reset the cache to collect statistics, and to clear all lines to prevent inaccurate miss rates
 	this->cache->reset();
 
 	std::shared_ptr<std::atomic<size_t>> n_success (new std::atomic<size_t>(0));
 
 	if(!is_parallel) {
 		this->aux_correctness(n_success, lines, n_attempts);
-		if(*n_success != 1) {
-			throw(exceptionpp::RuntimeError("cachepp::TestSuite::correctness", "correctness test failed"));
-		}
+		success = (*n_success == 1);
 	} else {
-		throw(exceptionpp::NotImplemented("cachepp::TestSuite::correctness(is_parallel = true)"));
+		std::vector<std::thread> threads;
+		for(size_t i = 0; i < n_threads; ++i) {
+			threads.push_back(std::thread(&cachepp::TestSuite<X, D, T>::aux_correctness, this, n_success, lines, n_attempts));
+		}
+		for(size_t i = 0; i < n_threads; ++i) {
+			threads.at(i).join();
+		}
+
+		success = (*n_success == n_threads);
+	}
+
+	if(!success) {
+		throw(exceptionpp::RuntimeError("cachepp::TestSuite::correctness", "correctness test failed"));
 	}
 }
 
-template <typename X, typename D, typename T> void cachepp::TestSuite<X, D, T>::aux_correctness(std::shared_ptr<std::atomic<size_t>> n_success, std::vector<std::shared_ptr<T>>& lines, size_t n_attempts) {
+/**
+ * helper function for the correctness tests -- either called directly or spawned into a thread
+ */
+template <typename X, typename D, typename T> void cachepp::TestSuite<X, D, T>::aux_correctness(const std::shared_ptr<std::atomic<size_t>>& n_success, const std::shared_ptr<std::vector<std::shared_ptr<T>>>& lines, size_t n_attempts) {
 	size_t local_n_success = 0;
 	for(size_t i = 0; i < n_attempts; ++i) {
-		cachepp::identifier index = rand() % lines.size();
-		this->cache->acquire(lines.at(index), D());
-		local_n_success += lines.at(index)->get_is_loaded();
-		this->cache->release(lines.at(index));
+		cachepp::identifier index = rand() % lines->size();
+		this->cache->acquire(lines->at(index), D());
+		local_n_success += lines->at(index)->get_is_loaded();
+		this->cache->release(lines->at(index));
 	}
 	*n_success += (local_n_success == n_attempts);
 }
