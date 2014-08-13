@@ -2,6 +2,8 @@
 #include <random>
 #include <vector>
 
+#include <iostream>
+
 #include "libs/catch/catch.hpp"
 #include "libs/exceptionpp/exception.h"
 
@@ -33,5 +35,12 @@ TEST_CASE("cachepp|testsuite-testsuite-correctness") {
 	cachepp::TestSuite<cachepp::SimpleConcurrentCache<cachepp::SimpleLine>, cachepp::SimpleConcurrentCacheData, cachepp::SimpleLine> concurrent_cache_suite = cachepp::TestSuite<cachepp::SimpleConcurrentCache<cachepp::SimpleLine>, cachepp::SimpleConcurrentCacheData, cachepp::SimpleLine>(concurrent_cache);
 
 	concurrent_cache_suite.correctness(v, 1000, false);
-	concurrent_cache_suite.correctness(v, 1000000, true, 16);
+	// concurrent_cache_suite.correctness(v, 1000000, true, 16);
+
+	std::shared_ptr<std::vector<cachepp::identifier>> pattern = concurrent_cache_suite.generate_access_pattern(10, 10);
+	REQUIRE(pattern->size() == 10);
+	for(size_t i = 0; i < pattern->size(); ++i) {
+		REQUIRE(pattern->at(i) >= 0);
+		REQUIRE(pattern->at(i) < 10);
+	}
 }

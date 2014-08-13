@@ -65,7 +65,10 @@ namespace cachepp {
 
 			TestResult get_result();
 
-			// static std::vector<identifier> generate_access_pattern(size_t length, identifier n_lines, uint8_t mode);
+			/**
+			 * generate access patterns to be used in performance tests
+			 */
+			std::shared_ptr<std::vector<identifier>> generate_access_pattern(identifier n_lines, size_t length, uint8_t mode = 0);
 
 		private:
 			std::shared_ptr<X> cache;

@@ -62,4 +62,18 @@ template <typename X, typename D, typename T> void cachepp::TestSuite<X, D, T>::
 	*n_success += (local_n_success == n_attempts);
 }
 
+template <typename X, typename D, typename T> std::shared_ptr<std::vector<cachepp::identifier>> cachepp::TestSuite<X, D, T>::generate_access_pattern(cachepp::identifier n_lines, size_t length, uint8_t mode) {
+	if(mode != 0) {
+		throw(exceptionpp::NotImplemented("cachepp::TestSuite::generate_access_pattern"));
+	}
+
+	std::shared_ptr<std::vector<cachepp::identifier>> v (new std::vector<cachepp::identifier>());
+	for(size_t i = 0; i < length; ++i) {
+		v->push_back(rand() % n_lines);
+	}
+
+	return(v);
+}
+
+
 #endif
