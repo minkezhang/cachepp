@@ -58,6 +58,11 @@ namespace cachepp {
 			 */
 			double get_miss_rate();
 
+			/**
+			 * exposes the cache size to the outside world
+			 */
+			identifier get_size();
+
 		protected:
 			identifier size;
 			C cache;
