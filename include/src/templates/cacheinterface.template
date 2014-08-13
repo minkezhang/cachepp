@@ -5,7 +5,7 @@
 
 #include "src/cacheinterface.h"
 
-template <typename C, typename D, typename T> cachepp::CacheInterface<C, D, T>::CacheInterface() : n_acquire(0), n_miss(0) {}
+template <typename C, typename D, typename T> cachepp::CacheInterface<C, D, T>::CacheInterface(cachepp::identifier size, bool is_thread_safe) : size(size), is_thread_safe(is_thread_safe), n_acquire(0), n_miss(0) {}
 
 template <typename C, typename D, typename T> std::vector<uint8_t> cachepp::CacheInterface<C, D, T>::r(const std::shared_ptr<T>& arg, D aux) {
 	this->acquire(arg, aux);

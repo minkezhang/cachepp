@@ -20,7 +20,7 @@ namespace cachepp {
 	template <typename C, typename D, typename T>
 	class CacheInterface {
 		public:
-			CacheInterface();
+			CacheInterface(identifier size, bool is_thread_safe);
 
 			/**
 			 * read / write wrapper for the Line element
@@ -63,15 +63,22 @@ namespace cachepp {
 			 */
 			identifier get_size();
 
+			/**
+			 * exposes if the cache is safe for concurrent access
+			 */
+			bool get_is_thread_safe();
+
 		protected:
 			identifier size;
-			C cache;
+			bool is_thread_safe;
 
 			/**
 			 * optional performance tracker objects
 			 */
 			std::atomic<identifier> n_acquire;
 			std::atomic<identifier> n_miss;
+
+			C cache;
 
 			/**
 			 * updates cache internal tracker

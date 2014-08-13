@@ -7,8 +7,7 @@
 
 #include "src/concurrentcache.h"
 
-template <typename D, typename T> cachepp::ConcurrentCache<D, T>::ConcurrentCache(cachepp::identifier size) : cachepp::CacheInterface<std::map<identifier, std::shared_ptr<T>>, D, T>::CacheInterface() {
-	this->size = size;
+template <typename D, typename T> cachepp::ConcurrentCache<D, T>::ConcurrentCache(cachepp::identifier size) : cachepp::CacheInterface<std::map<identifier, std::shared_ptr<T>>, D, T>::CacheInterface(size, true) {
 	for(cachepp::identifier i = 0; i < this->size; ++i) {
 		this->cache_l.push_back(std::shared_ptr<std::recursive_mutex> (new std::recursive_mutex()));
 	}
