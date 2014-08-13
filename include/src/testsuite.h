@@ -16,6 +16,11 @@ namespace cachepp {
 
 			void push_back(size_t n_acquire, size_t cache_size, size_t total_data, double read_rate, double miss_rate, double line_size, double total_runtime, bool is_parallel, size_t n_threads);
 
+			/**
+			 * get the number of records currently stored in the object
+			 */
+			size_t get_size();
+
 			double get_read_rate(size_t index);
 			double get_miss_rate(size_t index);
 			double get_throughput(size_t index);

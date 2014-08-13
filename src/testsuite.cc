@@ -13,6 +13,8 @@ bool is_dup(char l, char r) { return(((l == '\t') || (l == '\n')) && (l == r)); 
 
 cachepp::TestResult::TestResult() : size(0) {}
 
+size_t cachepp::TestResult::get_size() { return(this->size); }
+
 void cachepp::TestResult::push_back(size_t n_acquire, size_t cache_size, size_t total_data, double read_rate, double miss_rate, double line_size, double total_runtime, bool is_parallel, size_t n_threads) {
 	this->n_acquire.push_back(n_acquire);
 	this->total_data.push_back(total_data);
@@ -39,14 +41,14 @@ std::string cachepp::TestResult::to_string(bool is_tsv) {
 	size_t pad = 12;
 	std::string sep = " | ";
 
-	if(this->size == 0) {
+	if(this->get_size() == 0) {
 		throw(exceptionpp::InvalidOperation("cachepp::TestResult::to_string", "reporting zero trials"));
 	}
 
 	std::stringstream buffer;
 	buffer << std::setw(pad) << "trial" << sep << std::setw(pad) << "cache size" << sep << std::setw(pad) << "read (%)" << sep << std::setw(pad) << "miss (%)" << sep << std::setw(pad) << "tput (B/ms)" << sep << std::setw(pad) << "lat (ms)" << sep << std::setw(pad) << "line (B)" << sep << std::setw(pad) << "parallel" << sep << std::setw(pad) << "n_threads" << std::endl;
 	buffer << std::string(buffer.str().length(), '=') << std::endl;
-	for(size_t index = 0; index < this->size; ++index) {
+	for(size_t index = 0; index < this->get_size(); ++index) {
 
 		buffer << std::setw(pad) << index + 1 << sep << std::setw(pad) << this->get_cache_size(index) << sep << std::setw(pad) << this->get_read_rate(index) << sep << std::setw(pad) << this->get_miss_rate(index) << sep << std::setw(pad) << this->get_throughput(index) << sep << std::setw(pad) << this->get_latency(index) << sep << std::setw(pad) << this->get_line_size(index) << sep << std::setw(pad) << this->get_is_parallel(index) << sep << std::setw(pad);
 

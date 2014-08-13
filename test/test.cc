@@ -14,7 +14,12 @@
 
 TEST_CASE("cachepp|testsuite-testresult") {
 	cachepp::TestResult r = cachepp::TestResult();
+
+	REQUIRE(r.get_size() == 0);
 	REQUIRE_THROWS_AS(r.to_string(), exceptionpp::InvalidOperation);
+
+	r.push_back(1, 1, 1, 1, 1, 1, 1, 1, 2);
+	REQUIRE(r.get_size() == 1);
 }
 
 TEST_CASE("cachepp|testsuite-testsuite-correctness") {
@@ -59,4 +64,6 @@ TEST_CASE("cachepp|testsuite-testsuite-performance") {
 
 	REQUIRE_THROWS_AS(concurrent_cache_suite.performance(v, line_size, access_pattern, access_pattern_aux, 1000, true, 0), exceptionpp::InvalidOperation);
 	REQUIRE_THROWS_AS(concurrent_cache_suite.performance(v, line_size, access_pattern, access_pattern_aux, 1000, false, 1), exceptionpp::InvalidOperation);
+
+	
 }
