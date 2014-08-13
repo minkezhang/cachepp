@@ -18,20 +18,10 @@ namespace cachepp {
 		public:
 			ConcurrentCache(identifier size);
 
-			/**
-			 * ensures that the given arg is in the cache, and ensures that the given arg cannot be unloaded until release is called
-			 */
 			virtual void acquire(const std::shared_ptr<T>& arg, D aux = D()) final;
-
-			/**
-			 * releases a hold on the cache line containing arg -- this cache line can now be evicted
-			 */
 			virtual void release(const std::shared_ptr<T>& arg) final;
-
-			/**
-			 * deletes things
-			 */
 			virtual void clear() final;
+			virtual void remove(const std::shared_ptr<T>& arg) final;
 
 		protected:
 			/**

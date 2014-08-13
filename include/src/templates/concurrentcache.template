@@ -44,6 +44,17 @@ template <typename D, typename T> void cachepp::ConcurrentCache<D, T>::clear() {
 	}
 }
 
+template <typename D, typename T> void cachepp::ConcurrentCache<D, T>::remove(const std::shared_ptr<T>& arg) {
+	// fundamentally we need to make this->cache's size atomic -- map.insert and map.erase therefore must be wrapped with a lock
+	std::lock_guard<std::recursive_mutex> l (this->l);
+	this->cache_l.at(this->index(arg))->lock();
+	if(arg->get_is_loaded()) {
+		arg->unload();
+		this->cache.erase(arg->get_identifier());
+	}
+	this->cache_l.at(this->index(arg))->unlock();
+}
+
 template <typename D, typename T> void cachepp::ConcurrentCache<D, T>::allocate(const std::shared_ptr<T>& arg) {
 	// fundamentally we need to make this->cache's size atomic -- map.insert and map.erase therefore must be wrapped with a lock
 	std::lock_guard<std::recursive_mutex> l (this->l);
@@ -63,9 +74,7 @@ template <typename D, typename T> void cachepp::ConcurrentCache<D, T>::allocate(
 	}
 
 	if(this->cache.size() >= this->size) {
-		std::shared_ptr<T> target = this->select();
-		target->unload();
-		this->cache.erase(target->get_identifier());
+		this->remove(this->select());
 	}
 	arg->load();
 	this->cache.insert(std::pair<cachepp::identifier, std::shared_ptr<T>> (arg->get_identifier(), arg));

@@ -29,15 +29,20 @@ template <typename D, typename T> void cachepp::SerialCache<D, T>::clear() {
 	}
 }
 
+template <typename D, typename T> void cachepp::SerialCache<D, T>::remove(const std::shared_ptr<T>& arg) {
+	if(this->in(arg)) {
+		arg->unload();
+		this->cache.erase(arg->get_identifier());
+	}
+}
+
 template <typename D, typename T> bool cachepp::SerialCache<D, T>::in(const std::shared_ptr<T>& arg) {
 	return(this->cache.count(arg->get_identifier()) == 1);
 }
 
 template <typename D, typename T> void cachepp::SerialCache<D, T>::allocate(const std::shared_ptr<T>& arg) {
 	if(this->cache.size() >= this->size) {
-		std::shared_ptr<T> target = this->select();
-		target->unload();
-		this->cache.erase(target->get_identifier());
+		this->remove(this->select());
 	}
 	arg->load();
 	this->cache.insert(std::pair<cachepp::identifier, std::shared_ptr<T>> (arg->get_identifier(), arg));

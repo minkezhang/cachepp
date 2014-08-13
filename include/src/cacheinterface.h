@@ -44,6 +44,11 @@ namespace cachepp {
 			virtual void clear() = 0;
 
 			/**
+			 * explicitly remove the line from the cache -- useful for when deleting the line from memory, etc.
+			 */
+			virtual void remove(const std::shared_ptr<T>& arg) = 0;
+
+			/**
 			 * returns n_miss / n_acquire, or returns a RuntimeError if a divide-by-zero occurs
 			 */
 			double get_miss_rate();
