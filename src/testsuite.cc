@@ -47,7 +47,7 @@ std::string cachepp::TestResult::to_string(bool is_tsv) {
 	}
 
 	std::stringstream buffer;
-	buffer << std::setw(pad) << "trial" << sep << std::setw(pad) << "cache size" << sep << std::setw(pad) << "read (%)" << sep << std::setw(pad) << "miss (%)" << sep << std::setw(pad) << "tput (B/ns)" << sep << std::setw(pad) << "lat (ns)" << sep << std::setw(pad) << "line (B)" << sep << std::setw(pad) << "parallel" << sep << std::setw(pad) << "n_threads" << std::endl;
+	buffer << std::setw(pad) << "trial" << sep << std::setw(pad) << "cache size" << sep << std::setw(pad) << "read (%)" << sep << std::setw(pad) << "miss (%)" << sep << std::setw(pad) << "tput (B/us)" << sep << std::setw(pad) << "lat (us)" << sep << std::setw(pad) << "line (B)" << sep << std::setw(pad) << "parallel" << sep << std::setw(pad) << "n_threads" << std::endl;
 	buffer << std::string(buffer.str().length(), '=') << std::endl;
 	for(size_t index = 0; index < this->get_size(); ++index) {
 
