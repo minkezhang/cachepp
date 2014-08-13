@@ -137,12 +137,12 @@ template <typename X, typename D, typename T> void cachepp::TestSuite<X, D, T>::
 			if((rand() % 100) <= (read_rate * 100)) {
 				std::clock_t start = std::clock();
 				local_data += this->cache->r(lines->at(index), aux).size();
-				local_runtime += (std::clock() - start) / (double) (CLOCKS_PER_SEC / 1000);
+				local_runtime += (std::clock() - start) / (double) (CLOCKS_PER_SEC / 1000000);
 			} else {
 				local_data += buffer.size();
 				std::clock_t start = std::clock();
 				this->cache->w(lines->at(index), buffer, aux);
-				local_runtime += (std::clock() - start) / (double) (CLOCKS_PER_SEC / 1000);
+				local_runtime += (std::clock() - start) / (double) (CLOCKS_PER_SEC / 1000000);
 			}
 		}
 	}

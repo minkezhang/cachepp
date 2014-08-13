@@ -32,7 +32,7 @@ void cachepp::TestResult::push_back(size_t n_acquire, size_t cache_size, size_t 
 double cachepp::TestResult::get_read_rate(size_t index) { return(this->read_rate.at(index) * 100); }
 double cachepp::TestResult::get_miss_rate(size_t index) { return(this->miss_rate.at(index) * 100); }
 double cachepp::TestResult::get_throughput(size_t index) { return(this->total_data.at(index) / this->total_runtime.at(index)); }
-double cachepp::TestResult::get_latency(size_t index) { return(this->n_acquire.at(index) / this->total_runtime.at(index)); }
+double cachepp::TestResult::get_latency(size_t index) { return(this->total_runtime.at(index) / this->n_acquire.at(index)); }
 double cachepp::TestResult::get_line_size(size_t index) { return(this->line_size.at(index)); }
 size_t cachepp::TestResult::get_cache_size(size_t index) { return(this->cache_size.at(index)); }
 bool cachepp::TestResult::get_is_parallel(size_t index) { return(this->is_parallel.at(index)); }
@@ -47,7 +47,7 @@ std::string cachepp::TestResult::to_string(bool is_tsv) {
 	}
 
 	std::stringstream buffer;
-	buffer << std::setw(pad) << "trial" << sep << std::setw(pad) << "cache size" << sep << std::setw(pad) << "read (%)" << sep << std::setw(pad) << "miss (%)" << sep << std::setw(pad) << "tput (B/ms)" << sep << std::setw(pad) << "lat (ms)" << sep << std::setw(pad) << "line (B)" << sep << std::setw(pad) << "parallel" << sep << std::setw(pad) << "n_threads" << std::endl;
+	buffer << std::setw(pad) << "trial" << sep << std::setw(pad) << "cache size" << sep << std::setw(pad) << "read (%)" << sep << std::setw(pad) << "miss (%)" << sep << std::setw(pad) << "tput (B/ns)" << sep << std::setw(pad) << "lat (ns)" << sep << std::setw(pad) << "line (B)" << sep << std::setw(pad) << "parallel" << sep << std::setw(pad) << "n_threads" << std::endl;
 	buffer << std::string(buffer.str().length(), '=') << std::endl;
 	for(size_t index = 0; index < this->get_size(); ++index) {
 
