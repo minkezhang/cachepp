@@ -20,7 +20,7 @@ namespace cachepp {
 			bool get_is_parallel(size_t index);
 			size_t get_n_threads(size_t index);
 
-			std::string to_string();
+			std::string to_string(bool is_tsv = false);
 
 		private:
 			size_t size;
@@ -35,7 +35,8 @@ namespace cachepp {
 			std::vector<size_t> n_threads;
 	};
 
-	std::ostream& operator<< (std::ostream& os, TestResult& obj);
 }
+
+std::ostream& operator<< (std::ostream& os, cachepp::TestResult& obj);
 
 #endif
