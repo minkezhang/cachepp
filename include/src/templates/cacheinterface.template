@@ -27,4 +27,10 @@ template <typename C, typename D, typename T> double cachepp::CacheInterface<C, 
 	return((double) ((double) this->n_miss / this->n_acquire));
 }
 
+template <typename C, typename D, typename T> void cachepp::CacheInterface<C, D, T>::reset() {
+	this->n_acquire = 0;
+	this->n_miss = 0;
+	this->clear();
+}
+
 #endif

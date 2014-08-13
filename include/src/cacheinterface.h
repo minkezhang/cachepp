@@ -49,6 +49,11 @@ namespace cachepp {
 			virtual void remove(const std::shared_ptr<T>& arg) = 0;
 
 			/**
+			 * reset miss rate counters
+			 */
+			virtual void reset();
+
+			/**
 			 * returns n_miss / n_acquire, or returns a RuntimeError if a divide-by-zero occurs
 			 */
 			double get_miss_rate();
