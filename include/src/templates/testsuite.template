@@ -18,7 +18,7 @@ template <typename X, typename D, typename T> void cachepp::TestSuite<X, D, T>::
 	}
 
 	if((!is_parallel && (n_threads != 0)) || (is_parallel && (n_threads == 0))) {
-		throw(exceptionpp::InvalidOperation("cachepp::TestResult::push_back", "is_parallel and n_thread provide conflicting data"));
+		throw(exceptionpp::InvalidOperation("cachepp::TestSuite::correctness", "is_parallel and n_thread provide conflicting data"));
 	}
 
 	bool success = false;
@@ -74,6 +74,23 @@ template <typename X, typename D, typename T> std::shared_ptr<std::vector<cachep
 
 	return(v);
 }
+
+template <typename X, typename D, typename T> void cachepp::TestSuite<X, D, T>::performance( \
+	const std::shared_ptr<std::vector<std::shared_ptr<T>>>& lines, const std::shared_ptr<std::vector<size_t>>& line_size, \
+	std::shared_ptr<std::vector<identifier>>& access_pattern, std::shared_ptr<std::vector<std::shared_ptr<D>>>& access_pattern_aux, size_t n_attempts, bool is_parallel, \
+	size_t n_threads) {
+
+	if(is_parallel & !this->cache->get_is_thread_safe()) {
+		throw(exceptionpp::InvalidOperation("cachepp::TestSuite::performance", "attempting to run a cache test in parallel on a non-thread-safe cache"));
+	}
+
+	if((!is_parallel && (n_threads != 0)) || (is_parallel && (n_threads == 0))) {
+		throw(exceptionpp::InvalidOperation("cachepp::TestSuite::performance", "is_parallel and n_thread provide conflicting data"));
+	}
+
+	this->cache->reset();
+}
+
 
 
 #endif

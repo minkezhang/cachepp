@@ -61,12 +61,18 @@ namespace cachepp {
 			/**
 			 * run performance tests on the cache -- add to test results
 			 */
-			// void performance(std::vector<D> lines, std::vector<size_t> line_size, std::vector<identifier> access_pattern, std::vector<D> access_pattern_aux, size_t n_attempts, bool is_parallel, size_t n_threads);
 
+			void performance(const std::shared_ptr<std::vector<std::shared_ptr<T>>>& lines, const std::shared_ptr<std::vector<size_t>>& line_size, std::shared_ptr<std::vector<identifier>>& access_pattern, std::shared_ptr<std::vector<std::shared_ptr<D>>>& access_pattern_aux, size_t n_attempts, bool is_parallel, size_t n_threads);
+
+			/**
+			 * get performance test results
+			 */
 			TestResult get_result();
 
 			/**
 			 * generate access patterns to be used in performance tests
+			 *
+			 * this should be static -- but is included as an instance method to save the non-trivial task fo specifying all the different types again
 			 */
 			std::shared_ptr<std::vector<identifier>> generate_access_pattern(identifier n_lines, size_t length, uint8_t mode = 0);
 
