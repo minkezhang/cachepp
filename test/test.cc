@@ -37,10 +37,10 @@ TEST_CASE("cachepp|testsuite-testsuite-correctness") {
 	concurrent_cache_suite.correctness(v, 1000, false);
 	// concurrent_cache_suite.correctness(v, 1000000, true, 16);
 
-	std::shared_ptr<std::vector<cachepp::identifier>> pattern = concurrent_cache_suite.generate_access_pattern(10, 10);
-	REQUIRE(pattern->size() == 10);
+	std::shared_ptr<std::vector<cachepp::identifier>> pattern = concurrent_cache_suite.generate_access_pattern(256, 10000);
+	REQUIRE(pattern->size() == 10000);
 	for(size_t i = 0; i < pattern->size(); ++i) {
 		REQUIRE(pattern->at(i) >= 0);
-		REQUIRE(pattern->at(i) < 10);
+		REQUIRE(pattern->at(i) < 256);
 	}
 }
