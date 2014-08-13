@@ -62,8 +62,10 @@ TEST_CASE("cachepp|testsuite-testsuite-performance") {
 	std::shared_ptr<std::vector<size_t>> line_size (new std::vector<size_t>(v->size(), 256));
 	std::shared_ptr<std::vector<std::shared_ptr<cachepp::SimpleConcurrentCacheData>>> access_pattern_aux (new std::vector<std::shared_ptr<cachepp::SimpleConcurrentCacheData>>());
 
-	REQUIRE_THROWS_AS(concurrent_cache_suite.performance(v, line_size, access_pattern, access_pattern_aux, 1000, true, 0), exceptionpp::InvalidOperation);
-	REQUIRE_THROWS_AS(concurrent_cache_suite.performance(v, line_size, access_pattern, access_pattern_aux, 1000, false, 1), exceptionpp::InvalidOperation);
+	REQUIRE_THROWS_AS(concurrent_cache_suite.performance(v, line_size, access_pattern, access_pattern_aux, .5, 1000, true, 0), exceptionpp::InvalidOperation);
+	REQUIRE_THROWS_AS(concurrent_cache_suite.performance(v, line_size, access_pattern, access_pattern_aux, .5, 1000, false, 1), exceptionpp::InvalidOperation);
 
-	
+	concurrent_cache_suite.performance(v, line_size, access_pattern, access_pattern_aux, .5, 1, false, 0);
+	concurrent_cache_suite.performance(v, line_size, access_pattern, access_pattern_aux, .5, 1, false, 0);
+	std::cout << concurrent_cache_suite.get_result().to_string();
 }

@@ -17,10 +17,10 @@ size_t cachepp::TestResult::get_size() { return(this->size); }
 
 void cachepp::TestResult::push_back(size_t n_acquire, size_t cache_size, size_t total_data, double read_rate, double miss_rate, double line_size, double total_runtime, bool is_parallel, size_t n_threads) {
 	this->n_acquire.push_back(n_acquire);
-	this->total_data.push_back(total_data);
+	this->total_data.push_back(total_data / 8);
 	this->read_rate.push_back(read_rate);
 	this->miss_rate.push_back(miss_rate);
-	this->line_size.push_back(line_size);
+	this->line_size.push_back(line_size / 8);
 	this->cache_size.push_back(cache_size);
 	this->total_runtime.push_back(total_runtime);
 	this->is_parallel.push_back(is_parallel);

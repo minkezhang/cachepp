@@ -2,9 +2,12 @@
 #define _CACHEPP_TESTSUITE_TEMPLATE
 
 #include <atomic>
+#include <ctime>
 #include <memory>
 #include <random>
 #include <thread>
+
+#include <iostream>
 
 #include "src/testsuite.h"
 
@@ -75,11 +78,7 @@ template <typename X, typename D, typename T> std::shared_ptr<std::vector<cachep
 	return(v);
 }
 
-template <typename X, typename D, typename T> void cachepp::TestSuite<X, D, T>::performance( \
-	const std::shared_ptr<std::vector<std::shared_ptr<T>>>& lines, const std::shared_ptr<std::vector<size_t>>& line_size, \
-	std::shared_ptr<std::vector<identifier>>& access_pattern, std::shared_ptr<std::vector<std::shared_ptr<D>>>& access_pattern_aux, size_t n_attempts, bool is_parallel, \
-	size_t n_threads) {
-
+template <typename X, typename D, typename T> void cachepp::TestSuite<X, D, T>::performance(const std::shared_ptr<std::vector<std::shared_ptr<T>>>& lines, const std::shared_ptr<std::vector<size_t>>& line_size, std::shared_ptr<std::vector<identifier>>& access_pattern, std::shared_ptr<std::vector<std::shared_ptr<D>>>& access_pattern_aux, double read_rate, size_t n_attempts, bool is_parallel, size_t n_threads) {
 	if(is_parallel & !this->cache->get_is_thread_safe()) {
 		throw(exceptionpp::InvalidOperation("cachepp::TestSuite::performance", "attempting to run a cache test in parallel on a non-thread-safe cache"));
 	}
@@ -88,9 +87,77 @@ template <typename X, typename D, typename T> void cachepp::TestSuite<X, D, T>::
 		throw(exceptionpp::InvalidOperation("cachepp::TestSuite::performance", "is_parallel and n_thread provide conflicting data"));
 	}
 
+	if((access_pattern_aux->size() != 0) && (access_pattern_aux->size() != access_pattern->size())) {
+		throw(exceptionpp::InvalidOperation("cachepp::TestSuite::performance", "access_pattern_aux does not match access_pattern size"));
+	}
+
 	this->cache->reset();
+
+	size_t n_acquire;
+
+	std::shared_ptr<std::atomic<size_t>> data (new std::atomic<size_t>(0));
+	std::shared_ptr<std::atomic<double>> runtime (new std::atomic<double>(0));
+
+	if(!is_parallel) {
+		n_acquire = access_pattern->size() * n_attempts;
+		this->aux_performance(data, runtime, lines, line_size, access_pattern, access_pattern_aux, read_rate, n_attempts);
+	} else {
+		n_acquire = access_pattern->size() * n_attempts * n_threads;
+		std::vector<std::thread> threads;
+		for(size_t i = 0; i < n_threads; ++i) {
+			// threads.push_back(std::thread(&cachepp::TestSuite<X, D, T>::aux_performance, this, data, runtime, lines, line_size, access_pattern, access_pattern_aux, read_rate, n_attempts));
+			// threads.push_back(std::thread(&cachepp::TestSuite<X, D, T>::aux_, this, NULL));
+		}
+		for(size_t i = 0; i < n_threads; ++i) {
+			// threads.at(i).join();
+		}
+	}
+
+	double size = 0;
+	for(size_t i = 0; i < line_size->size(); ++i) {
+		size += line_size->at(i);
+	}
+	size /= line_size->size();
+
+	this->result.push_back(n_acquire, this->cache->get_size(), *data, read_rate, this->cache->get_miss_rate(), size, *runtime, is_parallel, n_threads);
 }
 
+template <typename X, typename D, typename T> void cachepp::TestSuite<X, D, T>::aux_(const std::shared_ptr<std::vector<std::shared_ptr<T>>>& a) {
+}
 
+template <typename X, typename D, typename T> void cachepp::TestSuite<X, D, T>::aux_performance( const std::shared_ptr<std::atomic<size_t>>& data, const std::shared_ptr<std::atomic<double>>& runtime, const std::shared_ptr<std::vector<std::shared_ptr<T>>>& lines, const std::shared_ptr<std::vector<size_t>>& line_size, std::shared_ptr<std::vector<identifier>>& access_pattern, std::shared_ptr<std::vector<std::shared_ptr<D>>>& access_pattern_aux, double read_rate, size_t n_attempts) {
+	size_t local_data = 0;
+	double local_runtime = 0;
+
+	for(size_t i = 0; i < n_attempts; ++i) {
+		for(cachepp::identifier j = 0; j < access_pattern->size(); ++j) {
+			cachepp::identifier index = access_pattern->at(j);
+			std::vector<uint8_t> buffer = std::vector<uint8_t>(line_size->at(index), 1);
+			D aux = (access_pattern_aux->size() == 0) ? D() : *access_pattern_aux->at(j);
+			if((rand() % 100) <= (read_rate * 100)) {
+				std::clock_t start = std::clock();
+				local_data += this->cache->r(lines->at(index), aux).size();
+				local_runtime += (std::clock() - start) / (double) (CLOCKS_PER_SEC / 1000);
+			} else {
+				local_data += buffer.size();
+				std::clock_t start = std::clock();
+				this->cache->w(lines->at(index), buffer, aux);
+				local_runtime += (std::clock() - start) / (double) (CLOCKS_PER_SEC / 1000);
+			}
+		}
+	}
+
+	*data += local_data;
+
+	/**
+	 * increment total runtime
+	 *	cf. http://bit.ly/1kCi2pA
+	 */
+	double expected = runtime->load();
+	double desired;
+	do {
+		desired = expected + local_runtime;
+	} while(!runtime->compare_exchange_weak(expected, desired));
+}
 
 #endif
