@@ -9,4 +9,13 @@ template <typename X, typename D, typename T> cachepp::TestSuite<X, D, T>::TestS
 
 template <typename X, typename D, typename T> cachepp::TestResult cachepp::TestSuite<X, D, T>::get_result() { return(this->result); }
 
+template <typename X, typename D, typename T> void cachepp::TestSuite<X, D, T>::correctness(std::vector<T> lines, size_t n_attempts, bool is_parallel, size_t n_threads) {
+	if(!(is_parallel & this->cache->get_is_thread_safe())) {
+		throw(exceptionpp::InvalidOperation("cachepp::TestSuite::correctness", "attempting to run a cache test in parallel on a non-thread-safe cache"));
+	}
+	if((!is_parallel && (n_threads != 0)) || (is_parallel && (n_threads == 0))) {
+		throw(exceptionpp::InvalidOperation("cachepp::TestResult::push_back", "is_parallel and n_thread provide conflicting data"));
+	}
+}
+
 #endif

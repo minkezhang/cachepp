@@ -14,9 +14,6 @@ bool is_dup(char l, char r) { return(((l == '\t') || (l == '\n')) && (l == r)); 
 cachepp::TestResult::TestResult() : size(0) {}
 
 void cachepp::TestResult::push_back(size_t n_acquire, size_t cache_size, size_t total_data, double read_rate, double miss_rate, double line_size, double total_runtime, bool is_parallel, size_t n_threads) {
-	if((!is_parallel && (n_threads != 0)) || (is_parallel && (n_threads == 0))) {
-		throw(exceptionpp::InvalidOperation("cachepp::TestResult::push_back", "is_parallel and n_thread provide conflicting data"));
-	}
 	this->n_acquire.push_back(n_acquire);
 	this->total_data.push_back(total_data);
 	this->read_rate.push_back(read_rate);

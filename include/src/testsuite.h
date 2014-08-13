@@ -53,7 +53,7 @@ namespace cachepp {
 			/**
 			 * run correctness tests on the cache
 			 */
-			// void correctness(std::vector<D> lines, size_t n_attempts, bool is_parallel, size_t n_threads);
+			void correctness(std::vector<T> lines, size_t n_attempts, bool is_parallel, size_t n_threads);
 			// void performance(std::vector<D> lines, std::vector<size_t> line_size, std::vector<identifier> access_pattern, std::vector<D> access_pattern_aux, size_t n_attempts, bool is_parallel, size_t n_threads);
 
 			TestResult get_result();
