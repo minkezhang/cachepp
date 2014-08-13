@@ -84,8 +84,6 @@ TEST_CASE("cachepp|serialcache") {
 
 	REQUIRE(v.at(0)->get_is_loaded() == true);
 	REQUIRE(v.at(3)->get_is_loaded() == true);
-
-	std::cout << "cachepp|serialcache: " << c->get_miss_rate() << std::endl;
 }
 
 TEST_CASE("cachepp|concurrentcache-singlethread") {
@@ -143,8 +141,6 @@ TEST_CASE("cachepp|concurrentcache-singlethread") {
 
 	REQUIRE(v.at(0)->get_is_loaded() == true);
 	REQUIRE(v.at(3)->get_is_loaded() == true);
-
-	std::cout << "cachepp|concurrentcache-singlethread: " << c->get_miss_rate() << std::endl;
 }
 
 TEST_CASE("cachepp|concurrentcache-multithread") {
@@ -183,6 +179,4 @@ TEST_CASE("cachepp|concurrentcache-multithread") {
 	std::cout << std::endl;
 
 	REQUIRE(*result == (n_attempts * n_threads));
-
-	std::cout << "cachepp|concurrentcache-multithread: " << c->get_miss_rate() << std::endl;
 }
