@@ -66,6 +66,6 @@ TEST_CASE("cachepp|testsuite-testsuite-performance") {
 	REQUIRE_THROWS_AS(concurrent_cache_suite.performance(v, line_size, access_pattern, access_pattern_aux, .5, 1000, false, 1), exceptionpp::InvalidOperation);
 
 	concurrent_cache_suite.performance(v, line_size, access_pattern, access_pattern_aux, .5, 1, false, 0);
-	concurrent_cache_suite.performance(v, line_size, access_pattern, access_pattern_aux, .5, 1, false, 0);
+	concurrent_cache_suite.performance(v, line_size, access_pattern, access_pattern_aux, .5, 4, false, 0);
 	std::cout << concurrent_cache_suite.get_result().to_string();
 }
