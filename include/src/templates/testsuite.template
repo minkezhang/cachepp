@@ -20,6 +20,8 @@ template <typename X, typename D, typename T> void cachepp::TestSuite<X, D, T>::
 		throw(exceptionpp::InvalidOperation("cachepp::TestResult::push_back", "is_parallel and n_thread provide conflicting data"));
 	}
 
+	this->cache->reset();
+
 	std::shared_ptr<std::atomic<size_t>> n_success (new std::atomic<size_t>(0));
 
 	if(!is_parallel) {
