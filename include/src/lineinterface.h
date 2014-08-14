@@ -41,7 +41,7 @@ namespace cachepp {
 
 			void set_is_loaded(bool is_loaded);
 			void set_is_dirty(bool is_dirty);
-			void set_checksum(T);
+			void set_checksum(T checksum);
 			T get_checksum();
 
 			/**
