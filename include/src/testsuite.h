@@ -55,7 +55,7 @@ namespace cachepp {
 	 *
 	 * typename X -- cache
 	 * typename D -- cache data
-	 * typename L -- cache line
+	 * typename T -- cache line
 	 */
 	template <typename X, typename D, typename T>
 	class TestSuite {
@@ -91,8 +91,6 @@ namespace cachepp {
 
 			void aux_correctness(const std::shared_ptr<std::atomic<size_t>>& n_success, const std::shared_ptr<std::vector<std::shared_ptr<T>>>& lines, size_t n_attempts);
 			void aux_performance(const std::shared_ptr<std::atomic<size_t>>& data, const std::shared_ptr<std::atomic<double>>& runtime, const std::shared_ptr<std::vector<std::shared_ptr<T>>>& lines, const std::shared_ptr<std::vector<size_t>>& line_size, const std::shared_ptr<std::vector<identifier>>& access_pattern, const std::shared_ptr<std::vector<std::shared_ptr<D>>>& access_pattern_aux, double read_rate, size_t n_attempts);
-
-			void aux_(const std::shared_ptr<std::vector<std::shared_ptr<T>>>& a);
 	};
 }
 

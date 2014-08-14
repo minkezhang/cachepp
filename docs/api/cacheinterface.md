@@ -9,7 +9,7 @@ automated testing suite. The cache interface implements several analytical funct
 
 ### Template Arguments
 
-The cache interface must be provided with several template arguments in order to be a fully user-callable:
+The cache interface must be provided with several template arguments in order to be fully user-callable:
 
 * `typename C`
 
@@ -82,7 +82,7 @@ The cache interface must be provided with several template arguments in order to
 
 * `reset()`
 
-	Resets `CacheInterface::n_acquire` and `CacheInterface::n_miss` to `0`.
+	Resets `CacheInterface::n_acquire` and `CacheInterface::n_miss` to `0` **and** calls `CacheInterface::clear`.
 
 * `get_miss_rate()`
 
