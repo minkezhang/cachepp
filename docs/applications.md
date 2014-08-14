@@ -11,7 +11,7 @@ Caching the Cloud
 `LineInterface`:
 
 ```cpp
-class NetworkLine {
+class NetworkLine : public LineInterface<int> {
 	private:
 		std::string endpoint;
 		std::string username;
