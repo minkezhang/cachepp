@@ -105,6 +105,7 @@ Further Reading
 ----
 
 * [cache interface](cacheinterface.md)
+* [exceptionpp](https://github.com/cripplet/exceptionpp)
 * [lineinterface.h](../../include/src/lineinterface.h)
 * [lineinterface.template](../../include/src/templates/lineinterface.template)
-* [exceptionpp]
+* [testsuite](testsuite.md)
