@@ -5,7 +5,7 @@ SUBDIRS=external/exceptionpp/
 
 INCLUDE=-Iinclude/
 INCLUDE_LIBS=-Iexternal/catch/include/ -Iexternal/exceptionpp/include/ -Iinclude/libs/stacktrace/
-SOURCES=src/*cc libs/*/*cc test/*cc
+SOURCES=src/*cc libs/*/*cc tests/*cc
 
 LIBS=-pthread
 
