@@ -6,14 +6,15 @@ can't think of a good pun
 Overview
 ----
 
-`cachepp` is a caching framework written in C++, designed for arbitrary eviction schemas and arbitrary data. The framework comes with several examples, a tutorial 
-(pending), interface documentation, and **automated correctness and performance testing**. The goal is to provide a framework which is both robust enough to be an 
-implementable production library for developers, and flexible enough to be an experimental testbed for researchers and students.
+`cachepp` is a caching framework written in C++, designed for arbitrary eviction schemas and storing arbitrary data. The framework comes with several examples, a 
+[tutorial](docs/tutorial/index.md) (pending), interface [documentation](docs/api/index.md) (pending), and **automated correctness and performance testing**. The goal is 
+to provide a framework which is both robust enough to be an implementable production library for developers, and flexible enough to be an experimental testbed for 
+researchers and students.
 
 Installation
 ----
 
-```
+```bash
 git clone https://github.com/cripplet/cachepp.git
 cd cachepp
 git submodule update --init --recursive
@@ -23,7 +24,7 @@ make test
 Updating
 ----
 
-```
+```bash
 git pull
 git submodule foreach --recursive git checkout master
 git submodule foreach --recursive git pull
