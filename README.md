@@ -38,19 +38,19 @@ Documentation is currently being added. The root directory for all documentation
 #### Quick Resources:
 
 * [index](docs/index.md)
-* how to begin (in progress)
+* [beginner's guide](docs/overview.md) (in progress)
 
 	What's the point of `cachepp`? Why would this be useful? A quick overview and links for further reading.
 
-* applications (in progress)
+* [applications](docs/applications.md) (in progress)
 
 	A few talked-through examples of how to use `cachepp` in the real world.
 
-* data structures (in progress)
+* [data structures](docs/api/index.md) (in progress)
 
 	A guide to the API.
 	
-* tutorial (in progress)
+* [tutorial](docs/tutorial/index.md) (in progress)
 
 	How to start a project -- from creating the appropriate directory hierarchy to developing a cache to testing for correctness and performance.
 
