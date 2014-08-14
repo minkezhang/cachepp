@@ -4,11 +4,9 @@ Beginner's Guide
 Motivation
 ----
 
-Add motivation here.
-
-* stemmed from [giga](https://github.com/cripplet/giga.git)
-* practice in good interface design
-* lack of C++ caching frameworks
+`cachepp` is an exercise in good interface design, and an attempt is made to unify the way in which different caches behave. Though numerous caching libraries exist, 
+there does not seem to be a similar demand for caching *frameworks* -- that is, something that will allow the developer to easily design their own cache. Moreover, these 
+caching libraries are almost always written in languages such as Java and Python, with little to no attention paid to the C++ community.
 
 Installation
 ----
