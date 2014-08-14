@@ -14,11 +14,11 @@ to the confused.
 
 		all documentation resides here
 
-		* api/
+		* [api/](../docs/api/)
 
 			guide to the `cachepp` interface
 
-		* tutorial/
+		* [tutorial/](../docs/tutorial/)
 
 	* [external/](../external/)
 
@@ -37,7 +37,7 @@ to the confused.
 
 			header files for the /src/ directory
 
-			* [templates/](../include/src/templates/
+			* [templates/](../include/src/templates/)
 
 				all `cachepp` template files here
 
