@@ -4,12 +4,9 @@ cachepp
 Overview
 ----
 
-This is a caching framework designed so that different caching algorithms can be easily added, and to be flexible enough that the cache itself can store arbitrary data 
-(by casting data into a byte vector).
-
-While the supplied `Cache` template is not inherently concurrent, a concurrent instantiation of the template is underway.
-
-Examples are included, but will be more well-documented in the future.
+`cachepp` is a caching framework written in C++, designed for arbitrary eviction schemas and arbitrary data. The framework comes with several examples, a tutorial 
+(pending), interface documentation, and **automated correctness and performance testing**. The goal is to provide a framework which is both robust enough to be an 
+implementable production library for developers, and flexible enough to be an experimental testbed for researchers and students.
 
 Installation
 ----
