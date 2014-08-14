@@ -32,7 +32,7 @@ git submodule foreach --recursive git pull
 Documentation
 ----
 
-Documentation is currently being added. The root directory for all documentation is at [docs](docs/). The documenation index is found at [docs/index.md](docs/index.md)
+Documentation is currently being added. The root directory for all documentation is at [docs](docs/). The documentation index is found at [docs/index.md](docs/index.md)
 
 #### Quick Resources:
 
