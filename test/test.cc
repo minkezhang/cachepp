@@ -18,7 +18,7 @@ TEST_CASE("cachepp|testsuite-testresult") {
 	REQUIRE(r.get_size() == 0);
 	REQUIRE_THROWS_AS(r.to_string(), exceptionpp::InvalidOperation);
 
-	r.push_back(1, 1, 1, 1, 1, 1, 1, 1, 2);
+	r.push_back(1, 1, 1, 1, 1, 1, 1, 1, 1, 2);
 	REQUIRE(r.get_size() == 1);
 }
 
@@ -49,7 +49,7 @@ TEST_CASE("cachepp|testsuite-testsuite-performance") {
 		v->push_back(std::shared_ptr<cachepp::SimpleLine> (new cachepp::SimpleLine(rand(), false)));
 	}
 
-	std::shared_ptr<cachepp::SimpleConcurrentCache<cachepp::SimpleLine>> concurrent_cache (new cachepp::SimpleConcurrentCache<cachepp::SimpleLine>(2));
+	std::shared_ptr<cachepp::SimpleConcurrentCache<cachepp::SimpleLine>> concurrent_cache (new cachepp::SimpleConcurrentCache<cachepp::SimpleLine>(256));
 	cachepp::TestSuite<cachepp::SimpleConcurrentCache<cachepp::SimpleLine>, cachepp::SimpleConcurrentCacheData, cachepp::SimpleLine> concurrent_cache_suite = cachepp::TestSuite<cachepp::SimpleConcurrentCache<cachepp::SimpleLine>, cachepp::SimpleConcurrentCacheData, cachepp::SimpleLine>(concurrent_cache);
 
 	std::shared_ptr<std::vector<cachepp::identifier>> access_pattern = concurrent_cache_suite.generate_access_pattern(v->size(), 10000);
@@ -65,7 +65,16 @@ TEST_CASE("cachepp|testsuite-testsuite-performance") {
 	REQUIRE_THROWS_AS(concurrent_cache_suite.performance(v, line_size, access_pattern, access_pattern_aux, .5, 1000, true, 0), exceptionpp::InvalidOperation);
 	REQUIRE_THROWS_AS(concurrent_cache_suite.performance(v, line_size, access_pattern, access_pattern_aux, .5, 1000, false, 1), exceptionpp::InvalidOperation);
 
-	concurrent_cache_suite.performance(v, line_size, access_pattern, access_pattern_aux, .5, 1, false, 0);
-	concurrent_cache_suite.performance(v, line_size, access_pattern, access_pattern_aux, .5, 4, false, 0);
+	concurrent_cache_suite.performance(v, line_size, access_pattern, access_pattern_aux, 0.0, 16, false, 0);
+	concurrent_cache_suite.performance(v, line_size, access_pattern, access_pattern_aux, 0.1, 16, false, 0);
+	concurrent_cache_suite.performance(v, line_size, access_pattern, access_pattern_aux, 0.2, 16, false, 0);
+	concurrent_cache_suite.performance(v, line_size, access_pattern, access_pattern_aux, 0.3, 16, false, 0);
+	concurrent_cache_suite.performance(v, line_size, access_pattern, access_pattern_aux, 0.4, 16, false, 0);
+	concurrent_cache_suite.performance(v, line_size, access_pattern, access_pattern_aux, 0.5, 16, false, 0);
+	concurrent_cache_suite.performance(v, line_size, access_pattern, access_pattern_aux, 0.6, 16, false, 0);
+	concurrent_cache_suite.performance(v, line_size, access_pattern, access_pattern_aux, 0.7, 16, false, 0);
+	concurrent_cache_suite.performance(v, line_size, access_pattern, access_pattern_aux, 0.8, 16, false, 0);
+	concurrent_cache_suite.performance(v, line_size, access_pattern, access_pattern_aux, 0.9, 16, false, 0);
+	concurrent_cache_suite.performance(v, line_size, access_pattern, access_pattern_aux, 1.0, 16, false, 0);
 	std::cout << concurrent_cache_suite.get_result().to_string();
 }

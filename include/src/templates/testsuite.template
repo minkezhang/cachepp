@@ -119,7 +119,7 @@ template <typename X, typename D, typename T> void cachepp::TestSuite<X, D, T>::
 	}
 	size /= line_size->size();
 
-	this->result.push_back(n_acquire, this->cache->get_size(), *data, read_rate, this->cache->get_miss_rate(), size, *runtime, is_parallel, n_threads);
+	this->result.push_back(n_acquire, lines->size(), this->cache->get_size(), *data, read_rate, this->cache->get_miss_rate(), size, *runtime, is_parallel, n_threads);
 }
 
 template <typename X, typename D, typename T> void cachepp::TestSuite<X, D, T>::aux_(const std::shared_ptr<std::vector<std::shared_ptr<T>>>& a) {
