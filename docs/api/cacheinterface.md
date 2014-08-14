@@ -122,7 +122,7 @@ The cache interface must be provided with several template arguments in order to
 Examples
 ----
 
-[simpleserialcache](../../include/src/simpleserialcache.h) and [simpleconcurrentcache](../../include/src/simpleconcurrentcache.h) implements `CacheInterface`.
+[simpleserialcache](../../include/src/simpleserialcache.h) and [simpleconcurrentcache](../../include/src/simpleconcurrentcache.h) implement `CacheInterface`.
 
 Further Reading
 ====
