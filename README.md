@@ -35,7 +35,7 @@ Documentation
 
 Documentation is currently being added. The root directory for all documentation is at [docs](docs/). The documentation index is found at [docs/index.md](docs/index.md)
 
-#### Quick Resources:
+### Quick Links
 
 * [index](docs/index.md)
 * [beginner's guide](docs/overview.md) (in progress)

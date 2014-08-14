@@ -36,6 +36,10 @@ git submodule foreach --recursive git pull
 Further Reading
 ----
 
+* [applications](applications.md)
+
+	A list of possible use-cases for this framework.
+
 * [api](api/index.md)
 
 	The API documentation index.
