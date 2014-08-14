@@ -49,7 +49,7 @@ TEST_CASE("cachepp|testsuite-testsuite-performance") {
 		v->push_back(std::shared_ptr<cachepp::SimpleLine> (new cachepp::SimpleLine(rand(), false)));
 	}
 
-	std::shared_ptr<cachepp::SimpleConcurrentCache<cachepp::SimpleLine>> concurrent_cache (new cachepp::SimpleConcurrentCache<cachepp::SimpleLine>(256));
+	std::shared_ptr<cachepp::SimpleConcurrentCache<cachepp::SimpleLine>> concurrent_cache (new cachepp::SimpleConcurrentCache<cachepp::SimpleLine>(16));
 	cachepp::TestSuite<cachepp::SimpleConcurrentCache<cachepp::SimpleLine>, cachepp::SimpleConcurrentCacheData, cachepp::SimpleLine> concurrent_cache_suite = cachepp::TestSuite<cachepp::SimpleConcurrentCache<cachepp::SimpleLine>, cachepp::SimpleConcurrentCacheData, cachepp::SimpleLine>(concurrent_cache);
 
 	std::shared_ptr<std::vector<cachepp::identifier>> access_pattern = concurrent_cache_suite.generate_access_pattern(v->size(), 10000);
