@@ -17,7 +17,7 @@ The cache interface must be provided with several template arguments in order to
 
 * `typename D`
 
-	Each cache may need auxiliary data in a call to accessing the cache, in order to impelement custom eviction algorithms. `D` is the type of the class which will 
+	Each cache may need auxiliary data in a call to accessing the cache, in order to implement custom eviction algorithms. `D` is the type of the class which will 
 	provide this feature.
 
 * `typename T`
@@ -130,4 +130,4 @@ Further Reading
 * [cacheinterface.h](../../include/src/cacheinterface.h)
 * [cacheinterface.template](../../include/src/templates/cacheinterface.template)
 * [line interface](lineinterface.md)
-* [testsuite](testsuite.md)
+* [test suite](testsuite.md)

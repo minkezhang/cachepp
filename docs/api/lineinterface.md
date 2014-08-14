@@ -108,4 +108,4 @@ Further Reading
 * [exceptionpp](https://github.com/cripplet/exceptionpp)
 * [lineinterface.h](../../include/src/lineinterface.h)
 * [lineinterface.template](../../include/src/templates/lineinterface.template)
-* [testsuite](testsuite.md)
+* [test suite](testsuite.md)
