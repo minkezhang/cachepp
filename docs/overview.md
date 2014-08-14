@@ -39,4 +39,4 @@ Further Reading
 * [applications](applications.md) -- a list of possible use-cases for this framework
 * [api](api/index.md) -- the API documentation index
 * [file structure](structure.md) -- a walkthrough of the folder hierarchy in this library
-* [future](future.md) -- a list of planned features
+* [planned features](future.md)
