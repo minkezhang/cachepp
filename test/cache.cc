@@ -4,8 +4,6 @@
 #include <thread>
 #include <vector>
 
-#include <iostream>
-
 #include "libs/catch/catch.hpp"
 #include "libs/exceptionpp/exception.h"
 
@@ -142,7 +140,7 @@ TEST_CASE("cachepp|concurrentcache-singlethread") {
 	REQUIRE(v.at(0)->get_is_loaded() == true);
 	REQUIRE(v.at(3)->get_is_loaded() == true);
 }
-/*
+
 TEST_CASE("cachepp|concurrentcache-multithread") {
 	size_t n_threads = 16;
 	size_t n_attempts = 1000;
@@ -158,8 +156,6 @@ TEST_CASE("cachepp|concurrentcache-multithread") {
 
 	std::shared_ptr<std::atomic<size_t>> result (new std::atomic<size_t>());
 
-	std::cout << "cachepp|concurrentcache-multithread: " << std::flush;
-
 	for(size_t attempt = 0; attempt < n_attempts; ++attempt) {
 		threads.clear();
 
@@ -170,14 +166,7 @@ TEST_CASE("cachepp|concurrentcache-multithread") {
 		for(size_t i = 0; i < n_threads; ++i) {
 			threads.at(i).join();
 		}
-
-		if((attempt % 100) == 0) {
-			std::cout << "." << std::flush;
-		}
 	}
-
-	std::cout << std::endl;
 
 	REQUIRE(*result == (n_attempts * n_threads));
 }
-*/

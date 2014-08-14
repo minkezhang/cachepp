@@ -15,8 +15,9 @@ cachepp::TestResult::TestResult() : size(0) {}
 
 size_t cachepp::TestResult::get_size() { return(this->size); }
 
-void cachepp::TestResult::push_back(size_t n_acquire, size_t pool_size, size_t cache_size, size_t total_data, double read_rate, double miss_rate, double line_size, double total_runtime, bool is_parallel, size_t n_threads) {
+void cachepp::TestResult::push_back(std::string tag, size_t n_acquire, size_t pool_size, size_t cache_size, size_t total_data, double read_rate, double miss_rate, double line_size, double total_runtime, bool is_parallel, size_t n_threads) {
 	// total_data and average line_size are in bits -- converting to bytes
+	this->tag.push_back(tag);
 	this->n_acquire.push_back(n_acquire);
 	this->total_data.push_back(total_data / 8);
 	this->read_rate.push_back(read_rate);
@@ -30,6 +31,7 @@ void cachepp::TestResult::push_back(size_t n_acquire, size_t pool_size, size_t c
 	this->size++;
 }
 
+std::string cachepp::TestResult::get_tag(size_t index) { return(this->tag.at(index)); }
 double cachepp::TestResult::get_read_rate(size_t index) { return(this->read_rate.at(index) * 100); }
 double cachepp::TestResult::get_miss_rate(size_t index) { return(this->miss_rate.at(index) * 100); }
 double cachepp::TestResult::get_throughput(size_t index) { return(this->total_data.at(index) / this->total_runtime.at(index)); }
@@ -49,11 +51,11 @@ std::string cachepp::TestResult::to_string(bool is_tsv) {
 	}
 
 	std::stringstream buffer;
-	buffer << std::setw(pad) << "trial" << sep << std::setw(pad) << "pool size" << sep << std::setw(pad) << "cache size" << sep << std::setw(pad) << "read (%)" << sep << std::setw(pad) << "miss (%)" << sep << std::setw(pad) << "tput (B/us)" << sep << std::setw(pad) << "lat (us)" << sep << std::setw(pad) << "line (B)" << sep << std::setw(pad) << "parallel" << sep << std::setw(pad) << "n_threads" << std::endl;
+	buffer << std::setw(pad) << "trial" << sep << std::setw(pad) << "tag" << sep << std::setw(pad) << "pool size" << sep << std::setw(pad) << "cache size" << sep << std::setw(pad) << "read (%)" << sep << std::setw(pad) << "miss (%)" << sep << std::setw(pad) << "tput (B/us)" << sep << std::setw(pad) << "lat (us)" << sep << std::setw(pad) << "line (B)" << sep << std::setw(pad) << "parallel" << sep << std::setw(pad) << "n_threads" << std::endl;
 	buffer << std::string(buffer.str().length(), '=') << std::endl;
 	for(size_t index = 0; index < this->get_size(); ++index) {
 
-		buffer << std::setw(pad) << index + 1 << sep << std::setw(pad) << this->get_pool_size(index) << sep << std::setw(pad) << this->get_cache_size(index) << sep << std::setw(pad) << this->get_read_rate(index) << sep << std::setw(pad) << this->get_miss_rate(index) << sep << std::setw(pad) << this->get_throughput(index) << sep << std::setw(pad) << this->get_latency(index) << sep << std::setw(pad) << this->get_line_size(index) << sep << std::setw(pad) << this->get_is_parallel(index) << sep << std::setw(pad);
+		buffer << std::setw(pad) << index + 1 << sep << std::setw(pad) << this->get_tag(index) << sep << std::setw(pad) << this->get_pool_size(index) << sep << std::setw(pad) << this->get_cache_size(index) << sep << std::setw(pad) << this->get_read_rate(index) << sep << std::setw(pad) << this->get_miss_rate(index) << sep << std::setw(pad) << this->get_throughput(index) << sep << std::setw(pad) << this->get_latency(index) << sep << std::setw(pad) << this->get_line_size(index) << sep << std::setw(pad) << this->get_is_parallel(index) << sep << std::setw(pad);
 
 		if(this->get_is_parallel(index)) {
 			buffer << this->get_n_threads(index);

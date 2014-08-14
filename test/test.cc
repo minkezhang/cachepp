@@ -18,8 +18,12 @@ TEST_CASE("cachepp|testsuite-testresult") {
 	REQUIRE(r.get_size() == 0);
 	REQUIRE_THROWS_AS(r.to_string(), exceptionpp::InvalidOperation);
 
-	r.push_back(1, 1, 1, 1, 1, 1, 1, 1, 1, 2);
-	REQUIRE(r.get_size() == 1);
+	r.push_back("ABC", 1, 1, 1, 1, 1, 1, 1, 1, 1, 2);
+	r.push_back("123", 1, 1, 1, 1, 1, 1, 1, 1, 1, 2);
+	REQUIRE(r.get_size() == 2);
+
+	// ensure that the earlier records are in front
+	REQUIRE(r.get_tag(0).compare("ABC") == 0);
 }
 
 TEST_CASE("cachepp|testsuite-testsuite-correctness") {
@@ -40,7 +44,7 @@ TEST_CASE("cachepp|testsuite-testsuite-correctness") {
 	cachepp::TestSuite<cachepp::SimpleConcurrentCache<cachepp::SimpleLine>, cachepp::SimpleConcurrentCacheData, cachepp::SimpleLine> concurrent_cache_suite = cachepp::TestSuite<cachepp::SimpleConcurrentCache<cachepp::SimpleLine>, cachepp::SimpleConcurrentCacheData, cachepp::SimpleLine>(concurrent_cache);
 
 	concurrent_cache_suite.correctness(v, 1000, false);
-	// concurrent_cache_suite.correctness(v, 1000000, true, 16);
+	concurrent_cache_suite.correctness(v, 1000000, true, 16);
 }
 
 TEST_CASE("cachepp|testsuite-testsuite-performance") {
@@ -62,19 +66,23 @@ TEST_CASE("cachepp|testsuite-testsuite-performance") {
 	std::shared_ptr<std::vector<size_t>> line_size (new std::vector<size_t>(v->size(), 256));
 	std::shared_ptr<std::vector<std::shared_ptr<cachepp::SimpleConcurrentCacheData>>> access_pattern_aux (new std::vector<std::shared_ptr<cachepp::SimpleConcurrentCacheData>>());
 
-	REQUIRE_THROWS_AS(concurrent_cache_suite.performance(v, line_size, access_pattern, access_pattern_aux, .5, 1000, true, 0), exceptionpp::InvalidOperation);
-	REQUIRE_THROWS_AS(concurrent_cache_suite.performance(v, line_size, access_pattern, access_pattern_aux, .5, 1000, false, 1), exceptionpp::InvalidOperation);
+	REQUIRE_THROWS_AS(concurrent_cache_suite.performance("", v, line_size, access_pattern, access_pattern_aux, .5, 1000, true, 0), exceptionpp::InvalidOperation);
+	REQUIRE_THROWS_AS(concurrent_cache_suite.performance("", v, line_size, access_pattern, access_pattern_aux, .5, 1000, false, 1), exceptionpp::InvalidOperation);
+	REQUIRE_THROWS_AS(concurrent_cache_suite.performance("ABCD", v, line_size, access_pattern, access_pattern_aux, .5, 1000, true, 1), exceptionpp::InvalidOperation);
 
-	concurrent_cache_suite.performance(v, line_size, access_pattern, access_pattern_aux, 0.0, 16, false, 0);
-	concurrent_cache_suite.performance(v, line_size, access_pattern, access_pattern_aux, 0.1, 16, false, 0);
-	concurrent_cache_suite.performance(v, line_size, access_pattern, access_pattern_aux, 0.2, 16, false, 0);
-	concurrent_cache_suite.performance(v, line_size, access_pattern, access_pattern_aux, 0.3, 16, false, 0);
-	concurrent_cache_suite.performance(v, line_size, access_pattern, access_pattern_aux, 0.4, 16, false, 0);
-	concurrent_cache_suite.performance(v, line_size, access_pattern, access_pattern_aux, 0.5, 16, false, 0);
-	concurrent_cache_suite.performance(v, line_size, access_pattern, access_pattern_aux, 0.6, 16, false, 0);
-	concurrent_cache_suite.performance(v, line_size, access_pattern, access_pattern_aux, 0.7, 16, false, 0);
-	concurrent_cache_suite.performance(v, line_size, access_pattern, access_pattern_aux, 0.8, 16, false, 0);
-	concurrent_cache_suite.performance(v, line_size, access_pattern, access_pattern_aux, 0.9, 16, false, 0);
-	concurrent_cache_suite.performance(v, line_size, access_pattern, access_pattern_aux, 1.0, 16, false, 0);
+	concurrent_cache_suite.performance("RND", v, line_size, access_pattern, access_pattern_aux, 0.0, 16, false, 0);
+	concurrent_cache_suite.performance("RND", v, line_size, access_pattern, access_pattern_aux, 0.1, 16, false, 0);
+	concurrent_cache_suite.performance("RND", v, line_size, access_pattern, access_pattern_aux, 0.2, 16, false, 0);
+	concurrent_cache_suite.performance("RND", v, line_size, access_pattern, access_pattern_aux, 0.3, 16, false, 0);
+	concurrent_cache_suite.performance("RND", v, line_size, access_pattern, access_pattern_aux, 0.4, 16, false, 0);
+	concurrent_cache_suite.performance("RND", v, line_size, access_pattern, access_pattern_aux, 0.5, 16, false, 0);
+	concurrent_cache_suite.performance("RND", v, line_size, access_pattern, access_pattern_aux, 0.6, 16, false, 0);
+	concurrent_cache_suite.performance("RND", v, line_size, access_pattern, access_pattern_aux, 0.7, 16, false, 0);
+	concurrent_cache_suite.performance("RND", v, line_size, access_pattern, access_pattern_aux, 0.8, 16, false, 0);
+	concurrent_cache_suite.performance("RND", v, line_size, access_pattern, access_pattern_aux, 0.9, 16, false, 0);
+	concurrent_cache_suite.performance("RND", v, line_size, access_pattern, access_pattern_aux, 1.0, 16, false, 0);
+
+	concurrent_cache_suite.performance("PAR", v, line_size, access_pattern, access_pattern_aux, 1.0, 16, true, 16);
+
 	std::cout << concurrent_cache_suite.get_result().to_string();
 }
