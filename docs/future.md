@@ -16,4 +16,8 @@ A list of features which will eventually make it into the framework.
 
 	A guided tutorial on implementing `CacheInterface` and `LineInterface` using this framework.
 
+* C / Python API bindings
+
+	**Maybe.**
+
 Feature requests should be directed to the project [issues](https://github.com/cripplet/cachepp/issues) page.
