@@ -9,7 +9,7 @@
 
 #include "src/testsuite.h"
 
-bool is_dup(char l, char r) { return(((l == '\t') || (l == '\n')) && (l == r)); }
+bool is_dup(char l, char r) { return(((l == ' ') || (l == '\n')) && (l == r)); }
 
 cachepp::TestResult::TestResult() : size(0) {}
 
@@ -51,11 +51,11 @@ std::string cachepp::TestResult::to_string(bool is_tsv) {
 	}
 
 	std::stringstream buffer;
-	buffer << std::setw(pad) << "trial" << sep << std::setw(pad) << "tag" << sep << std::setw(pad) << "pool size" << sep << std::setw(pad) << "cache size" << sep << std::setw(pad) << "read (%)" << sep << std::setw(pad) << "miss (%)" << sep << std::setw(pad) << "tput (B/us)" << sep << std::setw(pad) << "lat (us)" << sep << std::setw(pad) << "line (B)" << sep << std::setw(pad) << "parallel" << sep << std::setw(pad) << "n_threads" << std::endl;
+	buffer << std::setw(pad) << "trial" << sep << std::setw(3) << "tag" << sep << std::setw(pad) << "pool size" << sep << std::setw(pad) << "cache size" << sep << std::setw(pad) << "read (%)" << sep << std::setw(pad) << "miss (%)" << sep << std::setw(pad) << "tput (B/us)" << sep << std::setw(pad) << "lat (us)" << sep << std::setw(pad) << "line (B)" << sep << std::setw(pad) << "parallel" << sep << std::setw(pad) << "n_threads" << std::endl;
 	buffer << std::string(buffer.str().length(), '=') << std::endl;
 	for(size_t index = 0; index < this->get_size(); ++index) {
 
-		buffer << std::setw(pad) << index + 1 << sep << std::setw(pad) << this->get_tag(index) << sep << std::setw(pad) << this->get_pool_size(index) << sep << std::setw(pad) << this->get_cache_size(index) << sep << std::setw(pad) << this->get_read_rate(index) << sep << std::setw(pad) << this->get_miss_rate(index) << sep << std::setw(pad) << this->get_throughput(index) << sep << std::setw(pad) << this->get_latency(index) << sep << std::setw(pad) << this->get_line_size(index) << sep << std::setw(pad) << this->get_is_parallel(index) << sep << std::setw(pad);
+		buffer << std::setw(pad) << index + 1 << sep << std::setw(3) << this->get_tag(index) << sep << std::setw(pad) << this->get_pool_size(index) << sep << std::setw(pad) << this->get_cache_size(index) << sep << std::setw(pad) << this->get_read_rate(index) << sep << std::setw(pad) << this->get_miss_rate(index) << sep << std::setw(pad) << this->get_throughput(index) << sep << std::setw(pad) << this->get_latency(index) << sep << std::setw(pad) << this->get_line_size(index) << sep << std::setw(pad) << this->get_is_parallel(index) << sep << std::setw(pad);
 
 		if(this->get_is_parallel(index)) {
 			buffer << this->get_n_threads(index);
@@ -69,7 +69,6 @@ std::string cachepp::TestResult::to_string(bool is_tsv) {
 	// format to tabs
 	if(is_tsv) {
 		std::replace(ret.begin(), ret.end(), '|', '\t');
-		std::replace(ret.begin(), ret.end(), ' ', '\t');
 		// cf. http://bit.ly/1p6ATc7
 		ret.erase(std::remove(ret.begin(), ret.end(), '='), ret.end());
 
@@ -83,6 +82,11 @@ std::string cachepp::TestResult::to_string(bool is_tsv) {
 		size_t pos = 0;
 		while((pos = ret.find(s.str())) != std::string::npos) {
 			ret.erase(pos + 1, 1);
+		}
+		pos = 0;
+		while((pos = ret.find(" \t ")) != std::string::npos) {
+			ret.erase(pos + 2, 1);
+			ret.erase(pos, 1);
 		}
 
 		ret = ret.substr(1);

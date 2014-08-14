@@ -84,5 +84,5 @@ TEST_CASE("cachepp|testsuite-testsuite-performance") {
 
 	concurrent_cache_suite.performance("PAR", v, line_size, access_pattern, access_pattern_aux, 1.0, 16, true, 16);
 
-	std::cout << concurrent_cache_suite.get_result().to_string();
+	std::cout << concurrent_cache_suite.get_result().to_string(false);
 }
