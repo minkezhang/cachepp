@@ -40,3 +40,4 @@ Further Reading
 * [api](api/index.md) -- the API documentation index
 * [file structure](structure.md) -- a walkthrough of the folder hierarchy in this library
 * [planned features](future.md)
+* [tutorial](tutorial/index.md)

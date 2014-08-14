@@ -38,8 +38,8 @@ Documentation is currently being added. The root directory for all documentation
 ### Quick Links
 
 * [index](docs/index.md)
-* [beginner's guide](docs/overview.md) (in progress) -- start here
-* [applications](docs/applications.md) (in progress) -- a few talked-through examples of how to use `cachepp` in the real world
+* [beginner's guide](docs/overview.md) -- start here
+* [applications](docs/applications.md) -- a few talked-through examples of how to use `cachepp` in the real world
 * [api](docs/api/index.md) -- a guide to the API
 * [tutorial](docs/tutorial/index.md) (in progress) -- how to start a project, from creating the appropriate directory hierarchy to developing a cache to testing for
 	correctness and performance
@@ -49,3 +49,4 @@ Contact
 
 * [github](https://github.com/cripplet/cachepp.git)
 * [gmail](mailto:minke.zhang@gmail.com)
+* issues and feature requests should be directed to the project [issues](https://github.com/cripplet/cachepp/issues) page
