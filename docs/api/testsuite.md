@@ -52,15 +52,15 @@ following arguments:
 
 	Takes in:
 
-		* `tag` -- three character string describing the test
-		* `lines` -- an array of lines of type `T`
-		* `line_size` -- the size of each line in `lines` (that is, write to each line the appropriate number of bytes)
-		* `access_patten` -- a pointer to a vector of indicies of `lines` -- this represents the order by which the performance test will access `lines`
-		* `access_pattern_aux` -- a pointer to a vector of `D` instances -- for each element in `access_pattern`, the associated auxiliary data to be put into 
-			`CacheInterface::acquire`. If the length of `access_pattern_aux` is `0`, then the default constructor `D()` will be called for each call to 
-			`CacheInterface::acquire` instead.
-		* `read_rate` -- a decimal value (i.e. between `0` and `1`) of how many reads to expect in the performance test
-		* `n_attempts` -- number of times to iterate through `access_pattern` **per thread**
+	* `tag` -- three character string describing the test
+	* `lines` -- an array of lines of type `T`
+	* `line_size` -- the size of each line in `lines` (that is, write to each line the appropriate number of bytes)
+	* `access_patten` -- a pointer to a vector of indicies of `lines` -- this represents the order by which the performance test will access `lines`
+	* `access_pattern_aux` -- a pointer to a vector of `D` instances -- for each element in `access_pattern`, the associated auxiliary data to be put into 
+		`CacheInterface::acquire`. If the length of `access_pattern_aux` is `0`, then the default constructor `D()` will be called for each call to 
+		`CacheInterface::acquire` instead.
+	* `read_rate` -- a decimal value (i.e. between `0` and `1`) of how many reads to expect in the performance test
+	* `n_attempts` -- number of times to iterate through `access_pattern` **per thread**
 
 	`CacheInterface::performance` will raise `exceptionpp::InvalidOperation` on incorrect argument format. Calls `CacheInterface::reset`. Adds a record to 
 	`CacheInterface::result` upon completion of test.
