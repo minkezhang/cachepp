@@ -105,11 +105,10 @@ template <typename X, typename D, typename T> void cachepp::TestSuite<X, D, T>::
 		n_acquire = access_pattern->size() * n_attempts * n_threads;
 		std::vector<std::thread> threads;
 		for(size_t i = 0; i < n_threads; ++i) {
-			// threads.push_back(std::thread(&cachepp::TestSuite<X, D, T>::aux_performance, this, data, runtime, lines, line_size, access_pattern, access_pattern_aux, read_rate, n_attempts));
-			// threads.push_back(std::thread(&cachepp::TestSuite<X, D, T>::aux_, this, NULL));
+			threads.push_back(std::thread(&cachepp::TestSuite<X, D, T>::aux_performance, this, data, runtime, lines, line_size, access_pattern, access_pattern_aux, read_rate, n_attempts));
 		}
 		for(size_t i = 0; i < n_threads; ++i) {
-			// threads.at(i).join();
+			threads.at(i).join();
 		}
 	}
 
@@ -122,10 +121,7 @@ template <typename X, typename D, typename T> void cachepp::TestSuite<X, D, T>::
 	this->result.push_back(n_acquire, lines->size(), this->cache->get_size(), *data, read_rate, this->cache->get_miss_rate(), size, *runtime, is_parallel, n_threads);
 }
 
-template <typename X, typename D, typename T> void cachepp::TestSuite<X, D, T>::aux_(const std::shared_ptr<std::vector<std::shared_ptr<T>>>& a) {
-}
-
-template <typename X, typename D, typename T> void cachepp::TestSuite<X, D, T>::aux_performance( const std::shared_ptr<std::atomic<size_t>>& data, const std::shared_ptr<std::atomic<double>>& runtime, const std::shared_ptr<std::vector<std::shared_ptr<T>>>& lines, const std::shared_ptr<std::vector<size_t>>& line_size, std::shared_ptr<std::vector<identifier>>& access_pattern, std::shared_ptr<std::vector<std::shared_ptr<D>>>& access_pattern_aux, double read_rate, size_t n_attempts) {
+template <typename X, typename D, typename T> void cachepp::TestSuite<X, D, T>::aux_performance(const std::shared_ptr<std::atomic<size_t>>& data, const std::shared_ptr<std::atomic<double>>& runtime, const std::shared_ptr<std::vector<std::shared_ptr<T>>>& lines, const std::shared_ptr<std::vector<size_t>>& line_size, const std::shared_ptr<std::vector<identifier>>& access_pattern, const std::shared_ptr<std::vector<std::shared_ptr<D>>>& access_pattern_aux, double read_rate, size_t n_attempts) {
 	size_t local_data = 0;
 	double local_runtime = 0;
 
