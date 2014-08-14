@@ -36,10 +36,14 @@ git submodule foreach --recursive git pull
 Further Reading
 ----
 
+* [api](api/index.md)
+
+	The API documentation index.
+
 * [file structure](structure.md)
 
 	A walkthrough of the folder hierarchy in this library.
 
-* [api](api/index.md)
+* [future](future.md)
 
-	The API documentation index.
+	A list of planned features.
