@@ -33,11 +33,26 @@ git submodule foreach --recursive git pull
 Documentation
 ----
 
-Documentation is currently being added. The root directory for docs is at [docs](docs/).
+Documentation is currently being added. The root directory for all documentation is at [docs](docs/). The documenation index is found at [docs/index.md](docs/index.md)
 
-* [table of contents](docs/index.md)
-* [data structures] (in progress)
-* [tutorial] (in progress)
+#### Quick Resources:
+
+* [index](docs/index.md)
+* how to begin (in progress)
+
+	What's the point of `cachepp`? Why would this be useful? A quick overview and links for further reading.
+
+* applications (in progress)
+
+	A few talked-through examples of how to use `cachepp` in the real world.
+
+* data structures (in progress)
+
+	A guide to the API.
+	
+* tutorial (in progress)
+
+	How to start a project -- from creating the appropriate directory hierarchy to developing a cache to testing for correctness and performance.
 
 Contact
 ----
