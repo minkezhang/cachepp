@@ -137,5 +137,5 @@ Further Reading
 * [exceptionpp](https://github.com/cripplet/exceptionpp)
 * [line interface](lineinterface.md)
 * [testsuite.cc](../../src/testsuite.cc)
-* [testsuite.h](../../include/testsuite.h)
-* [testsuite.template](../../include/templates/testsuite.template)
+* [testsuite.h](../../include/src/testsuite.h)
+* [testsuite.template](../../include/src/templates/testsuite.template)
