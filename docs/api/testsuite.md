@@ -77,7 +77,9 @@ following arguments:
 TestResult
 ----
 
-The `TestResult` class keeps a record of all performance evaluations done by `TestSuite`.
+The `TestResult` class keeps a record of all performance evaluations done by `TestSuite` -- these are reported `TestResult::to_string` with column names which closely 
+reflect the properties below. Each property below is stored in `TestResult` as a data array, with `0` being the index of the first record stored -- that is, `tag.at(0)`
+is the tag of an experiment that was run with `read_rate.at(0)`.
 
 ### Properties
 
@@ -95,6 +97,8 @@ The `TestResult` class keeps a record of all performance evaluations done by `Te
 
 * `read_rate`
 
+	The read rate of the experiment (versus write rate).
+
 * `miss_rate`
 
 	As reported by `CacheInterface::get_miss_rate`.
@@ -109,7 +113,7 @@ The `TestResult` class keeps a record of all performance evaluations done by `Te
 
 * `pool_size`
 
-	The **number** of lines (i.e. `lines.size()`) passed into `TestSuite::performance`.
+	The **number** of lines (i.e. `lines.size`) passed into `TestSuite::performance`.
 
 * `total_runtime`
 

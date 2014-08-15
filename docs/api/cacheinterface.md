@@ -36,11 +36,11 @@ The cache interface must be provided with several template arguments in order to
 	It will be desirable for the user to explicitly state the thread-safeness of a particular cache instantiation -- this field is checked in the `TestSuite` (see 
 	[api](testinterface.md)) to check if parallel testing is appropriate or not.
 
-* `std::atomic<identifier> n_acquire`
+* `std::atomic<cachepp::identifier> n_acquire`
 
 	This is incremented every time the cache is called. This field is initialized to `0` in the constructor.
 
-* `std::atomic<identifier> n_miss`
+* `std::atomic<cachepp::identifier> n_miss`
 
 	This is incremented every time a cache miss occurs. This field is initialized to `0` in the constructor.
 
