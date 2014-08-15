@@ -17,3 +17,4 @@ to the confused.
 	* [libs/](../libs/) -- all source files from the external files are linked here
 	* [src/](../src/) -- all source files for `cachepp`
 	* [tests/](../tests/) -- all unit testing files for `cachepp`
+	* [tutorial/](../tutorial/) -- the live tutorial work directory

@@ -42,7 +42,7 @@ class RandomEvictCache : cachepp::CacheInterface<...> { ... };
 class TabData : cachepp::LineInterface<...> { ... };
 ```
 
-After uisng this cache in development for several days, the programmer decides to run the test suite on this cache to test performance:
+After using this cache in development for several days, the programmer decides to run the test suite on this cache to test performance:
 
 ```cpp
 auto test = cachepp::TestSuite(RandomEvictCache<TabData>(...));
