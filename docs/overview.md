@@ -89,7 +89,7 @@ For a more in-depth look at building from the framework, see the [tutorial](tuto
 Installation
 ----
 
-Get a copy of the `cachepp` framework library, including all dependencies.
+Get a copy of the `cachepp` framework, including all dependencies.
 
 ```bash
 git clone https://github.com/cripplet/cachepp.git
@@ -114,6 +114,6 @@ Further Reading
 
 * [applications](applications.md) -- a list of possible use-cases for this framework
 * [api](api/index.md) -- the API documentation index
-* [file structure](structure.md) -- a walkthrough of the folder hierarchy in this library
+* [file structure](structure.md) -- a walkthrough of the folder hierarchy in this project
 * [planned features](future.md)
 * [tutorial](tutorial/index.md)
