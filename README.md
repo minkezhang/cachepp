@@ -7,7 +7,7 @@ Overview
 ----
 
 `cachepp` is a caching **framework** written in C++, designed for easy creation of caches with arbitrary eviction schemas and storing arbitrary data. The framework comes 
-with several examples, a [tutorial](docs/tutorial/index.md) (pending), interface [api documentation](docs/api/index.md), and **automated correctness and performance 
+with several examples, a [tutorial](docs/tutorial/intro.md), interface [api documentation](docs/api/index.md), and **automated correctness and performance 
 testing**. The goal is to provide a framework which is both robust enough to be used in a production library for developers, and flexible enough to be an experimental 
 testbed for researchers and students.
 
@@ -41,7 +41,7 @@ Documentation is currently being added. The root directory for all documentation
 * [beginner's guide](docs/overview.md) -- start here
 * [applications](docs/applications.md) -- a few talked-through examples of how to use `cachepp` in the real world
 * [api](docs/api/index.md) -- a guide to the API
-* [tutorial](docs/tutorial/index.md) (in progress) -- how to start a project, from creating the appropriate directory hierarchy to developing a cache to testing for
+* [tutorial](docs/tutorial/intro.md) -- how to start a project, from creating the appropriate directory hierarchy to developing a cache to testing for
 	correctness and performance
 
 Contact

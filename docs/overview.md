@@ -84,7 +84,7 @@ auto c = RandomEvictCache<FileIOData>(...);
 
 The friend **did not need to adjust the cache to handle separate data** -- this was all done for him inside the C++ template system.
 
-For a more in-depth look at building from the framework, see the [tutorial](tutorial/index.md).
+For a more in-depth look at building from the framework, see the [tutorial](tutorial/intro.md).
 
 Installation
 ----
@@ -116,4 +116,4 @@ Further Reading
 * [api](api/index.md) -- the API documentation index
 * [file structure](structure.md) -- a walkthrough of the folder hierarchy in this project
 * [planned features](future.md)
-* [tutorial](tutorial/index.md)
+* [tutorial](tutorial/intro.md)
