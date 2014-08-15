@@ -67,7 +67,7 @@ FileData::FileData(id, filename) : filename(filename), cachepp::LineInterface<ch
 
 For loading and unloading the file, we simply need to read and write to the filename:
 
-```
+```cpp
 FileData::aux_load() {
 	std::string line;
 	ifstream fp (this->filename.c_str());
