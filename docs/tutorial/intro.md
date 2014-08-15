@@ -4,9 +4,10 @@ Tutorial Introduction
 In order to showcase the features of this framework, we will go through a (rather contrived) example of implementing both `CacheInterface` (the cache) and 
 `LineInterface` (the data). Let us examine a use-case which will motivate us to write a cache in the first place:
 
-One day at CashCo., a programmer received a complaint that an important computing subcomponent in the *Department of Efficiency and Such* was very slow. After some 
-research, he realized that this component was processing a large number of files, all of which it kept in memory while processing. He decides that in order to deal with 
-this problem, he will use a cache to load different files to and from memory. He decides that an LRU cache eviction scheme would be the best way to accomplish this.
+> One day at CashCo., a programmer received a complaint that an important computing subcomponent in the *Department of Efficiency and Such* was very slow. After some 
+> research, he realized that this component was processing a large number of files, all of which it kept in memory while processing. He decides that in order to deal 
+> with this problem, he will use a cache to load different files to and from memory. He decides that an LRU cache eviction scheme would be the best way to accomplish 
+> this.
 
 Table of Contents
 ----
@@ -23,7 +24,7 @@ Take a look at the [tutorial directory](../../tutorial/), which has been populat
 this folder as a working directory. The included `Makefile` will compile as-is, and will produce an executable called `tutorial.app`. All header files in this tutorial 
 should go into the [tutorial/include/src](../../tutorial/include/src/) directory, and all source files into the [tutorial/src/](../../tutorial/src/) directory.
 
-If you are creating a project from scratch, simply copy the base tutorial directory, `cd` into it and *replace the `external/cachepp` link with a `git clone` of the 
+If you are creating a project from scratch, simply copy the base tutorial directory, `cd` into it and *replace the* `external/cachepp` *link with a* `git clone` *of the 
 repository*:
 
 ```bash
