@@ -101,24 +101,22 @@ cache, we will model "least recent" as the head of the queue:
 template <typename T> ... LRUCache<T>::select() { return(this->cache.at(0)); }
 
 template <typename T> void LRUCache<T>::remove(arg) {
-    for(size_t i = 0; i < this->cache.size(); ++i) {
-        if(this->cache.at(i) == arg) {
-            this->cache.at(i)->unload();
-            this->cache.erase(this->cache.begin() + i);
-            return;
-        }
-    }
+	for(size_t i = 0; i < this->cache.size(); ++i) {
+		if(this->cache.at(i) == arg) {
+			this->cache.at(i)->unload();
+			this->cache.erase(this->cache.begin() + i);
+			return;
+		}
+	}
 }
 
 template <typename T> void LRUCache<T>::clear() {
-    while(this->cache.size() != 0) {
-        this->remove(this->cache.at(0));
-    }
+	while(this->cache.size() != 0) {
+		this->remove(this->cache.at(0));
+	}
 }
 
-template <typename T> ... LRUCache<T>::in(arg) {
-    return(arg->get_is_loaded());
-}
+template <typename T> ... LRUCache<T>::in(arg) { return(arg->get_is_loaded()); }
 ```
 
 We see that `LRUCache::remove`, `LRUCache::in`, and `LRUCache::clear` are straightforward queue iterating operators (this toy implementation uses a vector, but the idea 
@@ -128,13 +126,13 @@ Next, let us consider access -- since this is an LRU cache, we will simply need 
 
 ```cpp
 template <typename T> void LRUCache<T>::access(arg, aux) {
-    for(size_t i = 0; i < this->cache.size(); ++i) {
-        if(this->cache.at(i) == arg) {
-            this->cache.erase(this->cache.begin() + i);
-            break;
-        }
-    }
-    this->cache.push_back(arg);
+	for(size_t i = 0; i < this->cache.size(); ++i) {
+		if(this->cache.at(i) == arg) {
+			this->cache.erase(this->cache.begin() + i);
+			break;
+		}
+	}
+	this->cache.push_back(arg);
 }
 ```
 
@@ -142,19 +140,19 @@ Finally, with all these tools, we can write `LRUCache::allocate` and `LRUCache::
 
 ```cpp
 template <typename T> void LRUCache<T>::allocate(arg) {
-    if(this->cache.size() > this->get_size()) {
-        this->remove(this->select());
-    }
-    arg->load();
-    this->cache.push_back(arg);
+	if(this->cache.size() > this->get_size()) {
+		this->remove(this->select());
+	}
+	arg->load();
+	this->cache.push_back(arg);
 }
 
 template <typename T> void LRUCache<T>::acquire(arg, aux) {
-    this->n_acquire++;
-    if(!this->in(arg)) {
-        this->n_miss++;
-        this->allocate(arg);
-    }
+	this->n_acquire++;
+	if(!this->in(arg)) {
+		this->n_miss++;
+		this->allocate(arg);
+	}
 }
 ```
 
