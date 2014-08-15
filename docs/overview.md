@@ -20,7 +20,7 @@ Interface Basics
 
 In return for this additional level of indirection, programmers who *do* use the framework provided will be able to **easily share their cache designs** with 
 everyone else who also use the same framework. This is important, as `cachepp` makes a clear distinction between the *cache* and the *data* -- that is, the cache is 
-*data-agnostic*. Therefore, any caches designed using this framework **will be able to be drop-deployable* to any other application also using `cachepp`**
+*data-agnostic*. Therefore, any caches designed using this framework **will be able to be drop-deployable** to any other application also using `cachepp`.
 
 One such "application" which takes advantage of this standardized interface is the testing suite provided within the framework -- because each cache a programmer writes 
 within `cachepp` has expected functionality, then once an application is built around the *interface*, that application automatically supports *all* cache designs.
@@ -84,7 +84,7 @@ auto c = RandomEvictCache<FileIOData>(...);
 
 The friend **did not need to adjust the cache to handle separate data** -- this was all done for him inside the C++ template system.
 
-For a more in-depth look at building from the framework, see the [tutorial](docs/tutorial/index.md).
+For a more in-depth look at building from the framework, see the [tutorial](tutorial/index.md).
 
 Installation
 ----
