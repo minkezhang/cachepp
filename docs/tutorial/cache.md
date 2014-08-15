@@ -148,20 +148,6 @@ template <typename T> void LRUCache<T>::acquire(arg, aux) {
 }
 ```
 
-Finally, all that's left is to implement is `LRUCache:r` and `LRUCache:w`:
-
-```cpp
-template <typename T> ... LRUCache<T>::r(arg, aux) {
-	this->acquire(arg, aux);
-	return(arg->get_data());
-}
-
-template <typename T> void LRUCache<T>::w(arg, val, aux) {
-	this->acquire(arg, aux);
-	arg->set_data(val);
-}
-```
-
 And we're done!
 
 Further Reading

@@ -7,6 +7,8 @@
 #include <random>
 #include <thread>
 
+#include "libs/exceptionpp/exception.h"
+
 #include "src/testsuite.h"
 
 template <typename X, typename D, typename T> cachepp::TestSuite<X, D, T>::TestSuite(const std::shared_ptr<X>& cache) : cache(cache), result(cachepp::TestResult()) {}
@@ -58,7 +60,10 @@ template <typename X, typename D, typename T> void cachepp::TestSuite<X, D, T>::
 		cachepp::identifier index = rand() % lines->size();
 		this->cache->acquire(lines->at(index), D());
 		local_n_success += lines->at(index)->get_is_loaded();
-		this->cache->release(lines->at(index));
+		try {
+			this->cache->release(lines->at(index));
+		} catch(const exceptionpp::NotImplemented& e) {
+		}
 	}
 	*n_success += (local_n_success == n_attempts);
 }

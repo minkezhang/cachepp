@@ -18,7 +18,9 @@ template <typename D, typename T> void cachepp::SerialCache<D, T>::acquire(const
 	this->access(arg, aux);
 }
 
-template <typename D, typename T> void cachepp::SerialCache<D, T>::release(const std::shared_ptr<T>& arg) {}
+template <typename D, typename T> void cachepp::SerialCache<D, T>::release(const std::shared_ptr<T>& arg) {
+	throw(exceptionpp::NotImplemented("cachepp::SerialCache::release"));
+}
 
 template <typename D, typename T> void cachepp::SerialCache<D, T>::clear() {
 	for(typename std::map<cachepp::identifier, std::shared_ptr<T>>::iterator it = this->cache.begin(); it != this->cache.end();) {
