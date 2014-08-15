@@ -4,4 +4,4 @@ Testing the Cache
 Further Reading
 ----
 
-* Prev -- [Implementing the Data Interface](data.md)
+* Prev -- [Implementing the Line Interface](line.md)

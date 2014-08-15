@@ -14,7 +14,7 @@ Table of Contents
 
 * [Setting Up](intro.md)
 * [Implementing the Cache Interface](cache.md)
-* [Implementing the Data Interface](data.md)
+* [Implementing the Line Interface](line.md)
 * [Testing the Cache](testing.md)
 
 Setting Up

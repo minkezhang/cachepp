@@ -128,7 +128,7 @@ template <typename T> void LRUCache<T>::access(arg, aux) {
 }
 ```
 
-With all these tools, we can write `LRUCache::allocate` and `LRUCache::acquire`:
+Finally, with all these tools, we can write `LRUCache::allocate` and `LRUCache::acquire`:
 
 ```cpp
 template <typename T> void LRUCache<T>::allocate(arg, aux) {
@@ -154,4 +154,4 @@ Further Reading
 ----
 
 * Prev -- [Setting Up](intro.md)
-* Next -- [Implementing the Data Interface](data.md)
+* Next -- [Implementing the Line Interface](line.md)
