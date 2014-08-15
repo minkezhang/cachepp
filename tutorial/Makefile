@@ -10,7 +10,7 @@ EXECUTABLE=tutorial.app
 
 .PHONY: all clean
 
-all: $(EXECUTABLE) $(SOURCES)
+all: clean $(EXECUTABLE) $(SOURCES)
 
 $(EXECUTABLE): $(OBJECTS)
 	$(CC) $(CFLAGS) $(INCLUDE) $(INCLUDE_LIBS) $(OBJECTS) -o $@ $(LIBS)

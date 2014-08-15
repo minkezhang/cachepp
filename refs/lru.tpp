@@ -17,49 +17,47 @@ template <typename T> void LRUCache<T>::release(const std::shared_ptr<T>& arg) {
 template <typename T> std::shared_ptr<T> LRUCache<T>::select() { return(this->cache.at(0)); }
 
 template <typename T> void LRUCache<T>::remove(const std::shared_ptr<T>& arg) {
-    for(size_t i = 0; i < this->cache.size(); ++i) {
-        if(this->cache.at(i) == arg) {
-            this->cache.at(i)->unload();
-            this->cache.erase(this->cache.begin() + i);
-            return;
-        }
-    }
+	for(size_t i = 0; i < this->cache.size(); ++i) {
+		if(this->cache.at(i) == arg) {
+			this->cache.at(i)->unload();
+			this->cache.erase(this->cache.begin() + i);
+			return;
+		}
+	}
 }
 
 template <typename T> void LRUCache<T>::clear() {
-    while(this->cache.size() != 0) {
-        this->remove(this->cache.at(0));
-    }
+	while(this->cache.size() != 0) {
+		this->remove(this->cache.at(0));
+	}
 }
 
-template <typename T> bool LRUCache<T>::in(const std::shared_ptr<T>& arg) {
-    return(arg->get_is_loaded());
-}
+template <typename T> bool LRUCache<T>::in(const std::shared_ptr<T>& arg) { return(arg->get_is_loaded()); }
 
 template <typename T> void LRUCache<T>::access(const std::shared_ptr<T>& arg, LRUCacheData aux) {
-    for(size_t i = 0; i < this->cache.size(); ++i) {
-        if(this->cache.at(i) == arg) {
-            this->cache.erase(this->cache.begin() + i);
-            break;
-        }
-    }
-    this->cache.push_back(arg);
+	for(size_t i = 0; i < this->cache.size(); ++i) {
+		if(this->cache.at(i) == arg) {
+			this->cache.erase(this->cache.begin() + i);
+			break;
+		}
+	}
+	this->cache.push_back(arg);
 }
 
 template <typename T> void LRUCache<T>::allocate(const std::shared_ptr<T>& arg) {
-    if(this->cache.size() > this->get_size()) {
-        this->remove(this->select());
-    }
-    arg->load();
-    this->cache.push_back(arg);
+	if(this->cache.size() > this->get_size()) {
+		this->remove(this->select());
+	}
+	arg->load();
+	this->cache.push_back(arg);
 }
 
 template <typename T> void LRUCache<T>::acquire(const std::shared_ptr<T>& arg, LRUCacheData aux) {
-    this->n_acquire++;
-    if(!this->in(arg)) {
-        this->n_miss++;
-        this->allocate(arg);
-    }
+	this->n_acquire++;
+	if(!this->in(arg)) {
+		this->n_miss++;
+		this->allocate(arg);
+	}
 }
 
 #endif
