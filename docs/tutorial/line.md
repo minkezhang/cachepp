@@ -14,7 +14,7 @@ class LineInterface {
 ```
 
 We are loading and unloading files -- it would make sense then that we need an additional property `filename` stored in the data struct. With this, we set out creating 
-the header:
+the header (see [filedata.h](../../refs/filedata.h) for source file):
 
 ```cpp
 /* /include/src/filedata.h */
@@ -24,12 +24,15 @@ the header:
 
 #include <string>
 
-class FileData : public LineInterface<char> {
+#include "libs/cachepp/globals.h"
+#include "libs/cachepp/lineinterface.h"
+
+class FileData : public cachepp::LineInterface<...> {
 	public:
-		FileData(id, filename);
+		FileData(...);
 
 	private:
-		std::string filename;
+		... filename;
 		virtual void aux_load() final;
 		...
 };
@@ -47,19 +50,22 @@ We are choosing a very simple hash function for this datatype -- the first char 
 #ifndef FILEDATA_TEMPLATE
 #define FILEDATA_TEMPLATE
 
+#include <fstream>
 #include <string>
 
+#include "libs/cachepp/globals.h"
+#include "libs/cachepp/lineinterface.h"
 #include "libs/exceptionpp/exception.h"
 
 #include "src/filedata.h"
 
-FileData::FileData(id, filename) : filename(filename), cachepp::LineInterface<char>::LineInterface(id) {}
+FileData::FileData(id, filename) : cachepp::LineInterface<...>::LineInterface(id), filename(filename) {}
 
 ... FileData::hash() {
-	if(this->get_is_loaded() {
+	if(this->get_is_loaded()) {
 		return(this->data.at(0));
 	}
-	throw(exceptionpp::RuntimeError("FileData::hash", "attempting to hash an unloaded line"));
+	throw(exceptionpp::RuntimeError("FileData::hash", "attempting to hash data which is not loaded"));
 }
 
 #endif
@@ -68,18 +74,19 @@ FileData::FileData(id, filename) : filename(filename), cachepp::LineInterface<ch
 For loading and unloading the file, we simply need to read and write to the filename:
 
 ```cpp
-FileData::aux_load() {
+void FileData::aux_load() {
+	this->data.clear();
 	std::string line;
-	ifstream fp (this->filename.c_str());
+	std::ifstream fp (this->filename.c_str());
 	while(getline(fp, line)) {
 		std::vector<uint8_t> buf (line.begin(), line.end());
-		this->data.insert(this->data.end, buf.begin(), buf.end());
+		this->data.insert(this->data.end(), buf.begin(), buf.end());
 	}
 	fp.close();
 }
 
-FileData::aux_unload() {
-	FILE *fp = fopen(this->filename.c_str(), "r+");
+void FileData::aux_unload() {
+	FILE *fp = fopen(this->filename.c_str(), "w");
 	// http://bit.ly/1vS52ky
 	fputs(std::string(this->data.begin(), this->data.end()).c_str(), fp);
 	fclose(fp);

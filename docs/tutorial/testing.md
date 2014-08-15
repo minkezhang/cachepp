@@ -1,37 +1,51 @@
 Testing the Cache
 ====
 
-Before we start testing, let us consider how to use this cache in a coding project:
+Before we start testing, let us consider how to use this cache in a coding project (see [main.cc](../../refs/main.cc) for source file):
 
 ```cpp
 /* src/main.cc */
 
+#include <iostream>
+#include <random>
 #include <string>
 
+#include "libs/cachepp/simpleline.h"
 #include "libs/cachepp/testsuite.h"
 
 #include "src/filedata.h"
-#include "src/lrucache.h"
+#include "src/lru.h"
 
 int main() {
-	// 10-line cache
-	auto c = LRUCache<SimpleData>(1);
-	std::shared_ptr<FileData> foo (new FileData("files/foo"));
-	std::shared_ptr<FileData> bar (new FileData("files/bar"));
+	// test to make sure LRUCache is okay
+	std::shared_ptr<LRUCache<cachepp::SimpleLine>> c (new LRUCache<cachepp::SimpleLine>(1));
+
+	// compiler will return an error on non-pointer instances of the cache (LRUCache<FileData> d ...)
+	std::shared_ptr<LRUCache<FileData>> d (new LRUCache<FileData>(1));
 
 	// CacheInterface::r has the default D() aux data argument as input
-	std::cout << c.r(foo) << std::endl;
+	std::shared_ptr<FileData> foo (new FileData(1, "files/foo"));
+	std::shared_ptr<FileData> bar (new FileData(1, "files/bar"));
 
-	// swap out foo for bar in the cache
-	std::cout << c.r(bar) << std::endl;
+	// read some data
+	std::vector<uint8_t> foo_buf = d->r(foo);
+	std::vector<uint8_t> bar_buf = d->r(bar);
 
-	c.w(bar, "baz");
+	// output
+	std::cout << std::string(foo_buf.begin(), foo_buf.end()) << std::endl;
+	std::cout << std::string(bar_buf.begin(), bar_buf.end()) << std::endl;
+
+	// write some data
+	d->w(bar, std::vector<uint8_t> { 'b', 'a', 'z' });
 
 	// unload the data
-	c.remove(bar);
+	d->remove(bar);
 
-	// reload the data into the cache
-	std::cout << c.r(bar) << std::endl;
+	// load into the cache agian
+	std::vector<uint8_t> baz_buf = d->r(bar);
+
+	// assert the changes have been made
+	std::cout << std::string(baz_buf.begin(), baz_buf.end()) << std::endl;
 
 	return(0);
 }
@@ -41,12 +55,16 @@ We would like to ensure that `LRUCache` is doing what it's suppose to:
 
 ```cpp
 void test_correctness() {
-	std::shared_ptr<LRUCache<SimpleData>> c (new LRUCache<SimpleData>(2));
-	std::shared_ptr<std::vector<FileData>> l (new std::vector<FileData> (10, std::shared_ptr<FileData> (new FileData("files/foo"))));
+	std::shared_ptr<LRUCache<FileData>> c (new LRUCache<FileData>(2));
 
-	auto t = TestSuite(c);
+	std::shared_ptr<std::vector<std::shared_ptr<FileData>>> l (new std::vector<std::shared_ptr<FileData>>());
+	for(size_t i = 0; i < 10; ++i) {
+		l->push_back(std::shared_ptr<FileData> (new FileData(rand(), "files/foo")));
+	}
 
-	t->correctness(l, 1000, false);
+	auto t = cachepp::TestSuite<LRUCache<FileData>, LRUCacheData, FileData>(c);
+
+	t.correctness(l, 1000, false);
 }
 ```
 
@@ -54,8 +72,12 @@ What about performance?
 
 ```cpp
 void test_performance() {
-	std::shared_ptr<LRUCache<SimpleData>> c (new LRUCache<SimpleData>(2));
-	std::shared_ptr<std::vector<FileData>> l (new std::vector<FileData> (10, std::shared_ptr<FileData> (new FileData("files/foo"))));
+	std::shared_ptr<LRUCache<FileData>> c (new LRUCache<FileData>(2));
+
+	std::shared_ptr<std::vector<std::shared_ptr<FileData>>> l (new std::vector<std::shared_ptr<FileData>>());
+	for(size_t i = 0; i < 10; ++i) {
+		l->push_back(std::shared_ptr<FileData> (new FileData(rand(), "files/foo")));
+	}
 
 	// each line's data is capped at 128 bytes
 	std::shared_ptr<std::vector<size_t>> l_size (new std::vector<size_t> (10, 128));
@@ -64,14 +86,14 @@ void test_performance() {
 	std::shared_ptr<std::vector<size_t>> sam_access (new std::vector<size_t> { 1, 1, 1, 1, 1, 1, 1 });
 
 	// don't supply any auxiliary data for the access pattern
-	std::shared_ptr<std::vector<std::shared_ptr<LRUCacheData>>> aux (new std::vector<std::shared_ptr<LRUCacheData>());
+	std::shared_ptr<std::vector<std::shared_ptr<LRUCacheData>>> aux (new std::vector<std::shared_ptr<LRUCacheData>>());
 
-	auto t = TestSuite(c);
+	auto t = cachepp::TestSuite<LRUCache<FileData>, LRUCacheData, FileData>(c);
 
-	t->performance("RND", l, l_size, rnd_access, aux, .5, 1000, false);
-	t->performance("SAM", l, l_size, sam_access, aux, .5, 1000, false);
+	t.performance("RND", l, l_size, rnd_access, aux, .5, 1000, false);
+	t.performance("SAM", l, l_size, sam_access, aux, .5, 1000, false);
 
-	std::cout << t->get_result()->to_string(false);
+	std::cout << t.get_result().to_string(false);
 }
 ```
 
