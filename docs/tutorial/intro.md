@@ -24,6 +24,9 @@ Take a look at the [tutorial directory](../../tutorial/), which has been populat
 this folder as a working directory. The included `Makefile` will compile as-is, and will produce an executable called `tutorial.app`. All header files in this tutorial 
 should go into the [tutorial/include/src](../../tutorial/include/src/) directory, and all source files into the [tutorial/src/](../../tutorial/src/) directory.
 
+We have added `tutorial/include/` to the include path to make including header files much simpler -- a header file `tutorial/include/src/foo.h` can be included in all 
+files within the tutorial scope as `#include "src/foo.h"`.
+
 If you are creating a project from scratch, simply copy the base tutorial directory, `cd` into it and *replace the* `external/cachepp` *link with a* `git clone` *of the 
 repository*:
 
@@ -32,9 +35,13 @@ cd tutorial/external
 rm cachepp
 git clone https://github.com/cripplet/cachepp.git
 cd cachepp
+# get all dependencies
 git submodule update --init --recursive
 cd ../../
 ```
+
+All other files within `tutorial/` are symbolically linked from `tutorial/external/cachepp/` and so will automatically work as long as `tutorial/external/cachepp/` is 
+properly initialized.
 
 In the future, **we will assume** `tutorial/` **as the root directory** -- that is, when we refer to `/` in the documentation we mean `tutorial/` (e.g. `/src/` refers to 
 `tutorial/src/`, etc.).
