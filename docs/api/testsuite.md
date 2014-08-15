@@ -117,7 +117,7 @@ is the tag of an experiment that was run with `read_rate.at(0)`.
 
 * `total_runtime`
 
-	The total time taken in `CacheInterface::r` and `CacheInterface::w` during the experiment, in units if microseconds (us).
+	The total time taken in `CacheInterface::r` and `CacheInterface::w` during the experiment, in units of microseconds (us).
 
 ### Methods
 
