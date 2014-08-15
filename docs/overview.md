@@ -38,8 +38,8 @@ But enough talk -- often it is easier to demonstrate the advantages of a framewo
 programmer diligently writes code for this cache and fills in all the virtual functions of the cache and data interfaces:
 
 ```cpp
-class RandomEvictCache : cachepp::CacheInterface<...> { ... };
-class TabData : cachepp::LineInterface<...> { ... };
+class RandomEvictCache : public cachepp::CacheInterface<...> { ... };
+class TabData : public cachepp::LineInterface<...> { ... };
 ```
 
 After using this cache in development for several days, the programmer decides to run the test suite on this cache to test performance:
@@ -56,7 +56,7 @@ Unfortunately, he sees that this cache performs quite poorly.
 After several days, this programmer comes up with an LRU cache which also conforms to the `cachepp` interface:
 
 ```cpp
-class LRUCache : cachepp::CacheInterface<...> { ... };
+class LRUCache : public cachepp::CacheInterface<...> { ... };
 ```
 
 In order to test this new cache, the programmer runs:
