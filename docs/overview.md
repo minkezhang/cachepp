@@ -112,8 +112,8 @@ git submodule foreach --recursive git pull
 Further Reading
 ----
 
-* [applications](applications.md) -- a list of possible use-cases for this framework
+* [applications](applications.md) -- some use-cases for this framework
 * [api](api/index.md) -- the API documentation index
 * [file structure](structure.md) -- a walkthrough of the folder hierarchy in this project
 * [planned features](future.md)
-* [tutorial](tutorial/intro.md)
+* [tutorial](tutorial/intro.md) -- a guided tutorial
