@@ -1,4 +1,7 @@
 Testing the Cache
 ====
 
-Prev -- [Implementing the Data Interface](data.md)
+Further Reading
+----
+
+* Prev -- [Implementing the Data Interface](data.md)

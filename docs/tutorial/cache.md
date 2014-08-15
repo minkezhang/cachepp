@@ -1,5 +1,8 @@
 Implementing the Cache
 ====
 
-Prev -- [Setting Up](intro.md)
-Next -- [Implementing the Data Interface](data.md)
+Further Reading
+----
+
+* Prev -- [Setting Up](intro.md)
+* Next -- [Implementing the Data Interface](data.md)

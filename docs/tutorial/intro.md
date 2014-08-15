@@ -40,4 +40,7 @@ In the future, **we will assume 'tutorial' as the root directory** -- that is, w
 
 Please direct any questions to [gmail](mailto:minke.zhang@gmail.com).
 
-Next -- [Implementing the Cache Interface](cache.md)
+Further Reading
+----
+
+* Next -- [Implementing the Cache Interface](cache.md)
