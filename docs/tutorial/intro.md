@@ -36,10 +36,11 @@ git submodule update --init --recursive
 cd ../../
 ```
 
-In the future, **we will assume 'tutorial' as the root directory** -- that is, when we refer to `/` in the documentation we mean `tutorial/` (e.g. `/src/` refers to 
-`tutorial/src/`).
+In the future, **we will assume `tutorial/` as the root directory** -- that is, when we refer to `/` in the documentation we mean `tutorial/` (e.g. `/src/` refers to 
+`tutorial/src/`, etc.).
 
-Please direct any questions to [gmail](mailto:minke.zhang@gmail.com).
+Please direct any questions to [gmail](mailto:minke.zhang@gmail.com). Any issues with the tutorial should be addressed on the project 
+[issues](https://github.com/cripplet/cachepp/issues) page.
 
 Further Reading
 ----
