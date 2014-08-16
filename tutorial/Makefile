@@ -13,7 +13,7 @@ EXECUTABLE=tutorial.app
 all: clean $(EXECUTABLE) $(SOURCES)
 
 $(EXECUTABLE): $(OBJECTS)
-	$(CC) $(CFLAGS) $(INCLUDE) $(INCLUDE_LIBS) $(OBJECTS) -o $@ $(LIBS)
+	$(CC) $(CFLAGS) $(INCLUDE_LIBS) $(INCLUDE) $(OBJECTS) -o $@ $(LIBS)
 
 clean:
 	rm -f $(EXECUTABLE) *.o
