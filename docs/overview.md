@@ -11,7 +11,7 @@ caching libraries are almost always written in languages such as Java and Python
 On Work Required
 ----
 
-**`cachepp` still requires a programmer to write a cache.** This is a *framework*, not a *library*, in the sense that the end functionality needed (caching) is **not** 
+`cachepp` **still requires a programmer to write a cache.** This is a *framework*, not a *library*, in the sense that the end functionality needed (caching) is **not** 
 provided. A *scaffold* is given to the programmer instead -- the programmer is expected to build a cache around the scaffold, much like many websites and network 
 applications are built around their own frameworks -- [CakePHP](http://cakephp.org/), [Node.js](http://nodejs.org/), etc.
 
