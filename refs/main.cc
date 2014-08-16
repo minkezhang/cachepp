@@ -26,14 +26,13 @@ void test_performance(const std::shared_ptr<LRUCache<FileData>>& c) {
 
 	auto t = cachepp::TestSuite<LRUCache<FileData>, LRUCacheData, FileData>(c);
 
-	std::shared_ptr<std::vector<size_t>> rnd_access (new std::vector<size_t> { 0, 1, 0, 0, 1, 0, 1 });
-	std::shared_ptr<std::vector<size_t>> sam_access (new std::vector<size_t> { 1, 1, 1, 1, 1, 1, 1 });
+	std::shared_ptr<std::vector<size_t>> rnd_access (new std::vector<size_t> { 0, 1 });
+	std::shared_ptr<std::vector<size_t>> sam_access (new std::vector<size_t> { 1, 1 });
 
 	// don't supply any auxiliary data for the access pattern
 	std::shared_ptr<std::vector<std::shared_ptr<LRUCacheData>>> aux (new std::vector<std::shared_ptr<LRUCacheData>>());
 
 	for(size_t i = 0; i < 10; ++i) {
-		// each line's data is capped at 128 bytes
 		std::shared_ptr<std::vector<size_t>> l_size (new std::vector<size_t> (10, 1024 * (2 * (i + 1))));
 
 		t.performance("RND", l, l_size, rnd_access, aux, .5, 1000, false);
