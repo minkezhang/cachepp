@@ -119,6 +119,15 @@ is the tag of an experiment that was run with `read_rate.at(0)`.
 
 	The total time taken in `CacheInterface::r` and `CacheInterface::w` during the experiment, in units of microseconds (us).
 
+* `r_time`
+
+	average loading time (in microseconds) of the line data over `n_attempts` -- run in a separate test in `TestSuite::performance` (output column `l-time`)
+
+* `w_time`
+
+	average unloading time (in microseconds) of the line data over `n_attempts` -- run in a separate test in `TestSuite::performance` (output column `u-time`)
+
+
 ### Methods
 
 * `get_size()`

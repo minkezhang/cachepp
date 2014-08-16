@@ -14,7 +14,7 @@ namespace cachepp {
 		public:
 			TestResult();
 
-			void push_back(std::string tag, size_t n_acquire, size_t pool_size, size_t cache_size, size_t total_data, double read_rate, double miss_rate, double line_size, double total_runtime, bool is_parallel, size_t n_threads);
+			void push_back(std::string tag, size_t n_acquire, size_t pool_size, size_t cache_size, size_t total_data, double read_rate, double miss_rate, double line_size, double total_runtime, bool is_parallel, size_t n_threads, double r_time, double w_time);
 
 			/**
 			 * get the number of records currently stored in the object
@@ -31,6 +31,8 @@ namespace cachepp {
 			size_t get_pool_size(size_t index);
 			bool get_is_parallel(size_t index);
 			size_t get_n_threads(size_t index);
+			double get_r_time(size_t index);
+			double get_w_time(size_t index);
 
 			std::string to_string(bool is_tsv = false);
 
@@ -48,6 +50,8 @@ namespace cachepp {
 			std::vector<double> total_runtime;
 			std::vector<bool> is_parallel;
 			std::vector<size_t> n_threads;
+			std::vector<double> r_time;
+			std::vector<double> w_time;
 	};
 
 	/**
@@ -90,7 +94,8 @@ namespace cachepp {
 			TestResult result;
 
 			void aux_correctness(const std::shared_ptr<std::atomic<size_t>>& n_success, const std::shared_ptr<std::vector<std::shared_ptr<T>>>& lines, size_t n_attempts);
-			void aux_performance(const std::shared_ptr<std::atomic<size_t>>& data, const std::shared_ptr<std::atomic<double>>& runtime, const std::shared_ptr<std::vector<std::shared_ptr<T>>>& lines, const std::shared_ptr<std::vector<size_t>>& line_size, const std::shared_ptr<std::vector<identifier>>& access_pattern, const std::shared_ptr<std::vector<std::shared_ptr<D>>>& access_pattern_aux, double read_rate, size_t n_attempts);
+			void aux_performance_c(const std::shared_ptr<std::atomic<size_t>>& data, const std::shared_ptr<std::atomic<double>>& runtime, const std::shared_ptr<std::vector<std::shared_ptr<T>>>& lines, const std::shared_ptr<std::vector<size_t>>& line_size, const std::shared_ptr<std::vector<identifier>>& access_pattern, const std::shared_ptr<std::vector<std::shared_ptr<D>>>& access_pattern_aux, double read_rate, size_t n_attempts);
+			void aux_performance_l(const std::shared_ptr<std::atomic<double>>& r_time, const std::shared_ptr<std::atomic<double>>& w_time, const std::shared_ptr<std::vector<std::shared_ptr<T>>>& lines, size_t n_attempts);
 	};
 }
 

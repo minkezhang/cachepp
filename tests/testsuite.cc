@@ -18,8 +18,8 @@ TEST_CASE("cachepp|testsuite-testresult") {
 	REQUIRE(r.get_size() == 0);
 	REQUIRE_THROWS_AS(r.to_string(), exceptionpp::InvalidOperation);
 
-	r.push_back("ABC", 1, 1, 1, 1, 1, 1, 1, 1, 1, 2);
-	r.push_back("123", 1, 1, 1, 1, 1, 1, 1, 1, 1, 2);
+	r.push_back("ABC", 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 0, 0);
+	r.push_back("123", 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 0, 0);
 	REQUIRE(r.get_size() == 2);
 
 	// ensure that the earlier records are in front

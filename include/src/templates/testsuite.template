@@ -110,12 +110,12 @@ template <typename X, typename D, typename T> void cachepp::TestSuite<X, D, T>::
 
 	if(!is_parallel) {
 		n_acquire = access_pattern->size() * n_attempts;
-		this->aux_performance(data, runtime, lines, line_size, access_pattern, access_pattern_aux, read_rate, n_attempts);
+		this->aux_performance_c(data, runtime, lines, line_size, access_pattern, access_pattern_aux, read_rate, n_attempts);
 	} else {
 		n_acquire = access_pattern->size() * n_attempts * n_threads;
 		std::vector<std::thread> threads;
 		for(size_t i = 0; i < n_threads; ++i) {
-			threads.push_back(std::thread(&cachepp::TestSuite<X, D, T>::aux_performance, this, data, runtime, lines, line_size, access_pattern, access_pattern_aux, read_rate, n_attempts));
+			threads.push_back(std::thread(&cachepp::TestSuite<X, D, T>::aux_performance_c, this, data, runtime, lines, line_size, access_pattern, access_pattern_aux, read_rate, n_attempts));
 		}
 		for(size_t i = 0; i < n_threads; ++i) {
 			threads.at(i).join();
@@ -128,12 +128,48 @@ template <typename X, typename D, typename T> void cachepp::TestSuite<X, D, T>::
 	}
 	size /= line_size->size();
 
-	this->result.push_back(tag, n_acquire, lines->size(), this->cache->get_size(), *data, read_rate, this->cache->get_miss_rate(), size, *runtime, is_parallel, n_threads);
+
+	std::shared_ptr<std::atomic<double>> r_time (new std::atomic<double>(0));
+	std::shared_ptr<std::atomic<double>> w_time (new std::atomic<double>(0));
+
+	this->aux_performance_l(r_time, w_time, lines, n_attempts);
+
+	this->result.push_back(tag, n_acquire, lines->size(), this->cache->get_size(), *data, read_rate, this->cache->get_miss_rate(), size, *runtime, is_parallel, n_threads, *r_time / n_attempts, *w_time / n_attempts);
 
 	this->cache->reset();
 }
 
-template <typename X, typename D, typename T> void cachepp::TestSuite<X, D, T>::aux_performance(const std::shared_ptr<std::atomic<size_t>>& data, const std::shared_ptr<std::atomic<double>>& runtime, const std::shared_ptr<std::vector<std::shared_ptr<T>>>& lines, const std::shared_ptr<std::vector<size_t>>& line_size, const std::shared_ptr<std::vector<identifier>>& access_pattern, const std::shared_ptr<std::vector<std::shared_ptr<D>>>& access_pattern_aux, double read_rate, size_t n_attempts) {
+template <typename X, typename D, typename T> void cachepp::TestSuite<X, D, T>::aux_performance_l(const std::shared_ptr<std::atomic<double>>& r_time, const std::shared_ptr<std::atomic<double>>& w_time, const std::shared_ptr<std::vector<std::shared_ptr<T>>>& lines, size_t n_attempts) {
+	double local_r_time = 0;
+	double local_w_time = 0;
+	for(cachepp::identifier i = 0; i < lines->size(); ++i) {
+		lines->at(i)->unload();
+	}
+	for(size_t i = 0; i < n_attempts; ++i) {
+		cachepp::identifier index = rand() % lines->size();
+		std::clock_t start = std::clock();
+		lines->at(index)->load();
+		local_r_time += (std::clock() - start) / (double) (CLOCKS_PER_SEC / 1000000);
+		start = std::clock();
+		lines->at(index)->unload();
+		local_w_time += (std::clock() - start) / (double) (CLOCKS_PER_SEC / 1000000);
+	}
+
+	double expected;
+	double desired;
+
+	expected = r_time->load();
+	do {
+		desired = expected + local_r_time;
+	} while(!r_time->compare_exchange_weak(expected, desired));
+
+	expected = w_time->load();
+	do {
+		desired = expected + local_w_time;
+	} while(!w_time->compare_exchange_weak(expected, desired));
+}
+
+template <typename X, typename D, typename T> void cachepp::TestSuite<X, D, T>::aux_performance_c(const std::shared_ptr<std::atomic<size_t>>& data, const std::shared_ptr<std::atomic<double>>& runtime, const std::shared_ptr<std::vector<std::shared_ptr<T>>>& lines, const std::shared_ptr<std::vector<size_t>>& line_size, const std::shared_ptr<std::vector<identifier>>& access_pattern, const std::shared_ptr<std::vector<std::shared_ptr<D>>>& access_pattern_aux, double read_rate, size_t n_attempts) {
 	size_t local_data = 0;
 	double local_runtime = 0;
 
