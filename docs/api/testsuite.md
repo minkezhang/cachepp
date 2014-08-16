@@ -121,12 +121,13 @@ is the tag of an experiment that was run with `read_rate.at(0)`.
 
 * `r_time`
 
-	average loading time (in microseconds) of the line data over `n_attempts` -- run in a separate test in `TestSuite::performance` (output column `l-time`)
+	Average loading time (in microseconds) of the line data over `n_attempts` -- run in a separate test in `TestSuite::performance` (output column `l-lat`) -- we can 
+	calculate the loading throughput `l-tput = line_size / r_time`.
 
 * `w_time`
 
-	average unloading time (in microseconds) of the line data over `n_attempts` -- run in a separate test in `TestSuite::performance` (output column `u-time`)
-
+	Average unloading time (in microseconds) of the line data over `n_attempts` -- run in a separate test in `TestSuite::performance` (output column `u-lat`) -- we 
+	can calculate the unloading throughput `u-tput = line_size / w_time`.
 
 ### Methods
 

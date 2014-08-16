@@ -55,7 +55,7 @@ std::string cachepp::TestResult::to_string(bool is_tsv) {
 	}
 
 	std::stringstream buffer;
-	buffer << std::setw(pad) << "trial" << sep << std::setw(3) << "tag" << sep << std::setw(pad) << "pool size" << sep << std::setw(pad) << "cache size" << sep << std::setw(pad) << "read (%)" << sep << std::setw(pad) << "miss (%)" << sep << std::setw(pad) << "tput (B/us)" << sep << std::setw(pad) << "lat (us)" << sep << std::setw(pad) << "line (B)" << sep << std::setw(pad) << "parallel" << sep << std::setw(pad) << "n_threads" << sep << std::setw(pad) << "l-time (us)" << sep << std::setw(pad) << "u-time (us)" << std::endl;
+	buffer << std::setw(pad) << "trial" << sep << std::setw(3) << "tag" << sep << std::setw(pad) << "pool size" << sep << std::setw(pad) << "cache size" << sep << std::setw(pad) << "read (%)" << sep << std::setw(pad) << "miss (%)" << sep << std::setw(pad) << "tput (B/us)" << sep << std::setw(pad) << "lat (us)" << sep << std::setw(pad) << "line (B)" << sep << std::setw(pad) << "parallel" << sep << std::setw(pad) << "n_threads" << sep << std::setw(pad) << "l-lat (us)" << sep << std::setw(pad) << "u-lat (us)" << std::endl;
 	buffer << std::string(buffer.str().length(), '=') << std::endl;
 	for(size_t index = 0; index < this->get_size(); ++index) {
 		buffer << std::setprecision(2) << std::fixed;
