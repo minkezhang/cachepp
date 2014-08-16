@@ -9,7 +9,6 @@
 #include "src/lru.h"
 
 void test_correctness(const std::shared_ptr<LRUCache<FileData>>& c) {
-
 	std::shared_ptr<std::vector<std::shared_ptr<FileData>>> l (new std::vector<std::shared_ptr<FileData>>());
 	for(size_t i = 0; i < 10; ++i) {
 		l->push_back(std::shared_ptr<FileData> (new FileData(rand(), "files/foo")));

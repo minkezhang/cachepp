@@ -66,7 +66,7 @@ this function if our cache does not call for it. We decide that, as we are in an
 *with* this function implemented as well, but we have decided not to in this case just as an example.)
 
 In `/include/src/templates/lru.tpp` then, we will add the constructor and the empty `heuristic` function (see 
-[simpleserialcache.template](../../include/src/templates/simpleserialcache.template) for similar implementation and [lru.tpp](../../refs/lru.tpp] for source file):
+[simpleserialcache.template](../../include/src/templates/simpleserialcache.template) for similar implementation and [lru.tpp](../../refs/lru.tpp) for source file):
 
 ```cpp
 /* /include/src/templates/lru.tpp */
@@ -97,7 +97,7 @@ exception in `LRUCache::heuristic` and `LRUCache::release` rather than opting fo
 
 **NB** Keep in mind that the state of the cache at the destruction of the object **is not necessarily consistent with saved data** -- we do not require this consistency 
 as part of the API due to the fact that this may be *undesirable* behavior. To ensure a call to save the data at destruction, add a call to `this->clear` at the 
-destructor. Note that this can only be called in a class in which `clear` is **not** a pure virtual function, due to the way in which destructors work in C++.
+destructor. Note that this can only be called in a class in which `CacheInterface::clear` is **not** a pure virtual function, due to the way in which destructors work in C++.
 
 Let us consider `LRUCache::select`: according to the API, this will select an internal cache line and return that as the candidate to be evicted. As this is an LRU 
 cache, we will model "least recent" as the head of the queue:
@@ -132,7 +132,7 @@ Next, let us consider implementing `CacheInterface::access` -- since this is an 
 ```cpp
 template <typename T> void LRUCache<T>::access(arg, aux) {
 	for(size_t i = 0; i < this->cache.size(); ++i) {
-		if(this->cache.at(i) == arg) {
+		if(this->cache.at(i)->get_identifier() == arg->get_identifier()) {
 			this->cache.erase(this->cache.begin() + i);
 			break;
 		}

@@ -76,13 +76,20 @@ For loading and unloading the file, we simply need to read and write to the file
 ```cpp
 void FileData::aux_load() {
 	this->data.clear();
-	std::string line;
-	std::ifstream fp (this->filename.c_str());
-	while(getline(fp, line)) {
-		std::vector<uint8_t> buf (line.begin(), line.end());
-		this->data.insert(this->data.end(), buf.begin(), buf.end());
-	}
-	fp.close();
+	FILE *fp = fopen(this->filename.c_str(), "r");
+
+	// get file size
+	fseek(fp, 0, SEEK_END);
+	size_t size = ftell(fp);
+	rewind(fp);
+
+	char *buf = (char *) malloc(sizeof(char) * size);
+	size_t n_bytes = fread(buf, 1, size, fp);
+
+	this->data.insert(this->data.begin(), buf, buf + n_bytes);
+
+	free(buf);
+	fclose(fp);
 }
 
 void FileData::aux_unload() {
