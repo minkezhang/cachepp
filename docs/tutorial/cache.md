@@ -61,7 +61,7 @@ class LRUCache : public cachepp::CacheInterface<...> {
 Note that we have an additional `#include` statement at the end of the header -- if you wish to define the functions externally, you will need to add this at the end of 
 the header file so that the compiler will know where to look for the function definitions.
 
-Let us take a look at the documenation for `CacheInterface::heuristic` in the [API](../api/cacheinterface.md): we see that we do **not** necessarily need to implement 
+Let us take a look at the documentation for `CacheInterface::heuristic` in the [API](../api/cacheinterface.md): we see that we do **not** necessarily need to implement 
 this function if our cache does not call for it. We decide that, as we are in an LRU schema, we can skip this. (Note that it is also possible to write an LRU cache 
 *with* this function implemented as well, but we have decided not to in this case just as an example.)
 
