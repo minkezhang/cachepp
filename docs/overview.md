@@ -45,7 +45,8 @@ class TabData : public cachepp::LineInterface<...> { ... };
 After using this cache in development for several days, the programmer decides to run the test suite on this cache to test performance:
 
 ```cpp
-auto test = cachepp::TestSuite(RandomEvictCache<TabData>(...));
+std::shared_ptr<RandomEvictCache<TabData>> c (new RandomEvictCache<TabData>(...));
+auto test = cachepp::TestSuite<...>(c);
 test.correctness(...);
 test.performance(...);
 std::cout << test.get_result().to_string();
@@ -62,7 +63,8 @@ class LRUCache : public cachepp::CacheInterface<...> { ... };
 In order to test this new cache, the programmer runs:
 
 ```
-auto test = cachepp::TestSuite(LRUCache<TabData>(...));
+std::shared_ptr<LRUCache<TabData>> c (new LRUCache<TabData>(...));
+auto test = cachepp::TestSuite<...>(c);
 test.correctness(...);
 test.performance(...);
 std::cout << test.get_result().to_string();
@@ -79,7 +81,7 @@ application:
 ```cpp
 #include "dropin/randomcache.h"
 
-auto c = RandomEvictCache<FileIOData>(...);
+std::shared_ptr<RandomEvictCache<FileData>> c (new RandomEvictCache<FileData>(...));
 ```
 
 The friend **did not need to adjust the cache to handle separate data** -- this was all done for him inside the C++ template system.
