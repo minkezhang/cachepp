@@ -11,6 +11,7 @@
 #include "src/lru.h"
 
 template <typename T> LRUCache<T>::LRUCache(cachepp::identifier size) : cachepp::CacheInterface<std::vector<std::shared_ptr<T>>, LRUCacheData, T>::CacheInterface(size, false) {}
+
 template <typename T> size_t LRUCache<T>::heuristic(const std::shared_ptr<T>& arg) { throw(exceptionpp::NotImplemented("LRUCache::heuristic")); }
 template <typename T> void LRUCache<T>::release(const std::shared_ptr<T>& arg) { throw(exceptionpp::NotImplemented("LRUCache::release")); }
 

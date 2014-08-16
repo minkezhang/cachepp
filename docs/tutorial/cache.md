@@ -84,6 +84,7 @@ In `/include/src/templates/lru.tpp` then, we will add the constructor and the em
 #include "src/lru.h"
 
 template <typename T> LRUCache<T>::LRUCache(size) : cachepp::CacheInterface<...>::CacheInterface(size, false) {}
+
 template <typename T> ... LRUCache<T>::heuristic(arg) { throw(exceptionpp::NotImplemented("LRUCache::heuristic")); }
 template <typename T> void LRUCache<T>::release(arg) { throw(exceptionpp::NotImplemented("LRUCache::release")); }
 
@@ -93,6 +94,10 @@ template <typename T> void LRUCache<T>::release(arg) { throw(exceptionpp::NotImp
 The second argument in the `CacheInterface` constructor indicates this cache was **not** designed to be thread-safe. Note that we have added an (programmer's preference) 
 exception in `LRUCache::heuristic` and `LRUCache::release` rather than opting for an empty function -- this will allow us to realize readily that this `heurisitic` will 
 *not* be supported in `LRUCache` in the case of accidental invocation.
+
+**NB** Keep in mind that the state of the cache at the destruction of the object **is not necessarily consistent with saved data** -- we do not require this consistency 
+as part of the API due to the fact that this may be *undesirable* behavior. To ensure a call to save the data at destruction, add a call to `this->clear` at the 
+destructor. Note that this can only be called in a class in which `clear` is **not** a pure virtual function, due to the way in which destructors work in C++.
 
 Let us consider `LRUCache::select`: according to the API, this will select an internal cache line and return that as the candidate to be evicted. As this is an LRU 
 cache, we will model "least recent" as the head of the queue:

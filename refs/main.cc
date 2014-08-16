@@ -47,10 +47,6 @@ void test_performance() {
 }
 
 int main() {
-	std::cout << "This is a skeletal tutorial application for the cachepp caching framework." << std::endl << std::endl \
-		<< "Please see https://github.com/cripplet/cachepp/blob/master/docs/overview.md for the tutorial." << std::endl;
-
-
 	// test to make sure LRUCache is okay
 	std::shared_ptr<LRUCache<cachepp::SimpleLine>> c (new LRUCache<cachepp::SimpleLine>(1));
 
@@ -70,7 +66,7 @@ int main() {
 	std::cout << std::string(bar_buf.begin(), bar_buf.end()) << std::endl;
 
 	// write some data
-	d->w(bar, std::vector<uint8_t> { 'b', 'a', 'z' });
+	d->w(bar, std::vector<uint8_t> { 'b', 'a', 'z', '\n' });
 
 	// unload the data
 	d->remove(bar);
@@ -83,6 +79,10 @@ int main() {
 
 	test_correctness();
 	test_performance();
+
+	// reset the files
+	d->w(foo, std::vector<uint8_t> { 'f', 'o', 'o', '\n'});
+	d->w(bar, std::vector<uint8_t> { 'b', 'a', 'r', '\n'});
 
 	return(0);
 }
