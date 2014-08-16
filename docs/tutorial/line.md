@@ -71,6 +71,9 @@ FileData::FileData(id, filename) : cachepp::LineInterface<...>::LineInterface(id
 #endif
 ```
 
+Just as in the cache, `LineInterface` **does not implicitly call** `LineInterface::unload` **at destruction** -- this will have be to a custom destructor put into the 
+particular implementation of the template, and should only be called in the destructor if the programmer is **sure** this is desired behavior.
+
 For loading and unloading the file, we simply need to read and write to the filename:
 
 ```cpp
