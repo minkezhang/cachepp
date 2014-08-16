@@ -50,7 +50,6 @@ template <typename T> void LRUCache<T>::allocate(const std::shared_ptr<T>& arg) 
 		this->remove(this->select());
 	}
 	arg->load();
-	this->cache.push_back(arg);
 }
 
 template <typename T> void LRUCache<T>::acquire(const std::shared_ptr<T>& arg, LRUCacheData aux) {
@@ -59,6 +58,7 @@ template <typename T> void LRUCache<T>::acquire(const std::shared_ptr<T>& arg, L
 		this->n_miss++;
 		this->allocate(arg);
 	}
+	this->access(arg, aux);
 }
 
 #endif

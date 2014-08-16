@@ -127,7 +127,7 @@ template <typename T> ... LRUCache<T>::in(arg) { return(arg->get_is_loaded()); }
 We see that `LRUCache::remove`, `LRUCache::in`, and `LRUCache::clear` are straightforward queue iterating operators (this toy implementation uses a vector, but the idea 
 is the same).
 
-Next, let us consider access -- since this is an LRU cache, we will simply need to push the relevant element to the end of the queue:
+Next, let us consider implementing `CacheInterface::access` -- since this is an LRU cache, we will simply need to push the relevant element to the end of the queue:
 
 ```cpp
 template <typename T> void LRUCache<T>::access(arg, aux) {
@@ -149,7 +149,6 @@ template <typename T> void LRUCache<T>::allocate(arg) {
 		this->remove(this->select());
 	}
 	arg->load();
-	this->cache.push_back(arg);
 }
 
 template <typename T> void LRUCache<T>::acquire(arg, aux) {
@@ -158,6 +157,7 @@ template <typename T> void LRUCache<T>::acquire(arg, aux) {
 		this->n_miss++;
 		this->allocate(arg);
 	}
+	this->access(arg, aux);
 }
 ```
 
