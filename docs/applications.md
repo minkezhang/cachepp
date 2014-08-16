@@ -11,7 +11,7 @@ Caching the Cloud
 `LineInterface`:
 
 ```cpp
-class NetworkLine : public LineInterface<int> {
+class NetworkLine : public LineInterface<...> {
 	private:
 		std::string endpoint;
 		std::string username;
@@ -24,6 +24,47 @@ class NetworkLine : public LineInterface<int> {
 
 Which, upon calling `NetworkLine::aux_load`, will connect to the appropriate server (provided by `NetworkLine::endpoint`) with the user credentials and pull data from a 
 remote server. Likewise, `NetworkLine::aux_unload` will be able to push to a remote server.
+
+Hierarchical Caching
+----
+
+Just as the L1 caches the L2, which caches L3 or RAM, so too we may desire a hierarchical caching schema for certain applications. We can accomplish this within 
+`cachepp` by the use of *variadic templates*:
+
+```cpp
+// C and D have their usual template argument meanings
+template <typename T1, typename... Tn>
+class HierarchicalCache : public CacheInterface<C, D, T1> {
+	public:
+		HierarchicalCache(Tn&... data_types);
+	private:
+		HierarchicalCache<Tn> next;
+		virtual void allocate(arg) final;
+}
+
+template <typename T1, typename... Tn>HierarchicalCache<T1, Tn>::HierarchicalCache(Tn&... data_types) {
+	if(sizeof...(data_types)) == 0 {
+		this->next = NULL;
+	} else {
+		this->next = HierarchicalCache<data_types>(...);
+	}
+}
+
+template <typename T1, typename... Tn>HierarchicalCache<T1, Tn>::allocate(arg) {
+	if(this->next != NULL) {
+		this->next.allocate(arg);
+	} else { ... }
+}
+```
+
+Here, `typename T1` is the type of the first level of data, and `typename... Tn` represents the rest of the data (similar to `hd:tl` list syntax in functional 
+programming). Such a hypothetical cache can be invoked along the lines of:
+
+```cpp
+auto hc = HierarchicalCache<FastData, MediumData, SlowData>(...);
+```
+
+See [Wikipedia](http://en.wikipedia.org/wiki/Variadic_template) for more information on template metaprogramming.
 
 Cache Performance Research
 ----
