@@ -73,7 +73,7 @@ std::cout << test.get_result().to_string();
 **Every other line in the test suite invocation remains the same.** After running these tests, the programmer decides he is much happier with the LRU cache performance 
 than with the cache with random eviction. Going back to his application, he simply finds all instances of `RandomEvictCache` and change the constructor to `LRUCache`.
 
-Let us then consider this programmer's friend who also uses `cachepp` -- for some reason or another, the friend requires the use of a random eviction cache on file i/o 
+Let us then consider this programmer's friend who also uses `cachepp` -- for some reason or another, the friend requires the use of a random eviction cache on file I/O 
 data. The friend conformed to the data interface, but could not come up with a random eviction cache. After hearing the friend's problem, the programmer in question 
 simply shares his `RandomEvictCache` header and template declarations with his friend, who can now (with very little work) drop in this random eviction cache into his 
 application:
