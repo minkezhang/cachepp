@@ -83,6 +83,7 @@ int main() {
 	// reset the files
 	d->w(foo, std::vector<uint8_t> { 'f', 'o', 'o', '\n'});
 	d->w(bar, std::vector<uint8_t> { 'b', 'a', 'r', '\n'});
+	d->clear();
 
 	return(0);
 }
