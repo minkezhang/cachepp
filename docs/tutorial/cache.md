@@ -149,6 +149,7 @@ template <typename T> void LRUCache<T>::allocate(arg) {
 		this->remove(this->select());
 	}
 	arg->load();
+	this->cache.push_back(arg);
 }
 
 template <typename T> void LRUCache<T>::acquire(arg, aux) {

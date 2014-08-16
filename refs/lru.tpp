@@ -37,7 +37,7 @@ template <typename T> bool LRUCache<T>::in(const std::shared_ptr<T>& arg) { retu
 
 template <typename T> void LRUCache<T>::access(const std::shared_ptr<T>& arg, LRUCacheData aux) {
 	for(size_t i = 0; i < this->cache.size(); ++i) {
-		if(this->cache.at(i) == arg) {
+		if(this->cache.at(i)->get_identifier() == arg->get_identifier()) {
 			this->cache.erase(this->cache.begin() + i);
 			break;
 		}
@@ -50,6 +50,7 @@ template <typename T> void LRUCache<T>::allocate(const std::shared_ptr<T>& arg) 
 		this->remove(this->select());
 	}
 	arg->load();
+	this->cache.push_back(arg);
 }
 
 template <typename T> void LRUCache<T>::acquire(const std::shared_ptr<T>& arg, LRUCacheData aux) {

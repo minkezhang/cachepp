@@ -1,6 +1,8 @@
 #ifndef _CACHEPP_TESTSUITE_TEMPLATE
 #define _CACHEPP_TESTSUITE_TEMPLATE
 
+#include <iostream>
+
 #include <atomic>
 #include <ctime>
 #include <memory>
@@ -138,7 +140,7 @@ template <typename X, typename D, typename T> void cachepp::TestSuite<X, D, T>::
 	for(size_t i = 0; i < n_attempts; ++i) {
 		for(cachepp::identifier j = 0; j < access_pattern->size(); ++j) {
 			cachepp::identifier index = access_pattern->at(j);
-			std::vector<uint8_t> buffer = std::vector<uint8_t>(line_size->at(index), 1);
+			std::vector<uint8_t> buffer = std::vector<uint8_t>(line_size->at(index), 0xff);
 			D aux = (access_pattern_aux->size() == 0) ? D() : *access_pattern_aux->at(j);
 			if((rand() % 100) <= (read_rate * 100)) {
 				std::clock_t start = std::clock();
