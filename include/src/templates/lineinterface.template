@@ -20,6 +20,7 @@ template <typename T> void cachepp::LineInterface<T>::set_data(std::vector<uint8
 	if(!this->get_is_loaded()) {
 		throw(exceptionpp::RuntimeError("cachepp::LineInterface<T>::set_data", "attempting to set data when line is not loaded"));
 	}
+	this->set_is_dirty(true);
 	this->data = data;
 }
 
