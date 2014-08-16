@@ -15,6 +15,7 @@ to the confused.
 		* [src/](../include/src/) -- header files for the /src/ directory
 			* [templates/](../include/src/templates/) -- all `cachepp` template files here
 	* [libs/](../libs/) -- all source files from the external files are linked here
+	* [refs/](../refs/) -- reference files for the tutorial
 	* [src/](../src/) -- all source files for `cachepp`
 	* [tests/](../tests/) -- all unit testing files for `cachepp`
 	* [tutorial/](../tutorial/) -- the live tutorial work directory
