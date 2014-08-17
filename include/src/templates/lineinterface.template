@@ -40,8 +40,10 @@ template <typename T> void cachepp::LineInterface<T>::unload() {
 	if(!this->get_is_loaded()) {
 		return;
 	}
-	this->set_checksum(this->hash());
-	this->aux_unload();
+	if(this->get_is_dirty()) {
+		this->set_checksum(this->hash());
+		this->aux_unload();
+	}
 	this->set_is_loaded(false);
 }
 

@@ -8,7 +8,7 @@ cachepp::SimpleLine::SimpleLine(cachepp::identifier id, bool is_corrupt) : cache
 
 void cachepp::SimpleLine::aux_load() {}
 
-void cachepp::SimpleLine::aux_unload() { this->set_is_dirty(true); }
+void cachepp::SimpleLine::aux_unload() {}
 
 /**
  * intentionally corrupt the data to encourage Line::validate to throw an exception

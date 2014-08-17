@@ -13,20 +13,33 @@ TEST_CASE("cachepp|line") {
 	s->load();
 	REQUIRE(s->get_is_loaded() == true);
 	REQUIRE(s->get_data().at(0) == 111);
+
 	s->load();
 	REQUIRE(s->get_is_loaded() == true);
+
 	s->unload();
 	REQUIRE(s->get_is_loaded() == false);
+	REQUIRE(s->get_is_dirty() == false);
+
+	s->unload();
+	REQUIRE(s->get_is_loaded() == false);
+
+	s->load();
+	REQUIRE(s->get_is_loaded() == true);
+
+	s->set_data(std::vector<uint8_t>());
 	REQUIRE(s->get_is_dirty() == true);
+
 	s->unload();
-	REQUIRE(s->get_is_loaded() == false);
 	s->load();
-	REQUIRE(s->get_is_loaded() == true);
 
 	std::shared_ptr<cachepp::SimpleLine> t (new cachepp::SimpleLine(111, true));
 
 	t->load();
+	t->set_data(std::vector<uint8_t>());
 	t->unload();
+
 	REQUIRE(t->get_is_dirty() == true);
+
 	REQUIRE_THROWS_AS(t->load(), exceptionpp::RuntimeError);
 }
