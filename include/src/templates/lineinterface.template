@@ -32,8 +32,8 @@ template <typename T> void cachepp::LineInterface<T>::load() {
 		return;
 	}
 	this->aux_load();
-	this->validate();
 	this->set_is_loaded(true);
+	this->validate();
 }
 
 template <typename T> void cachepp::LineInterface<T>::unload() {
