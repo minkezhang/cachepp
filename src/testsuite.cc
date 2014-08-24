@@ -9,7 +9,7 @@
 
 #include "src/testsuite.h"
 
-bool is_dup(char l, char r) { return(((l == ' ') || (l == '\n')) && (l == r)); }
+bool cachepp::TestResult::is_dup(char l, char r) { return(((l == ' ') || (l == '\n')) && (l == r)); }
 
 cachepp::TestResult::TestResult() : size(0) {}
 
@@ -77,7 +77,7 @@ std::string cachepp::TestResult::to_string(bool is_tsv) {
 		ret.erase(std::remove(ret.begin(), ret.end(), '='), ret.end());
 
 		// cf. http://bit.ly/1ywrQSZ
-		std::string::iterator end = std::unique(ret.begin(), ret.end(), is_dup);
+		std::string::iterator end = std::unique(ret.begin(), ret.end(), cachepp::TestResult::is_dup);
 		ret.erase(end, ret.end());
 
 		// cf. http://bit.ly/1oN9U5R

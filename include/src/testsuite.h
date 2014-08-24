@@ -35,6 +35,7 @@ namespace cachepp {
 			double get_w_time(size_t index);
 
 			std::string to_string(bool is_tsv = false);
+			static bool is_dup(char l, char r);
 
 		private:
 			size_t size;
