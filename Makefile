@@ -18,12 +18,12 @@ EXECUTABLE=cachepp.app
 all: $(EXECUTABLE) $(SOURCES)
 
 $(EXECUTABLE): $(OBJECTS)
-	$(CC) $(CFLAGS) $(INCLUDE_LIBS) $(INCLUDE) $(OBJECTS) -o $@ $(LIBS)
+	@$(CC) $(CFLAGS) $(INCLUDE_LIBS) $(INCLUDE) $(OBJECTS) -o $@ $(LIBS)
 
 test: clean all
-	# set ulimit -c unlimited to get a core dump and analyze via gdb
-	#	cf. http://bit.ly/1zlOj8u, http://bit.ly/1n2ONGD, http://bit.ly/1n2ONGD, http://bit.ly/VCQ0yM
-	ulimit -c unlimited && ./$(EXECUTABLE) | tee results.log
+	@# set ulimit -c unlimited to get a core dump and analyze via gdb
+	@#	cf. http://bit.ly/1zlOj8u, http://bit.ly/1n2ONGD, http://bit.ly/1n2ONGD, http://bit.ly/VCQ0yM
+	@ulimit -c unlimited && ./$(EXECUTABLE) | tee results.log
 
 clean:
-	rm -f $(EXECUTABLE) *.o *.log core
+	@rm -f $(EXECUTABLE) *.o *.log core
