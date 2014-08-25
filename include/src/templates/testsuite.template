@@ -1,8 +1,6 @@
 #ifndef _CACHEPP_TESTSUITE_TEMPLATE
 #define _CACHEPP_TESTSUITE_TEMPLATE
 
-#include <iostream>
-
 #include <atomic>
 #include <ctime>
 #include <memory>
